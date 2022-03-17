@@ -9,11 +9,11 @@ def index(request):
     if request.POST:
         if request.POST['action'] == 'delete':
             with connection.cursor() as cursor:
-                cursor.execute("DELETE FROM GPU_Listing", [request.POST['id']])
+                cursor.execute("DELETE FROM GPU", [request.POST['id']])
 
     ## Use raw query to get all objects
     with connection.cursor() as cursor:
-        cursor.execute("SELECT * FROM GPU_Listing ORDER BY Listingid")
+        cursor.execute("SELECT * FROM GPU")
         customers = cursor.fetchall()
 
     result_dict = {'records': customers}
@@ -26,7 +26,7 @@ def view(request, id):
     
     ## Use raw query to get a customer
     with connection.cursor() as cursor:
-        cursor.execute("SELECT * FROM GPU_Listing", [id])
+        cursor.execute("SELECT * FROM GPU", [id])
         customer = cursor.fetchone()
     result_dict = {'cust': customer}
 
