@@ -9,14 +9,14 @@ def index(request):
     if request.POST:
         if request.POST['action'] == 'delete':
             with connection.cursor() as cursor:
-                cursor.execute("DELETE FROM GPU_Listing", [request.POST['Listingid']])
+                cursor.execute("DELETE FROM GPU_Listing WHERE Listingid = %s", [request.POST['Listingid']])
 
     ## Use raw query to get all objects
     with connection.cursor() as cursor:
-        cursor.execute("SELECT * FROM GPU_Listing")
-        customers = cursor.fetchall()
+        cursor.execute("SELECT * FROM GPU_Listing ORDER BY Listingid")
+        listing = cursor.fetchall()
 
-    result_dict = {'records': customers}
+    result_dict = {'records': listing}
 
     return render(request,'app/index.html',result_dict)
 
@@ -26,7 +26,7 @@ def view(request, id):
     
     ## Use raw query to get a customer
     with connection.cursor() as cursor:
-        cursor.execute("SELECT * FROM GPU_Listing", [id])
+        cursor.execute("SELECT * FROM GPU_Listing WHERE Listingid = %s", [id])
         customer = cursor.fetchone()
     result_dict = {'cust': customer}
 
@@ -42,7 +42,7 @@ def add(request):
         ## Check if customerid is already in the table
         with connection.cursor() as cursor:
 
-            cursor.execute("SELECT * FROM customers WHERE customerid = %s", [request.POST['customerid']])
+            cursor.execute("SELECT * FROM GPU_Listing WHERE Listingid = %s", [request.POST['customerid']])
             customer = cursor.fetchone()
             ## No customer with same id
             if customer == None:
