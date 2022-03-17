@@ -13,7 +13,7 @@ def index(request):
 
     ## Use raw query to get all objects
     with connection.cursor() as cursor:
-        cursor.execute("SELECT * FROM GPU_ListingU")
+        cursor.execute("SELECT * FROM GPU_Listing")
         customers = cursor.fetchall()
 
     result_dict = {'records': customers}
