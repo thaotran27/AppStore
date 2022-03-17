@@ -1,0 +1,26 @@
+0.  I use git bash as terminal in VSCode, but if other terminals work then ok
+
+1. Clone the repo to work locally:
+git clone https://github.com/thaotran27/AppStore.git
+
+2. Check which branch you are on:
+git checkout 
+
+(should give sth like your branch is up to date with '...'
+
+3. (if needed) create other branch:
+git branch <new_branch_name> 
+(change the thing inside <>)
+
+4. (if needed) switch to other branch:
+git checkout <branch_name> 
+
+5. push code onto Github remote so everyone can see:
+git add .
+git commit -m "message_change_this"
+git push
+
+if they got error like this: The current branch new_branch has no upstream branch.
+git push --set-upstream origin new_branch
+
+then git add, commit and push again
