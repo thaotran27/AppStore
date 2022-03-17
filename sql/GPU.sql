@@ -4,435 +4,199 @@
 
 ****************************/
 
-INSERT INTO games VALUES ('Aerified', '1.0', 12);
-INSERT INTO games VALUES ('Aerified', '1.1', 3.99);
-INSERT INTO games VALUES ('Aerified', '1.2', 1.99);
-INSERT INTO games VALUES ('Aerified', '2.0', 5);
-INSERT INTO games VALUES ('Aerified', '2.1', 12);
-INSERT INTO games VALUES ('Aerified', '3.0', 3.99);
-INSERT INTO games VALUES ('Alpha', '1.0', 12);
-INSERT INTO games VALUES ('Alpha', '1.1', 3.99);
-INSERT INTO games VALUES ('Alpha', '1.2', 12);
-INSERT INTO games VALUES ('Alpha', '2.0', 12);
-INSERT INTO games VALUES ('Alpha', '2.1', 2.99);
-INSERT INTO games VALUES ('Alpha', '3.0', 5);
-INSERT INTO games VALUES ('Alphazap', '1.1', 5.0);
-INSERT INTO games VALUES ('Alphazap', '1.2', 3.99);
-INSERT INTO games VALUES ('Alphazap', '2.0', 5);
-INSERT INTO games VALUES ('Alphazap', '2.1', 3.99);
-INSERT INTO games VALUES ('Alphazap', '3.0', 12);
-INSERT INTO games VALUES ('Andalax', '1.0', 12);
-INSERT INTO games VALUES ('Andalax', '1.1', 12);
-INSERT INTO games VALUES ('Andalax', '2.0', 12);
-INSERT INTO games VALUES ('Andalax', '2.1', 1.99);
-INSERT INTO games VALUES ('Andalax', '3.0', 12);
-INSERT INTO games VALUES ('Asoka', '1.0', 12);
-INSERT INTO games VALUES ('Asoka', '1.1', 1.99);
-INSERT INTO games VALUES ('Asoka', '2.0', 5);
-INSERT INTO games VALUES ('Asoka', '2.1', 2.99);
-INSERT INTO games VALUES ('Bamity', '1.0', 12);
-INSERT INTO games VALUES ('Bamity', '1.1', 12);
-INSERT INTO games VALUES ('Bamity', '1.2', 12);
-INSERT INTO games VALUES ('Bamity', '2.0', 3.99);
-INSERT INTO games VALUES ('Bamity', '3.0', 12);
-INSERT INTO games VALUES ('Bigtax', '1.1', 5.0);
-INSERT INTO games VALUES ('Bigtax', '2.1', 12);
-INSERT INTO games VALUES ('Bigtax', '3.0', 1.99);
-INSERT INTO games VALUES ('Biodex', '1.0', 2.99);
-INSERT INTO games VALUES ('Biodex', '1.1', 2.99);
-INSERT INTO games VALUES ('Biodex', '1.2', 12);
-INSERT INTO games VALUES ('Biodex', '2.0', 3.99);
-INSERT INTO games VALUES ('Biodex', '2.1', 12);
-INSERT INTO games VALUES ('Bitchip', '1.0', 12);
-INSERT INTO games VALUES ('Bitchip', '1.2', 12);
-INSERT INTO games VALUES ('Bitchip', '2.0', 2.99);
-INSERT INTO games VALUES ('Bitchip', '3.0', 12);
-INSERT INTO games VALUES ('Bitwolf', '1.0', 5);
-INSERT INTO games VALUES ('Bitwolf', '1.1', 5.0);
-INSERT INTO games VALUES ('Bitwolf', '1.2', 1.99);
-INSERT INTO games VALUES ('Bitwolf', '2.0', 3.99);
-INSERT INTO games VALUES ('Bitwolf', '2.1', 5.0);
-INSERT INTO games VALUES ('Bitwolf', '3.0', 5);
-INSERT INTO games VALUES ('Bytecard', '1.2', 12);
-INSERT INTO games VALUES ('Bytecard', '2.0', 5);
-INSERT INTO games VALUES ('Bytecard', '3.0', 5);
-INSERT INTO games VALUES ('Cardguard', '1.0', 12);
-INSERT INTO games VALUES ('Cardguard', '1.1', 12);
-INSERT INTO games VALUES ('Cardguard', '1.2', 12);
-INSERT INTO games VALUES ('Cardguard', '2.0', 5);
-INSERT INTO games VALUES ('Cardguard', '3.0', 3.99);
-INSERT INTO games VALUES ('Cardify', '1.0', 3.99);
-INSERT INTO games VALUES ('Cardify', '1.1', 12);
-INSERT INTO games VALUES ('Cardify', '1.2', 5.0);
-INSERT INTO games VALUES ('Cardify', '2.0', 12);
-INSERT INTO games VALUES ('Cardify', '2.1', 5.0);
-INSERT INTO games VALUES ('Cookley', '1.0', 5);
-INSERT INTO games VALUES ('Cookley', '1.1', 3.99);
-INSERT INTO games VALUES ('Cookley', '1.2', 1.99);
-INSERT INTO games VALUES ('Cookley', '2.0', 3.99);
-INSERT INTO games VALUES ('Cookley', '2.1', 12);
-INSERT INTO games VALUES ('Cookley', '3.0', 1.99);
-INSERT INTO games VALUES ('Daltfresh', '1.0', 2.99);
-INSERT INTO games VALUES ('Daltfresh', '1.1', 5.0);
-INSERT INTO games VALUES ('Daltfresh', '1.2', 12);
-INSERT INTO games VALUES ('Daltfresh', '2.0', 12);
-INSERT INTO games VALUES ('Daltfresh', '2.1', 12);
-INSERT INTO games VALUES ('Domainer', '1.0', 12);
-INSERT INTO games VALUES ('Domainer', '1.1', 12);
-INSERT INTO games VALUES ('Domainer', '1.2', 5.0);
-INSERT INTO games VALUES ('Domainer', '2.0', 3.99);
-INSERT INTO games VALUES ('Domainer', '2.1', 2.99);
-INSERT INTO games VALUES ('Duobam', '1.0', 12);
-INSERT INTO games VALUES ('Duobam', '1.1', 12);
-INSERT INTO games VALUES ('Duobam', '1.2', 1.99);
-INSERT INTO games VALUES ('Duobam', '2.1', 12);
-INSERT INTO games VALUES ('Duobam', '3.0', 3.99);
-INSERT INTO games VALUES ('Fintone', '1.0', 12);
-INSERT INTO games VALUES ('Fintone', '1.2', 12);
-INSERT INTO games VALUES ('Fintone', '2.0', 2.99);
-INSERT INTO games VALUES ('Fintone', '2.1', 2.99);
-INSERT INTO games VALUES ('Fix San', '1.0', 3.99);
-INSERT INTO games VALUES ('Fix San', '1.1', 5.0);
-INSERT INTO games VALUES ('Fix San', '1.2', 5.0);
-INSERT INTO games VALUES ('Fix San', '2.0', 5);
-INSERT INTO games VALUES ('Fix San', '2.1', 5.0);
-INSERT INTO games VALUES ('Fix San', '3.0', 5);
-INSERT INTO games VALUES ('Fixflex', '1.0', 12);
-INSERT INTO games VALUES ('Fixflex', '1.1', 3.99);
-INSERT INTO games VALUES ('Fixflex', '1.2', 2.99);
-INSERT INTO games VALUES ('Fixflex', '2.0', 3.99);
-INSERT INTO games VALUES ('Fixflex', '2.1', 5.0);
-INSERT INTO games VALUES ('Fixflex', '3.0', 5);
-INSERT INTO games VALUES ('Flexidy', '1.1', 1.99);
-INSERT INTO games VALUES ('Flexidy', '1.2', 5.0);
-INSERT INTO games VALUES ('Flexidy', '2.0', 5);
-INSERT INTO games VALUES ('Flexidy', '2.1', 2.99);
-INSERT INTO games VALUES ('Flowdesk', '1.0', 12);
-INSERT INTO games VALUES ('Flowdesk', '1.1', 12);
-INSERT INTO games VALUES ('Flowdesk', '1.2', 12);
-INSERT INTO games VALUES ('Flowdesk', '2.0', 12);
-INSERT INTO games VALUES ('Flowdesk', '2.1', 12);
-INSERT INTO games VALUES ('Flowdesk', '3.0', 5);
-INSERT INTO games VALUES ('Gembucket', '1.0', 5);
-INSERT INTO games VALUES ('Gembucket', '1.1', 12);
-INSERT INTO games VALUES ('Gembucket', '1.2', 3.99);
-INSERT INTO games VALUES ('Gembucket', '2.0', 12);
-INSERT INTO games VALUES ('Gembucket', '2.1', 1.99);
-INSERT INTO games VALUES ('Gembucket', '3.0', 12);
-INSERT INTO games VALUES ('Greenlam', '1.0', 3.99);
-INSERT INTO games VALUES ('Greenlam', '1.1', 1.99);
-INSERT INTO games VALUES ('Greenlam', '1.2', 12);
-INSERT INTO games VALUES ('Greenlam', '2.0', 5);
-INSERT INTO games VALUES ('Greenlam', '3.0', 5);
-INSERT INTO games VALUES ('Hatity', '1.0', 1.99);
-INSERT INTO games VALUES ('Hatity', '1.1', 12);
-INSERT INTO games VALUES ('Hatity', '1.2', 3.99);
-INSERT INTO games VALUES ('Hatity', '2.0', 5);
-INSERT INTO games VALUES ('Hatity', '2.1', 12);
-INSERT INTO games VALUES ('Hatity', '3.0', 5);
-INSERT INTO games VALUES ('Holdlamis', '1.0', 5);
-INSERT INTO games VALUES ('Holdlamis', '1.1', 2.99);
-INSERT INTO games VALUES ('Holdlamis', '2.0', 12);
-INSERT INTO games VALUES ('Holdlamis', '2.1', 3.99);
-INSERT INTO games VALUES ('Holdlamis', '3.0', 3.99);
-INSERT INTO games VALUES ('Home Ing', '1.2', 3.99);
-INSERT INTO games VALUES ('Home Ing', '2.0', 12);
-INSERT INTO games VALUES ('Home Ing', '2.1', 5.0);
-INSERT INTO games VALUES ('It', '1.0', 5);
-INSERT INTO games VALUES ('It', '1.1', 12);
-INSERT INTO games VALUES ('It', '1.2', 1.99);
-INSERT INTO games VALUES ('It', '2.0', 12);
-INSERT INTO games VALUES ('It', '2.1', 12);
-INSERT INTO games VALUES ('It', '3.0', 2.99);
-INSERT INTO games VALUES ('Job', '1.0', 12);
-INSERT INTO games VALUES ('Job', '1.1', 5.0);
-INSERT INTO games VALUES ('Job', '1.2', 2.99);
-INSERT INTO games VALUES ('Job', '2.0', 12);
-INSERT INTO games VALUES ('Job', '2.1', 1.99);
-INSERT INTO games VALUES ('Job', '3.0', 12);
-INSERT INTO games VALUES ('Kanlam', '1.0', 5);
-INSERT INTO games VALUES ('Kanlam', '1.1', 12);
-INSERT INTO games VALUES ('Kanlam', '1.2', 3.99);
-INSERT INTO games VALUES ('Kanlam', '2.1', 12);
-INSERT INTO games VALUES ('Kanlam', '3.0', 2.99);
-INSERT INTO games VALUES ('Keylex', '1.0', 3.99);
-INSERT INTO games VALUES ('Keylex', '1.1', 1.99);
-INSERT INTO games VALUES ('Keylex', '1.2', 12);
-INSERT INTO games VALUES ('Keylex', '2.1', 5.0);
-INSERT INTO games VALUES ('Keylex', '3.0', 2.99);
-INSERT INTO games VALUES ('Konklab', '1.0', 5);
-INSERT INTO games VALUES ('Konklab', '1.2', 12);
-INSERT INTO games VALUES ('Konklab', '2.0', 5);
-INSERT INTO games VALUES ('Konklab', '3.0', 1.99);
-INSERT INTO games VALUES ('Konklux', '1.0', 2.99);
-INSERT INTO games VALUES ('Konklux', '1.2', 12);
-INSERT INTO games VALUES ('Konklux', '2.0', 12);
-INSERT INTO games VALUES ('Konklux', '2.1', 3.99);
-INSERT INTO games VALUES ('Konklux', '3.0', 3.99);
-INSERT INTO games VALUES ('Latlux', '1.0', 5);
-INSERT INTO games VALUES ('Latlux', '1.1', 12);
-INSERT INTO games VALUES ('Latlux', '1.2', 2.99);
-INSERT INTO games VALUES ('Latlux', '2.0', 12);
-INSERT INTO games VALUES ('Latlux', '2.1', 3.99);
-INSERT INTO games VALUES ('Latlux', '3.0', 5);
-INSERT INTO games VALUES ('Lotlux', '1.0', 3.99);
-INSERT INTO games VALUES ('Lotlux', '1.1', 12);
-INSERT INTO games VALUES ('Lotlux', '1.2', 3.99);
-INSERT INTO games VALUES ('Lotlux', '2.1', 5.0);
-INSERT INTO games VALUES ('Lotlux', '3.0', 12);
-INSERT INTO games VALUES ('Lotstring', '1.0', 12);
-INSERT INTO games VALUES ('Lotstring', '1.1', 5.0);
-INSERT INTO games VALUES ('Lotstring', '1.2', 3.99);
-INSERT INTO games VALUES ('Lotstring', '2.0', 12);
-INSERT INTO games VALUES ('Lotstring', '2.1', 3.99);
-INSERT INTO games VALUES ('Lotstring', '3.0', 5);
-INSERT INTO games VALUES ('Mat Lam Tam', '1.0', 12);
-INSERT INTO games VALUES ('Mat Lam Tam', '1.1', 12);
-INSERT INTO games VALUES ('Mat Lam Tam', '1.2', 5.0);
-INSERT INTO games VALUES ('Mat Lam Tam', '2.0', 12);
-INSERT INTO games VALUES ('Mat Lam Tam', '2.1', 1.99);
-INSERT INTO games VALUES ('Mat Lam Tam', '3.0', 5);
-INSERT INTO games VALUES ('Matsoft', '1.0', 12);
-INSERT INTO games VALUES ('Matsoft', '1.1', 5.0);
-INSERT INTO games VALUES ('Matsoft', '1.2', 5.0);
-INSERT INTO games VALUES ('Matsoft', '2.0', 5);
-INSERT INTO games VALUES ('Matsoft', '2.1', 1.99);
-INSERT INTO games VALUES ('Matsoft', '3.0', 5);
-INSERT INTO games VALUES ('Namfix', '1.0', 2.99);
-INSERT INTO games VALUES ('Namfix', '1.1', 5.0);
-INSERT INTO games VALUES ('Namfix', '1.2', 2.99);
-INSERT INTO games VALUES ('Namfix', '2.1', 12);
-INSERT INTO games VALUES ('Namfix', '3.0', 12);
-INSERT INTO games VALUES ('Opela', '1.0', 5);
-INSERT INTO games VALUES ('Opela', '1.1', 3.99);
-INSERT INTO games VALUES ('Opela', '1.2', 5.0);
-INSERT INTO games VALUES ('Opela', '2.0', 5);
-INSERT INTO games VALUES ('Opela', '2.1', 3.99);
-INSERT INTO games VALUES ('Opela', '3.0', 2.99);
-INSERT INTO games VALUES ('Otcom', '1.0', 3.99);
-INSERT INTO games VALUES ('Otcom', '1.2', 5.0);
-INSERT INTO games VALUES ('Otcom', '2.0', 12);
-INSERT INTO games VALUES ('Otcom', '3.0', 3.99);
-INSERT INTO games VALUES ('Overhold', '1.0', 1.99);
-INSERT INTO games VALUES ('Overhold', '1.1', 2.99);
-INSERT INTO games VALUES ('Overhold', '1.2', 5.0);
-INSERT INTO games VALUES ('Overhold', '2.0', 12);
-INSERT INTO games VALUES ('Overhold', '2.1', 5.0);
-INSERT INTO games VALUES ('Overhold', '3.0', 2.99);
-INSERT INTO games VALUES ('Pannier', '1.0', 3.99);
-INSERT INTO games VALUES ('Pannier', '1.2', 12);
-INSERT INTO games VALUES ('Pannier', '2.0', 5);
-INSERT INTO games VALUES ('Pannier', '2.1', 12);
-INSERT INTO games VALUES ('Prodder', '1.0', 12);
-INSERT INTO games VALUES ('Prodder', '1.1', 2.99);
-INSERT INTO games VALUES ('Prodder', '1.2', 12);
-INSERT INTO games VALUES ('Prodder', '2.0', 5);
-INSERT INTO games VALUES ('Prodder', '3.0', 12);
-INSERT INTO games VALUES ('Quo Lux', '1.0', 12);
-INSERT INTO games VALUES ('Quo Lux', '1.1', 12);
-INSERT INTO games VALUES ('Quo Lux', '1.2', 5.0);
-INSERT INTO games VALUES ('Quo Lux', '2.0', 1.99);
-INSERT INTO games VALUES ('Quo Lux', '2.1', 12);
-INSERT INTO games VALUES ('Quo Lux', '3.0', 2.99);
-INSERT INTO games VALUES ('Rank', '1.0', 12);
-INSERT INTO games VALUES ('Rank', '1.1', 2.99);
-INSERT INTO games VALUES ('Rank', '1.2', 5.0);
-INSERT INTO games VALUES ('Rank', '2.0', 5);
-INSERT INTO games VALUES ('Rank', '2.1', 1.99);
-INSERT INTO games VALUES ('Rank', '3.0', 5);
-INSERT INTO games VALUES ('Redhold', '1.0', 12);
-INSERT INTO games VALUES ('Redhold', '1.1', 12);
-INSERT INTO games VALUES ('Redhold', '1.2', 12);
-INSERT INTO games VALUES ('Redhold', '2.0', 12);
-INSERT INTO games VALUES ('Redhold', '2.1', 12);
-INSERT INTO games VALUES ('Redhold', '3.0', 5);
-INSERT INTO games VALUES ('Regrant', '1.0', 3.99);
-INSERT INTO games VALUES ('Regrant', '1.1', 12);
-INSERT INTO games VALUES ('Regrant', '1.2', 12);
-INSERT INTO games VALUES ('Regrant', '2.0', 3.99);
-INSERT INTO games VALUES ('Regrant', '3.0', 12);
-INSERT INTO games VALUES ('Ronstring', '1.0', 3.99);
-INSERT INTO games VALUES ('Ronstring', '1.1', 3.99);
-INSERT INTO games VALUES ('Ronstring', '1.2', 5.0);
-INSERT INTO games VALUES ('Ronstring', '2.0', 5);
-INSERT INTO games VALUES ('Ronstring', '2.1', 12);
-INSERT INTO games VALUES ('Ronstring', '3.0', 5);
-INSERT INTO games VALUES ('Solarbreeze', '1.0', 5);
-INSERT INTO games VALUES ('Solarbreeze', '1.1', 3.99);
-INSERT INTO games VALUES ('Solarbreeze', '1.2', 5.0);
-INSERT INTO games VALUES ('Solarbreeze', '2.0', 2.99);
-INSERT INTO games VALUES ('Solarbreeze', '2.1', 3.99);
-INSERT INTO games VALUES ('Solarbreeze', '3.0', 3.99);
-INSERT INTO games VALUES ('Sonair', '1.0', 12);
-INSERT INTO games VALUES ('Sonair', '1.1', 2.99);
-INSERT INTO games VALUES ('Sonair', '1.2', 2.99);
-INSERT INTO games VALUES ('Sonair', '2.0', 3.99);
-INSERT INTO games VALUES ('Sonair', '2.1', 3.99);
-INSERT INTO games VALUES ('Sonair', '3.0', 12);
-INSERT INTO games VALUES ('Sonsing', '1.0', 3.99);
-INSERT INTO games VALUES ('Sonsing', '1.1', 1.99);
-INSERT INTO games VALUES ('Sonsing', '2.0', 12);
-INSERT INTO games VALUES ('Sonsing', '2.1', 3.99);
-INSERT INTO games VALUES ('Sonsing', '3.0', 2.99);
-INSERT INTO games VALUES ('Span', '1.0', 1.99);
-INSERT INTO games VALUES ('Span', '1.1', 5.0);
-INSERT INTO games VALUES ('Span', '1.2', 3.99);
-INSERT INTO games VALUES ('Span', '2.1', 5.0);
-INSERT INTO games VALUES ('Span', '3.0', 1.99);
-INSERT INTO games VALUES ('Stim', '1.0', 5);
-INSERT INTO games VALUES ('Stim', '1.1', 2.99);
-INSERT INTO games VALUES ('Stim', '1.2', 12);
-INSERT INTO games VALUES ('Stim', '2.1', 1.99);
-INSERT INTO games VALUES ('Stim', '3.0', 3.99);
-INSERT INTO games VALUES ('Stringtough', '1.0', 3.99);
-INSERT INTO games VALUES ('Stringtough', '1.1', 3.99);
-INSERT INTO games VALUES ('Stringtough', '1.2', 12);
-INSERT INTO games VALUES ('Stringtough', '2.0', 3.99);
-INSERT INTO games VALUES ('Stringtough', '3.0', 12);
-INSERT INTO games VALUES ('Stronghold', '1.0', 12);
-INSERT INTO games VALUES ('Stronghold', '1.1', 12);
-INSERT INTO games VALUES ('Stronghold', '1.2', 3.99);
-INSERT INTO games VALUES ('Stronghold', '2.0', 2.99);
-INSERT INTO games VALUES ('Stronghold', '2.1', 12);
-INSERT INTO games VALUES ('Stronghold', '3.0', 1.99);
-INSERT INTO games VALUES ('Sub-Ex', '1.0', 12);
-INSERT INTO games VALUES ('Sub-Ex', '1.1', 12);
-INSERT INTO games VALUES ('Sub-Ex', '2.0', 5);
-INSERT INTO games VALUES ('Sub-Ex', '2.1', 5.0);
-INSERT INTO games VALUES ('Subin', '1.0', 12);
-INSERT INTO games VALUES ('Subin', '1.1', 2.99);
-INSERT INTO games VALUES ('Subin', '1.2', 12);
-INSERT INTO games VALUES ('Subin', '2.0', 3.99);
-INSERT INTO games VALUES ('Subin', '2.1', 5.0);
-INSERT INTO games VALUES ('Tampflex', '1.1', 12);
-INSERT INTO games VALUES ('Tampflex', '2.0', 12);
-INSERT INTO games VALUES ('Tampflex', '2.1', 5.0);
-INSERT INTO games VALUES ('Tampflex', '3.0', 3.99);
-INSERT INTO games VALUES ('Temp', '1.0', 5);
-INSERT INTO games VALUES ('Temp', '1.1', 12);
-INSERT INTO games VALUES ('Temp', '1.2', 12);
-INSERT INTO games VALUES ('Temp', '2.0', 12);
-INSERT INTO games VALUES ('Temp', '2.1', 5.0);
-INSERT INTO games VALUES ('Temp', '3.0', 12);
-INSERT INTO games VALUES ('Tempsoft', '1.0', 5);
-INSERT INTO games VALUES ('Tempsoft', '1.1', 12);
-INSERT INTO games VALUES ('Tempsoft', '1.2', 3.99);
-INSERT INTO games VALUES ('Tempsoft', '2.0', 5);
-INSERT INTO games VALUES ('Tempsoft', '2.1', 12);
-INSERT INTO games VALUES ('Tin', '1.0', 5);
-INSERT INTO games VALUES ('Tin', '1.1', 12);
-INSERT INTO games VALUES ('Tin', '1.2', 3.99);
-INSERT INTO games VALUES ('Tin', '2.0', 12);
-INSERT INTO games VALUES ('Tin', '2.1', 3.99);
-INSERT INTO games VALUES ('Tin', '3.0', 12);
-INSERT INTO games VALUES ('Toughjoyfax', '1.0', 5);
-INSERT INTO games VALUES ('Toughjoyfax', '1.1', 12);
-INSERT INTO games VALUES ('Toughjoyfax', '1.2', 12);
-INSERT INTO games VALUES ('Toughjoyfax', '2.0', 5);
-INSERT INTO games VALUES ('Toughjoyfax', '2.1', 12);
-INSERT INTO games VALUES ('Toughjoyfax', '3.0', 5);
-INSERT INTO games VALUES ('Transcof', '1.0', 3.99);
-INSERT INTO games VALUES ('Transcof', '1.1', 2.99);
-INSERT INTO games VALUES ('Transcof', '1.2', 12);
-INSERT INTO games VALUES ('Transcof', '2.0', 2.99);
-INSERT INTO games VALUES ('Transcof', '2.1', 5.0);
-INSERT INTO games VALUES ('Transcof', '3.0', 3.99);
-INSERT INTO games VALUES ('Treeflex', '1.0', 2.99);
-INSERT INTO games VALUES ('Treeflex', '1.1', 1.99);
-INSERT INTO games VALUES ('Treeflex', '2.1', 5.0);
-INSERT INTO games VALUES ('Treeflex', '3.0', 12);
-INSERT INTO games VALUES ('Tres-Zap', '1.0', 12);
-INSERT INTO games VALUES ('Tres-Zap', '1.1', 1.99);
-INSERT INTO games VALUES ('Tres-Zap', '1.2', 3.99);
-INSERT INTO games VALUES ('Tres-Zap', '2.1', 3.99);
-INSERT INTO games VALUES ('Tres-Zap', '3.0', 12);
-INSERT INTO games VALUES ('Tresom', '1.0', 12);
-INSERT INTO games VALUES ('Tresom', '1.1', 12);
-INSERT INTO games VALUES ('Tresom', '1.2', 3.99);
-INSERT INTO games VALUES ('Tresom', '2.0', 12);
-INSERT INTO games VALUES ('Tresom', '2.1', 2.99);
-INSERT INTO games VALUES ('Trippledex', '1.0', 2.99);
-INSERT INTO games VALUES ('Trippledex', '1.1', 12);
-INSERT INTO games VALUES ('Trippledex', '1.2', 12);
-INSERT INTO games VALUES ('Trippledex', '2.0', 2.99);
-INSERT INTO games VALUES ('Trippledex', '2.1', 12);
-INSERT INTO games VALUES ('Trippledex', '3.0', 12);
-INSERT INTO games VALUES ('Vagram', '1.0', 12);
-INSERT INTO games VALUES ('Vagram', '1.1', 3.99);
-INSERT INTO games VALUES ('Vagram', '1.2', 2.99);
-INSERT INTO games VALUES ('Vagram', '2.0', 12);
-INSERT INTO games VALUES ('Vagram', '2.1', 5.0);
-INSERT INTO games VALUES ('Vagram', '3.0', 12);
-INSERT INTO games VALUES ('Ventosanzap', '1.0', 12);
-INSERT INTO games VALUES ('Ventosanzap', '1.1', 2.99);
-INSERT INTO games VALUES ('Ventosanzap', '1.2', 12);
-INSERT INTO games VALUES ('Ventosanzap', '2.0', 2.99);
-INSERT INTO games VALUES ('Ventosanzap', '3.0', 5);
-INSERT INTO games VALUES ('Veribet', '1.0', 12);
-INSERT INTO games VALUES ('Veribet', '1.1', 12);
-INSERT INTO games VALUES ('Veribet', '1.2', 3.99);
-INSERT INTO games VALUES ('Veribet', '2.0', 12);
-INSERT INTO games VALUES ('Veribet', '2.1', 2.99);
-INSERT INTO games VALUES ('Veribet', '3.0', 12);
-INSERT INTO games VALUES ('Viva', '1.0', 12);
-INSERT INTO games VALUES ('Viva', '1.1', 3.99);
-INSERT INTO games VALUES ('Viva', '1.2', 5.0);
-INSERT INTO games VALUES ('Viva', '2.0', 12);
-INSERT INTO games VALUES ('Viva', '2.1', 5.0);
-INSERT INTO games VALUES ('Viva', '3.0', 12);
-INSERT INTO games VALUES ('Voltsillam', '1.0', 2.99);
-INSERT INTO games VALUES ('Voltsillam', '1.1', 12);
-INSERT INTO games VALUES ('Voltsillam', '1.2', 3.99);
-INSERT INTO games VALUES ('Voltsillam', '2.0', 3.99);
-INSERT INTO games VALUES ('Voltsillam', '2.1', 1.99);
-INSERT INTO games VALUES ('Voltsillam', '3.0', 2.99);
-INSERT INTO games VALUES ('Voyatouch', '1.1', 5.0);
-INSERT INTO games VALUES ('Voyatouch', '1.2', 12);
-INSERT INTO games VALUES ('Voyatouch', '2.0', 2.99);
-INSERT INTO games VALUES ('Voyatouch', '2.1', 5.0);
-INSERT INTO games VALUES ('Voyatouch', '3.0', 3.99);
-INSERT INTO games VALUES ('Wrapsafe', '1.0', 12);
-INSERT INTO games VALUES ('Wrapsafe', '1.1', 5.0);
-INSERT INTO games VALUES ('Wrapsafe', '1.2', 12);
-INSERT INTO games VALUES ('Wrapsafe', '2.1', 12);
-INSERT INTO games VALUES ('Wrapsafe', '3.0', 1.99);
-INSERT INTO games VALUES ('Y-find', '1.0', 5);
-INSERT INTO games VALUES ('Y-find', '1.1', 3.99);
-INSERT INTO games VALUES ('Y-find', '1.2', 12);
-INSERT INTO games VALUES ('Y-find', '2.0', 5);
-INSERT INTO games VALUES ('Y-find', '2.1', 12);
-INSERT INTO games VALUES ('Y-find', '3.0', 12);
-INSERT INTO games VALUES ('Y-Solowarm', '1.0', 1.99);
-INSERT INTO games VALUES ('Y-Solowarm', '1.1', 12);
-INSERT INTO games VALUES ('Y-Solowarm', '1.2', 12);
-INSERT INTO games VALUES ('Y-Solowarm', '2.0', 2.99);
-INSERT INTO games VALUES ('Y-Solowarm', '2.1', 5.0);
-INSERT INTO games VALUES ('Y-Solowarm', '3.0', 3.99);
-INSERT INTO games VALUES ('Zaam-Dox', '1.1', 3.99);
-INSERT INTO games VALUES ('Zaam-Dox', '1.2', 12);
-INSERT INTO games VALUES ('Zaam-Dox', '2.0', 3.99);
-INSERT INTO games VALUES ('Zaam-Dox', '2.1', 5.0);
-INSERT INTO games VALUES ('Zaam-Dox', '3.0', 2.99);
-INSERT INTO games VALUES ('Zamit', '1.0', 5);
-INSERT INTO games VALUES ('Zamit', '1.2', 5.0);
-INSERT INTO games VALUES ('Zamit', '2.0', 5);
-INSERT INTO games VALUES ('Zamit', '2.1', 3.99);
-INSERT INTO games VALUES ('Zamit', '3.0', 3.99);
-INSERT INTO games VALUES ('Zathin', '1.0', 12);
-INSERT INTO games VALUES ('Zathin', '1.2', 5.0);
-INSERT INTO games VALUES ('Zathin', '2.1', 12);
-INSERT INTO games VALUES ('Zathin', '3.0', 5);
-INSERT INTO games VALUES ('Zontrax', '1.0', 5);
-INSERT INTO games VALUES ('Zontrax', '1.1', 5.0);
-INSERT INTO games VALUES ('Zontrax', '1.2', 12);
-INSERT INTO games VALUES ('Zontrax', '2.0', 2.99);
-INSERT INTO games VALUES ('Zontrax', '2.1', 5.0);
-INSERT INTO games VALUES ('Zontrax', '3.0', 5);
-INSERT INTO games VALUES ('Zoolab', '1.0', 3.99);
-INSERT INTO games VALUES ('Zoolab', '1.1', 5.0);
-INSERT INTO games VALUES ('Zoolab', '1.2', 5.0);
-INSERT INTO games VALUES ('Zoolab', '2.0', 5);
-INSERT INTO games VALUES ('Zoolab', '2.1', 2.99);
-INSERT INTO games VALUES ('Zoolab', '3.0', 5);
+INSERT INTO GPU VALUES
+    ('GeForce GT 1030 DDR4','NVIDIA','2 GB','DDR4','64 bit','1152 MHz','1050 MHz',384,24,16),
+    ('GeForce GT 1030 GK107','NVIDIA','2 GB','GDDR5','128 bit','1058 MHz','1250 MHz',384,32,16),
+    ('GeForce GTX 1050 3 GB','NVIDIA','3 GB','GDDR5','96 bit','1392 MHz','1752 MHz',768,48,24),
+    ('GeForce GTX 1050 Max-Q','NVIDIA','4 GB','GDDR5','128 bit','1000 MHz','1752 MHz',640,40,16),
+    ('GeForce GTX 1050 Ti Max-Q','NVIDIA','4 GB','GDDR5','128 bit','1152 MHz','1752 MHz',768,48,32),
+    ('GeForce GTX 1060 6 GB GDDR5X','NVIDIA','6 GB','GDDR5X','192 bit','1506 MHz','1001 MHz',1280,80,48),
+    ('GeForce GTX 1060 6 GB GP104','NVIDIA','6 GB','GDDR5','192 bit','1506 MHz','2002 MHz',1280,80,48),
+    ('GeForce GTX 1060 6 GB Rev. 2','NVIDIA','6 GB','GDDR5','192 bit','1506 MHz','2002 MHz',1280,80,48),
+    ('GeForce GTX 1060 8 GB GDDR5X','NVIDIA','8 GB','GDDR5X','256 bit','1506 MHz','1001 MHz',1280,80,64),
+    ('GeForce GTX 1070 GDDR5X','NVIDIA','8 GB','GDDR5X','256 bit','1506 MHz','1001 MHz',1920,120,64),
+    ('GeForce GTX 1080 Ti 10 GB','NVIDIA','10 GB','GDDR5X','320 bit','1557 MHz','1376 MHz',3200,200,80),
+    ('GeForce RTX 2070','NVIDIA','8 GB','GDDR6','256 bit','1410 MHz','1750 MHz',2304,144,64),
+    ('GeForce RTX 2080','NVIDIA','8 GB','GDDR6','256 bit','1515 MHz','1750 MHz',2944,184,64),
+    ('GeForce RTX 2080 Ti','NVIDIA','11 GB','GDDR6','352 bit','1350 MHz','1750 MHz',4352,272,88),
+    ('P102-100','NVIDIA','5 GB','GDDR5X','320 bit','1582 MHz','1376 MHz',3200,200,80),
+    ('P102-101','NVIDIA','10 GB','GDDR5','320 bit','1557 MHz','2002 MHz',3200,200,80),
+    ('P104-101','NVIDIA','4 GB','GDDR5','256 bit','1506 MHz','2002 MHz',2560,160,64),
+    ('Quadro GV100','NVIDIA','32 GB','HBM2','4096 bit','1132 MHz','848 MHz',5120,320,128),
+    ('Quadro P3200 Max-Q','NVIDIA','6 GB','GDDR5','192 bit','1139 MHz','1753 MHz',1792,112,64),
+    ('Quadro P3200 Mobile','NVIDIA','6 GB','GDDR5','192 bit','1328 MHz','1753 MHz',1792,112,64),
+    ('Quadro P4200 Mobile','NVIDIA','8 GB','GDDR5','256 bit','1227 MHz','1502 MHz',2304,144,64),
+    ('Quadro P500 Mobile','NVIDIA','2 GB','GDDR5','64 bit','1455 MHz','1253 MHz',256,16,16),
+    ('Quadro P5200 Max-Q','NVIDIA','16 GB','GDDR5','256 bit','1316 MHz','1804 MHz',2560,160,64),
+    ('Quadro P5200 Mobile','NVIDIA','16 GB','GDDR5','256 bit','1557 MHz','1804 MHz',2560,160,64),
+    ('Quadro P620','NVIDIA','2 GB','GDDR5','128 bit','1266 MHz','1252 MHz',512,32,16),
+    ('Quadro P620 Mobile','NVIDIA','4 GB','GDDR5','128 bit','1177 MHz','1502 MHz',512,32,16),
+    ('Quadro RTX 4000','NVIDIA','8 GB','GDDR6','256 bit','1005 MHz','1625 MHz',2304,144,64),
+    ('Quadro RTX 5000','NVIDIA','16 GB','GDDR6','256 bit','1620 MHz','1750 MHz',3072,192,64),
+    ('Quadro RTX 6000','NVIDIA','24 GB','GDDR6','384 bit','1440 MHz','1750 MHz',4608,288,96),
+    ('Quadro RTX 6000 Passive','NVIDIA','24 GB','GDDR6','384 bit','1305 MHz','1750 MHz',4608,288,96),
+    ('Quadro RTX 8000','NVIDIA','48 GB','GDDR6','384 bit','1395 MHz','1750 MHz',4608,288,96),
+    ('Quadro RTX 8000 Passive','NVIDIA','48 GB','GDDR6','384 bit','1230 MHz','1750 MHz',4608,288,96),
+    ('TITAN RTX','NVIDIA','24 GB','GDDR6','384 bit','1350 MHz','1750 MHz',4608,288,96),
+    ('TITAN V CEO Edition','NVIDIA','32 GB','HBM2','4096 bit','1200 MHz','848 MHz',5120,320,128),
+    ('Tesla T4','NVIDIA','16 GB','GDDR6','256 bit','585 MHz','1250 MHz',2560,160,64),
+    ('Tesla V100 DGXS 16 GB','NVIDIA','16 GB','HBM2','4096 bit','1327 MHz','876 MHz',5120,320,128),
+    ('Tesla V100 DGXS 32 GB','NVIDIA','32 GB','HBM2','4096 bit','1297 MHz','876 MHz',5120,320,128),
+    ('Tesla V100 FHHL','NVIDIA','16 GB','HBM2','4096 bit','937 MHz','810 MHz',5120,320,128),
+    ('Tesla V100 PCIe 32 GB','NVIDIA','32 GB','HBM2','4096 bit','1230 MHz','876 MHz',5120,320,128),
+    ('Tesla V100 SXM2 32 GB','NVIDIA','32 GB','HBM2','4096 bit','1290 MHz','876 MHz',5120,320,128),
+    ('Tesla V100 SXM3 32 GB','NVIDIA','32 GB','HBM2','4096 bit','1290 MHz','876 MHz',5120,320,128),
+	('GeForce GTX 1050 Mobile 3 GB','NVIDIA','3 GB','GDDR5','96 bit','1366 MHz','1752 MHz',768,48,24),
+    ('GeForce GTX 1650','NVIDIA','4 GB','GDDR5','128 bit','1485 MHz','2001 MHz',896,56,32),
+    ('GeForce GTX 1650 Max-Q','NVIDIA','4 GB','GDDR5','128 bit','1020 MHz','1751 MHz',1024,64,32),
+    ('GeForce GTX 1650 Mobile','NVIDIA','4 GB','GDDR5','128 bit','1395 MHz','2001 MHz',1024,64,32),
+    ('GeForce GTX 1650 SUPER','NVIDIA','4 GB','GDDR6','128 bit','1530 MHz','1500 MHz',1280,80,32),
+    ('GeForce GTX 1660','NVIDIA','6 GB','GDDR5','192 bit','1530 MHz','2001 MHz',1408,88,48),
+    ('GeForce GTX 1660 SUPER','NVIDIA','6 GB','GDDR6','192 bit','1530 MHz','1750 MHz',1408,88,48),
+    ('GeForce GTX 1660 Ti','NVIDIA','6 GB','GDDR6','192 bit','1500 MHz','1500 MHz',1536,96,48),
+    ('GeForce GTX 1660 Ti Max-Q','NVIDIA','6 GB','GDDR6','192 bit','1140 MHz','1500 MHz',1536,96,48),
+    ('GeForce GTX 1660 Ti Mobile','NVIDIA','6 GB','GDDR6','192 bit','1455 MHz','1500 MHz',1536,96,48),
+    ('GeForce MX150 GP107','NVIDIA','2 GB','GDDR5','64 bit','1469 MHz','1502 MHz',384,24,16),
+    ('GeForce MX230','NVIDIA','2 GB','GDDR5','64 bit','1519 MHz','1502 MHz',256,16,16),
+    ('GeForce MX250','NVIDIA','2 GB','GDDR5','64 bit','937 MHz','1502 MHz',384,24,16),
+    ('GeForce RTX 2060','NVIDIA','6 GB','GDDR6','192 bit','1365 MHz','1750 MHz',1920,120,48),
+    ('GeForce RTX 2060 Max-Q Refresh','NVIDIA','6 GB','GDDR6','192 bit','960 MHz','1353 MHz',1920,120,48),
+    ('GeForce RTX 2060 Mobile','NVIDIA','6 GB','GDDR6','192 bit','960 MHz','1750 MHz',1920,120,48),
+    ('GeForce RTX 2060 Mobile Refresh','NVIDIA','6 GB','GDDR6','192 bit','1005 MHz','1375 MHz',1920,120,48),
+    ('GeForce RTX 2060 SUPER','NVIDIA','8 GB','GDDR6','256 bit','1470 MHz','1750 MHz',2176,136,64),
+    ('GeForce RTX 2070 Max-Q','NVIDIA','8 GB','GDDR6','256 bit','885 MHz','1500 MHz',2304,144,64),
+    ('GeForce RTX 2070 Mobile','NVIDIA','8 GB','GDDR6','256 bit','1215 MHz','1750 MHz',2304,144,64),
+    ('GeForce RTX 2070 SUPER','NVIDIA','8 GB','GDDR6','256 bit','1605 MHz','1750 MHz',2560,160,64),
+    ('GeForce RTX 2080 Max-Q','NVIDIA','8 GB','GDDR6','256 bit','735 MHz','1500 MHz',2944,184,64),
+    ('GeForce RTX 2080 Mobile','NVIDIA','8 GB','GDDR6','256 bit','1380 MHz','1750 MHz',2944,184,64),
+    ('GeForce RTX 2080 SUPER','NVIDIA','8 GB','GDDR6','256 bit','1650 MHz','1937 MHz',3072,192,64),
+    ('P106M','NVIDIA','4 GB','GDDR5','128 bit','1291 MHz','1502 MHz',1152,72,32),
+    ('Quadro P2000 Mobile','NVIDIA','3.75 GB','GDDR5','128 bit','1291 MHz','1502 MHz',1152,72,32),
+    ('Quadro P2200','NVIDIA','5 GB','GDDR5X','160 bit','1000 MHz','1251 MHz',1280,80,40),
+    ('Quadro P520 Mobile','NVIDIA','2 GB','GDDR5','64 bit','1303 MHz','1502 MHz',384,24,16),
+    ('Quadro RTX 3000 Max-Q','NVIDIA','6 GB','GDDR6','192 bit','600 MHz','1500 MHz',1920,120,64),
+    ('Quadro RTX 3000 Mobile','NVIDIA','6 GB','GDDR6','192 bit','945 MHz','1750 MHz',1920,120,64),
+    ('Quadro RTX 3000 Mobile Refresh','NVIDIA','6 GB','GDDR6','192 bit','945 MHz','1750 MHz',1920,120,64),
+    ('Quadro RTX 4000 Max-Q','NVIDIA','8 GB','GDDR6','256 bit','780 MHz','1625 MHz',2560,160,64),
+    ('Quadro RTX 4000 Mobile','NVIDIA','8 GB','GDDR6','256 bit','1110 MHz','1750 MHz',2560,160,64),
+    ('Quadro RTX 5000 Max-Q','NVIDIA','16 GB','GDDR6','256 bit','600 MHz','1500 MHz',3072,192,64),
+    ('Quadro RTX 5000 Mobile','NVIDIA','16 GB','GDDR6','256 bit','1365 MHz','1750 MHz',3072,192,64),
+    ('Quadro T1000 Max-Q','NVIDIA','4 GB','GDDR5','128 bit','765 MHz','1250 MHz',896,56,32),
+    ('Quadro T1000 Mobile','NVIDIA','4 GB','GDDR5','128 bit','1395 MHz','2001 MHz',896,56,32),
+    ('Quadro T2000 Max-Q','NVIDIA','4 GB','GDDR5','128 bit','1200 MHz','1751 MHz',1024,64,32),
+    ('Quadro T2000 Mobile','NVIDIA','4 GB','GDDR5','128 bit','1575 MHz','2001 MHz',1024,64,32),
+    ('Switch GPU 16nm','NVIDIA','4 GB','DDR4','64 bit','384 MHz','1600 MHz',256,16,16),
+    ('Tesla PG500-216','NVIDIA','32 GB','HBM2','4096 bit','1260 MHz','1106 MHz',5120,320,128),
+    ('Tesla PG503-216','NVIDIA','32 GB','HBM2','4096 bit','1312 MHz','1106 MHz',5120,320,128),
+    ('Tesla V100 SXM2 16 GB','NVIDIA','16 GB','HBM2','4096 bit','1245 MHz','1106 MHz',5120,320,128),
+    ('Tesla V100S PCIe 32 GB','NVIDIA','32 GB','HBM2','4096 bit','1245 MHz','1106 MHz',5120,320,128),
+	('A100 PCIe','NVIDIA','40 GB','HBM2e','5120 bit','765 MHz','1215 MHz',6912,432,160),
+    ('A100 SXM4 40 GB','NVIDIA','40 GB','HBM2e','5120 bit','1095 MHz','1215 MHz',6912,432,160),
+    ('A100 SXM4 80 GB','NVIDIA','80 GB','HBM2e','5120 bit','1275 MHz','1593 MHz',6912,432,160),
+    ('A40 PCIe','NVIDIA','48 GB','GDDR6','384 bit','1305 MHz','1812 MHz',10752,336,112),
+    ('GRID A100A','NVIDIA','48 GB','HBM2e','6144 bit','900 MHz','1215 MHz',6912,432,192),
+    ('GRID A100B','NVIDIA','48 GB','HBM2e','6144 bit','900 MHz','1215 MHz',6912,432,192),
+    ('GRID RTX T10-16','NVIDIA','16 GB','GDDR6','384 bit','1065 MHz','1575 MHz',4608,288,96),
+    ('GRID RTX T10-2','NVIDIA','2 GB','GDDR6','384 bit','1065 MHz','1750 MHz',4608,288,96),
+    ('GRID RTX T10-4','NVIDIA','4 GB','GDDR6','384 bit','1065 MHz','1750 MHz',4608,288,96),
+    ('GRID RTX T10-8','NVIDIA','8 GB','GDDR6','384 bit','1065 MHz','1750 MHz',4608,288,96),
+    ('GeForce GTX 1650 GDDR6','NVIDIA','4 GB','GDDR6','128 bit','1410 MHz','1500 MHz',896,56,32),
+    ('GeForce GTX 1650 TU106','NVIDIA','4 GB','GDDR6','128 bit','1410 MHz','1500 MHz',896,56,32),
+    ('GeForce GTX 1650 TU116','NVIDIA','4 GB','GDDR6','128 bit','1410 MHz','1500 MHz',896,56,32),
+    ('GeForce GTX 1650 Ti Max-Q','NVIDIA','4 GB','GDDR6','128 bit','1035 MHz','1250 MHz',1024,64,32),
+    ('GeForce GTX 1650 Ti Mobile','NVIDIA','4 GB','GDDR6','128 bit','1350 MHz','1500 MHz',1024,64,32),
+    ('GeForce MX330','NVIDIA','2 GB','GDDR5','64 bit','1531 MHz','1752 MHz',384,24,16),
+    ('GeForce MX350','NVIDIA','2 GB','GDDR5','64 bit','1354 MHz','1752 MHz',640,32,16),
+    ('GeForce MX450 25W','NVIDIA','2 GB','GDDR6','64 bit','720 MHz','1250 MHz',896,56,32),
+    ('GeForce MX450 30.5W 10Gbps','NVIDIA','2 GB','GDDR6','64 bit','1395 MHz','1250 MHz',896,56,32),
+    ('GeForce MX450 30.5W 8Gbps','NVIDIA','2 GB','GDDR5','64 bit','1035 MHz','2000 MHz',896,56,32),
+    ('GeForce RTX 2060 Max-Q','NVIDIA','6 GB','GDDR6','192 bit','975 MHz','1375 MHz',1920,120,48),
+    ('GeForce RTX 2060 TU104','NVIDIA','6 GB','GDDR6','192 bit','1365 MHz','1750 MHz',1920,120,48),
+    ('GeForce RTX 2070 Max-Q Refresh','NVIDIA','8 GB','GDDR6','256 bit','900 MHz','1375 MHz',2304,144,64),
+    ('GeForce RTX 2070 Mobile Refresh','NVIDIA','8 GB','GDDR6','256 bit','1260 MHz','1375 MHz',2304,144,64),
+    ('GeForce RTX 2070 SUPER Max-Q','NVIDIA','8 GB','GDDR6','256 bit','930 MHz','1375 MHz',2560,160,64),
+    ('GeForce RTX 2070 SUPER Mobile','NVIDIA','8 GB','GDDR6','256 bit','1140 MHz','1750 MHz',2560,160,64),
+    ('GeForce RTX 2080 SUPER Max-Q','NVIDIA','8 GB','GDDR6','256 bit','735 MHz','1375 MHz',3072,192,64),
+    ('GeForce RTX 2080 SUPER Mobile','NVIDIA','8 GB','GDDR6','256 bit','1365 MHz','1750 MHz',3072,192,64),
+    ('GeForce RTX 3060 Ti','NVIDIA','8 GB','GDDR6','256 bit','1410 MHz','1750 MHz',4864,152,80),
+    ('GeForce RTX 3070','NVIDIA','8 GB','GDDR6','256 bit','1500 MHz','1750 MHz',5888,184,96),
+    ('GeForce RTX 3080','NVIDIA','10 GB','GDDR6X','320 bit','1440 MHz','1188 MHz',8704,272,96),
+    ('GeForce RTX 3090','NVIDIA','24 GB','GDDR6X','384 bit','1395 MHz','1219 MHz',10496,328,112),
+    ('Quadro RTX 5000 Mobile Refresh','NVIDIA','16 GB','GDDR6','256 bit','1035 MHz','1750 MHz',3072,192,64),
+    ('Quadro RTX 6000 Mobile','NVIDIA','24 GB','GDDR6','384 bit','1275 MHz','1750 MHz',4608,288,96),
+    ('Quadro T1000 Mobile GDDR6','NVIDIA','4 GB','GDDR6','128 bit','1395 MHz','1500 MHz',896,56,32),
+    ('RTX A6000','NVIDIA','48 GB','GDDR6','384 bit','1410 MHz','2000 MHz',10752,336,112),
+    ('T500 Mobile','NVIDIA','2 GB','GDDR6','64 bit','1365 MHz','1250 MHz',896,56,32),
+	 ('A10 PCIe','NVIDIA','24 GB','GDDR6','384 bit','885 MHz','1563 MHz',9216,288,96),
+    ('A100 PCIe 80 GB','NVIDIA','80 GB','HBM2e','5120 bit','1065 MHz','1593 MHz',6912,432,160),
+    ('A10G','NVIDIA','12 GB','GDDR6','384 bit','1320 MHz','1563 MHz',9216,288,96),
+    ('A16 PCIe','NVIDIA','16 GB','GDDR6','128 bit','885 MHz','1812 MHz',1280,40,32),
+    ('A2','NVIDIA','16 GB','GDDR6','128 bit','1440 MHz','1563 MHz',1280,40,32),
+    ('A30 PCIe','NVIDIA','24 GB','HBM2','3072 bit','930 MHz','1215 MHz',3584,224,96),
+    ('CMP 170HX','NVIDIA','16 GB','HBM2e','4096 bit','1140 MHz','1458 MHz',4480,280,128),
+    ('CMP 30HX','NVIDIA','6 GB','GDDR6','192 bit','1530 MHz','1750 MHz',1408,88,48),
+    ('CMP 40HX','NVIDIA','8 GB','GDDR6','256 bit','1470 MHz','1750 MHz',2304,144,64),
+    ('CMP 50HX','NVIDIA','10 GB','GDDR6','320 bit','1350 MHz','1750 MHz',3584,192,80),
+    ('CMP 70HX','NVIDIA','8 GB','GDDR6X','256 bit','1365 MHz','1188 MHz',6144,192,96),
+    ('CMP 90HX','NVIDIA','10 GB','GDDR6X','320 bit','1500 MHz','1188 MHz',6400,200,80),
+    ('GeForce GT 1010','NVIDIA','2 GB','GDDR5','64 bit','1228 MHz','1502 MHz',256,16,8),
+    ('GeForce GT 1010 DDR4','NVIDIA','2 GB','DDR4','64 bit','1228 MHz','1050 MHz',256,16,8),
+    ('GeForce RTX 2060 12 GB','NVIDIA','12 GB','GDDR6','192 bit','1470 MHz','1750 MHz',2176,136,48),
+    ('GeForce RTX 3050 Mobile','NVIDIA','4 GB','GDDR6','128 bit','712 MHz','1500 MHz',2048,64,32),
+    ('GeForce RTX 3050 Ti Mobile','NVIDIA','4 GB','GDDR6','128 bit','735 MHz','1500 MHz',2560,80,48),
+    ('GeForce RTX 3060','NVIDIA','12 GB','GDDR6','192 bit','1320 MHz','1875 MHz',3584,112,48),
+    ('GeForce RTX 3060 GA104','NVIDIA','12 GB','GDDR6','192 bit','1320 MHz','1875 MHz',3584,112,48),
+    ('GeForce RTX 3060 Max-Q','NVIDIA','6 GB','GDDR6','192 bit','817 MHz','1500 MHz',3840,120,48),
+    ('GeForce RTX 3060 Mobile','NVIDIA','6 GB','GDDR6','192 bit','900 MHz','1750 MHz',3840,120,48),
+    ('GeForce RTX 3070 Max-Q','NVIDIA','8 GB','GDDR6','256 bit','780 MHz','1500 MHz',5120,160,80),
+    ('GeForce RTX 3070 Mobile','NVIDIA','8 GB','GDDR6','256 bit','1110 MHz','1750 MHz',5120,160,80),
+    ('GeForce RTX 3070 Ti','NVIDIA','8 GB','GDDR6X','256 bit','1575 MHz','1188 MHz',6144,192,96),
+    ('GeForce RTX 3080 Max-Q','NVIDIA','8 GB','GDDR6','256 bit','780 MHz','1500 MHz',6144,192,96),
+    ('GeForce RTX 3080 Mobile','NVIDIA','8 GB','GDDR6','256 bit','1110 MHz','1750 MHz',6144,192,96),
+    ('GeForce RTX 3080 Ti','NVIDIA','12 GB','GDDR6X','384 bit','1365 MHz','1188 MHz',10240,320,112),
+    ('PG506-232','NVIDIA','24 GB','HBM2','3072 bit','930 MHz','1215 MHz',3584,224,96),
+    ('PG506-242','NVIDIA','24 GB','HBM2','3072 bit','930 MHz','1215 MHz',3584,224,96),
+    ('Quadro T1200 Mobile','NVIDIA','4 GB','GDDR6','128 bit','855 MHz','1250 MHz',1024,64,32),
+    ('RTX A2000','NVIDIA','6 GB','GDDR6','192 bit','562 MHz','1500 MHz',3328,104,48),
+    ('RTX A2000 12 GB','NVIDIA','12 GB','GDDR6','192 bit','562 MHz','1500 MHz',3328,104,48),
+    ('RTX A2000 Mobile','NVIDIA','4 GB','GDDR6','128 bit','893 MHz','1375 MHz',2560,80,48),
+    ('RTX A3000 Mobile','NVIDIA','6 GB','GDDR6','192 bit','1260 MHz','1375 MHz',4096,128,64),
+    ('RTX A4 Mobile','NVIDIA','4 GB','GDDR6','128 bit','1237 MHz','1750 MHz',2048,64,32),
+    ('RTX A4000','NVIDIA','16 GB','GDDR6','256 bit','735 MHz','1750 MHz',6144,192,96),
+    ('RTX A4000 Mobile','NVIDIA','8 GB','GDDR6','256 bit','1140 MHz','1500 MHz',5120,160,80),
+    ('RTX A4500','NVIDIA','20 GB','GDDR6','320 bit','1050 MHz','2000 MHz',7168,224,96),
+    ('RTX A5000','NVIDIA','24 GB','GDDR6','384 bit','1170 MHz','2000 MHz',8192,256,96),
+    ('RTX A5000 Mobile','NVIDIA','16 GB','GDDR6','256 bit','900 MHz','1750 MHz',6144,192,96),
+    ('T1000','NVIDIA','4 GB','GDDR6','128 bit','1065 MHz','1250 MHz',896,56,32),
+    ('T1000 8 GB','NVIDIA','8 GB','GDDR6','128 bit','1065 MHz','1250 MHz',896,56,32),
+    ('T400','NVIDIA','2 GB','GDDR6','64 bit','420 MHz','1250 MHz',384,24,16),
+    ('T400 4 GB','NVIDIA','4 GB','GDDR6','64 bit','420 MHz','1250 MHz',384,24,16),
+    ('T600','NVIDIA','4 GB','GDDR6','128 bit','735 MHz','1250 MHz',640,40,32),
+    ('T600 Mobile','NVIDIA','4 GB','GDDR6','128 bit','930 MHz','1250 MHz',640,40,32),
+	('GeForce MX550','NVIDIA','2 GB','GDDR6','64 bit','1065 MHz','1500 MHz',1024,32,16),
+    ('GeForce MX570','NVIDIA','4 GB','GDDR6','64 bit','1087 MHz','1500 MHz',2048,64,40),
+    ('GeForce RTX 2050 Mobile','NVIDIA','4 GB','GDDR6','64 bit','1155 MHz','1750 MHz',2048,64,32),
+    ('GeForce RTX 3050 4 GB','NVIDIA','4 GB','GDDR6','128 bit','1545 MHz','1750 MHz',2304,72,32),
+    ('GeForce RTX 3050 8 GB','NVIDIA','8 GB','GDDR6','128 bit','1552 MHz','1750 MHz',2560,80,32),
+    ('GeForce RTX 3050 8 GB GA107','NVIDIA','8 GB','GDDR6','128 bit','1552 MHz','1750 MHz',2560,80,32),
+    ('GeForce RTX 3060 Ti GA103','NVIDIA','8 GB','GDDR6','256 bit','1410 MHz','1750 MHz',4864,152,80),
+    ('GeForce RTX 3070 Ti 16 GB','NVIDIA','16 GB','GDDR6X','256 bit','1575 MHz','1188 MHz',6144,192,96),
+    ('GeForce RTX 3070 Ti Mobile','NVIDIA','8 GB','GDDR6','256 bit','915 MHz','1750 MHz',5632,176,80),
+    ('GeForce RTX 3080 12 GB','NVIDIA','12 GB','GDDR6X','384 bit','1260 MHz','1188 MHz',8960,280,96),
+    ('GeForce RTX 3080 Ti 20 GB','NVIDIA','20 GB','GDDR6X','320 bit','1335 MHz','1188 MHz',10240,320,112),
+    ('GeForce RTX 3080 Ti Max-Q','NVIDIA','16 GB','GDDR6','256 bit','585 MHz','1500 MHz',7424,232,96),
+    ('GeForce RTX 3080 Ti Mobile','NVIDIA','16 GB','GDDR6','256 bit','810 MHz','2000 MHz',7424,232,96),
+    ('GeForce RTX 3090 Ti','NVIDIA','24 GB','GDDR6X','384 bit','1560 MHz','1325 MHz',10752,336,112),
+    ('GeForce RTX 4060','NVIDIA','12 GB','GDDR6','192 bit','1925 MHz','2250 MHz',5888,184,64),
+    ('GeForce RTX 4070','NVIDIA','12 GB','GDDR6','192 bit','1925 MHz','2250 MHz',9728,304,112),
+    ('GeForce RTX 4080','NVIDIA','16 GB','GDDR6','256 bit','1925 MHz','2250 MHz',14080,440,176),
+    ('GeForce RTX 4080 Ti','NVIDIA','20 GB','GDDR6X','320 bit','1895 MHz','1325 MHz',16128,504,176),
+    ('GeForce RTX 4090','NVIDIA','24 GB','GDDR6X','384 bit','1815 MHz','1325 MHz',17408,544,192),
+    ('RTX A1000 Embedded','NVIDIA','4 GB','GDDR6','128 bit','1192 MHz','1500 MHz',2048,64,48),
+    ('RTX A2000 Embedded','NVIDIA','8 GB','GDDR6','128 bit','1117 MHz','1500 MHz',2560,80,48),
+    ('RTX A4500 Embedded','NVIDIA','16 GB','GDDR6','256 bit','930 MHz','2000 MHz',5888,184,80),
+    ('RTX A4500 Mobile','NVIDIA','12 GB','GDDR6','192 bit','855 MHz','1500 MHz',5632,176,80),
+    ('RTX A500 Embedded','NVIDIA','4 GB','GDDR6','64 bit','1192 MHz','1750 MHz',2048,64,48);
+
 
 
