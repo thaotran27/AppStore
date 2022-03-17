@@ -5,7 +5,7 @@ from django.db import connection
 def index(request):
     """Shows the main page"""
 
-    ## Delete customer
+    ## Delete listing
     if request.POST:
         if request.POST['action'] == 'delete':
             with connection.cursor() as cursor:
@@ -47,7 +47,7 @@ def add(request):
             ## No customer with same id
             if customer == None:
                 ##TODO: date validation
-                cursor.execute("INSERT INTO customers VALUES (%s, %s, %s, %s, %s, %s, %s)"
+                cursor.execute("INSERT INTO GPU_Listing VALUES (%s, %s, %s, %s, %s, %s, %s)"
                         , [request.POST['first_name'], request.POST['last_name'], request.POST['email'],
                            request.POST['dob'] , request.POST['since'], request.POST['customerid'], request.POST['country'] ])
                 return redirect('index')    
