@@ -13,13 +13,13 @@
             <th>Price</th>
         </thead>
         {% for cust in records %}
-        <a href="view/{{cust.5}}"><tr>
+        <tr>
             <td> {{ cust.0 }} </td>
-            <td> {{ cust.1 }} </td>
+            <td> <a href="view/{{cust.0}}"> {{ cust.1 }} </a> </td>
             <td> {{ cust.2 }} </td>
             <td> {{ cust.6 }} </td>
             
-        </tr></a>
+        </tr>
         {% endfor %}
     </table>
 </body>
