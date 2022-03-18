@@ -76,7 +76,7 @@ def add(request):
                 cursor.execute("INSERT INTO User1 VALUES (%s, %s, %s, %s, %s, %s, %s)"
                         , [request.POST['first_name'], request.POST['last_name'], request.POST['email'],
                            request.POST['customerid'] , 0, request.POST['phonenumber'], request.POST['password'] ])
-                return redirect('index')    
+                return redirect('appstore_admin')    
             else:
                 status = 'Customer with ID %s already exists' % (request.POST['customerid'])
 
