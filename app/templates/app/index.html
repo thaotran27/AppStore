@@ -42,8 +42,7 @@ button:hover {
 }
 
 img.avatar {
-  width: 15%;
-  border-radius: 50%;
+  width: 30%;
 }
 
 .container {
@@ -69,12 +68,12 @@ span.psw {
 </head>
 <body>
 
-<h2>Login Form</h2>
+<h2>Welcome to GPU Rental Service</h2>
 
 <form method="post">
   {% csrf_token %}
   <div class="imgcontainer">
-    <img src="{% static 'app/images/user.png' %}" alt="Avatar" class="avatar">
+    <img src="https://cdn.eteknix.com/wp-content/uploads/2016/09/Logo-on-white.jpg" alt="Avatar" class="avatar">
   </div>
 
   <div class="container">
@@ -91,7 +90,12 @@ span.psw {
   </div>
 
   <div class="container" style="background-color:#f1f1f1">
-    <button type="button" class="signupbtn">Signup</button>
+    <button id="myButton" type="button" class="signupbtn" value="Add">Signup</button>
+    <script type="text/javascript">
+      document.getElementById("myButton").onclick = function () {
+          location.href = "/add";
+      };
+  </script>
     <span class="psw">Forgot <a href="#">password?</a></span>
   </div>
 </form>
