@@ -17,13 +17,11 @@ def index(request):
             cursor.execute("SELECT * FROM User1 WHERE Pass_word = %s", [request.POST['psw']])
             customer_password = cursor.fetchone()
             ## No customer with input Email and Password
-            if customer_email == None or customer_password == None:
-                status = 'Customer with Email %s does not exist. Please sign up' % (request.POST['email'])   
-            else:
+            if customer_email != None and customer_password != None:
                 return redirect('appstore_admin')
 
     context['status']=status
-    return render(request,'app/add.html',context)
+    return render(request,'app/index.html',context)
 
 # Create your views here.
 def appstore_admin(request):
@@ -81,7 +79,7 @@ def add(request):
 
     context['status'] = status
  
-    return render(request, "app/index.html", context)
+    return render(request, "app/add.html", context)
 
 # Create your views here.
 def edit(request, id):
