@@ -112,3 +112,16 @@ def edit(request, id):
     context["status"] = status
  
     return render(request, "app/edit.html", context)
+
+# Create your views here.
+def listing(request):
+    """Shows the main page"""
+
+    ## Use raw query to get all objects
+    with connection.cursor() as cursor:
+        cursor.execute("SELECT * FROM GPU_Listing ORDER BY Listingid")
+        listings = cursor.fetchall()
+
+    result_dict = {'records': listings}
+
+    return render(request,'app/listing.html',result_dict)
