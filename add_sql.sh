@@ -34,6 +34,3 @@ psql ${URI} -f sql/GPU.sql
 psql ${URI} -f sql/User.sql
 psql ${URI} -f sql/GPU_Listing.sql
 psql ${URI} -f sql/Rental.sql
-
-psql ${URI} -U postgres -c "SELECT * from GPU"
-psql ${URI} -U postgres -c "SELECT * from GPU_Listing"
