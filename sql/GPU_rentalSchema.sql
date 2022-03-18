@@ -28,7 +28,7 @@ CREATE TABLE IF NOT EXISTS User1(
  );
   
  CREATE TABLE IF NOT EXISTS GPU_Listing(
- Listingid CHAR(64) CHECK (Listingid NOT LIKE '%[^0-9]%'),
+ Listingid NUMERIC CHECK (Listingid >= 0),
  GPU_model VARCHAR(32),
  GPU_brand VARCHAR(32),
  PRIMARY KEY (Listingid, GPU_model, GPU_brand),
