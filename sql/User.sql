@@ -4,6 +4,7 @@
 
 ****************************/
 
+insert into User1 (First_name, Last_name, Email, Customerid, Wallet_balance, Phone_number, Pass_word) values ('Admin', 'Admin', 'admin@admin.com', 'admin01', 999, '9999999999', 'admin123');
 insert into User1 (First_name, Last_name, Email, Customerid, Wallet_balance, Phone_number, Pass_word) values ('Clevey', 'Danielli', 'cdanielli0@nasa.gov', 'cdanielli0', 86, '8602195194', '3rmnr3uOQX');
 insert into User1 (First_name, Last_name, Email, Customerid, Wallet_balance, Phone_number, Pass_word) values ('Kelcy', 'Longfoot', 'klongfoot1@jigsy.com', 'klongfoot1', 109, '6056893026', 'v2S0Qtu55');
 insert into User1 (First_name, Last_name, Email, Customerid, Wallet_balance, Phone_number, Pass_word) values ('Sandy', 'Kiln', 'skiln2@bbb.org', 'skiln2', 55, '3716172810', '0GRggILH6');
