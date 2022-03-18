@@ -13,12 +13,16 @@ def index(request):
             ## Get email
             cursor.execute("SELECT * FROM User1 WHERE Email = %s", [request.POST['email']])
             customer_email = cursor.fetchone()
+            print(customer_email)
             ## Get password
             cursor.execute("SELECT * FROM User1 WHERE Pass_word = %s", [request.POST['psw']])
             customer_password = cursor.fetchone()
-            ## No customer with input Email and Password
-            if customer_email != None and customer_password != None:
+            print(customer_password)
+            ## Check if login with admin account
+            if request.POST['email'] == "admin@admin.com" and request.POST['psw'] == "admin123":
                 return redirect('appstore_admin')
+            elif customer_email != None and customer_password != None:
+                return redirect('listing')
 
     context['status']=status
     return render(request,'app/index.html',context)
@@ -71,7 +75,7 @@ def add(request):
                 ##TODO: date validation
                 cursor.execute("INSERT INTO User1 VALUES (%s, %s, %s, %s, %s, %s, %s)"
                         , [request.POST['first_name'], request.POST['last_name'], request.POST['email'],
-                           request.POST['customerid'] , request.POST['walletbalance'], request.POST['phonenumber'], request.POST['password'] ])
+                           request.POST['customerid'] , 0, request.POST['phonenumber'], request.POST['password'] ])
                 return redirect('index')    
             else:
                 status = 'Customer with ID %s already exists' % (request.POST['customerid'])
