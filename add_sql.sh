@@ -33,8 +33,4 @@ psql ${URI} -f sql/GPU_rentalSchema.sql
 psql ${URI} -f sql/GPU.sql
 psql ${URI} -f sql/User.sql
 psql ${URI} -f sql/GPU_Listing.sql
-<<<<<<< HEAD
 psql ${URI} -f sql/Rental.sql
-=======
-psql ${URI} -f sql/Rental.sql
->>>>>>> e22a221e859c4d8165dd46bf5e944571e0e29828
