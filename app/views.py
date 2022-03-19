@@ -1,5 +1,7 @@
 from django.shortcuts import render, redirect
 from django.db import connection
+from django.http import HttpResponse
+import logging
 
 # Create your views here.
 def index(request):
@@ -13,16 +15,18 @@ def index(request):
             ## Get email
             cursor.execute("SELECT * FROM User1 WHERE Email = %s", [request.POST['email']])
             customer_email = cursor.fetchone()
-            print(customer_email)
+            logging.debug(customer_email)
             ## Get password
             cursor.execute("SELECT * FROM User1 WHERE Pass_word = %s", [request.POST['psw']])
             customer_password = cursor.fetchone()
-            print(customer_password)
+            logging.debug(customer_password)
             ## Check if login with admin account
             if request.POST['email'] == "admin@admin.com" and request.POST['psw'] == "admin123":
                 return redirect('appstore_admin')
             elif customer_email != None and customer_password != None:
                 return redirect('listing')
+            else:
+                return HttpResponse('<h1>No such user</h1>')
 
     context['status']=status
     return render(request,'app/index.html',context)
