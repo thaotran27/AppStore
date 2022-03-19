@@ -13,11 +13,11 @@ def index(request):
             ## Get email
             cursor.execute("SELECT * FROM User1 WHERE Email = %s", [request.POST['email']])
             customer_email = cursor.fetchone()
-            print(customer_email)
+
             ## Get password
             cursor.execute("SELECT * FROM User1 WHERE Pass_word = %s", [request.POST['psw']])
             customer_password = cursor.fetchone()
-            print(customer_password)
+
             ## Check if login with admin account
             if request.POST['email'] == "admin@admin.com" and request.POST['psw'] == "admin123":
                 return redirect('appstore_admin')
@@ -129,3 +129,15 @@ def listing(request):
     result_dict = {'records': listings}
 
     return render(request,'app/listing.html',result_dict)
+
+# Create your views here.
+def view_listing(request, id):
+    """Shows the main page"""
+    
+    ## Use raw query to get a GPU
+    with connection.cursor() as cursor:
+        cursor.execute("SELECT * FROM GPU", [id])
+        view_listing = cursor.fetchone()
+    result_dict = {'view_listing': view_listing}
+
+    return render(request,'app/view_listing.html',result_dict)
