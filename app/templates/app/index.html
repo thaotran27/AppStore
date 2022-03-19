@@ -1,26 +1,104 @@
+<!DOCTYPE html>
 {% load static %}
 <html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+body {font-family: Arial, Helvetica, sans-serif;}
+form {border: 3px solid #f1f1f1;}
+
+input[type=text], input[type=password] {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
+
+button {
+  background-color: #04AA6D;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+}
+
+button:hover {
+  opacity: 0.8;
+}
+
+.signupbtn {
+  width: auto;
+  padding: 10px 50px;
+  background-color: #0645bb;
+}
+
+.imgcontainer {
+  text-align: center;
+  margin: 24px 0 12px 0;
+}
+
+img.avatar {
+  width: 30%;
+}
+
+.container {
+  padding: 16px;
+}
+
+span.psw {
+  float: right;
+  padding-top: 16px;
+}
+
+/* Change styles for span and Signup button on extra small screens */
+@media screen and (max-width: 300px) {
+  span.psw {
+     display: block;
+     float: none;
+  }
+  .signupbtn {
+     width: 100%;
+  }
+}
+</style>
+</head>
 <body>
-    <h2>Customers in the App Store</h2>
-    <img src="{% static 'app/images/nus.jpg' %}" width="10%"   alt="NUS logo"/><br/>
-    <a href="add">New customer</a>
-    <br/><br/>
-    <table border=1>
-        <thead>
-            <th>ID</th>
-            <th>GPU Model</th>
-            <th>Brand</th>
-            <th>Price</th>
-        </thead>
-        {% for cust in records %}
-        <tr>
-            <td> {{ cust.0 }} </td>
-            <td> <a href="view/{{cust.0}}"> {{ cust.1 }} </a> </td>
-            <td> {{ cust.2 }} </td>
-            <td> {{ cust.6 }} </td>
-            
-        </tr>
-        {% endfor %}
-    </table>
+
+<h2>Welcome to GPU Rental Service</h2>
+
+<form method="post">
+  {% csrf_token %}
+  <div class="imgcontainer">
+    <img src="https://cdn.eteknix.com/wp-content/uploads/2016/09/Logo-on-white.jpg" alt="Avatar" class="avatar">
+  </div>
+
+  <div class="container">
+    <label for="email"><b>Email</b></label>
+    <input type="text" placeholder="Enter Email" name="email" required>
+
+    <label for="psw"><b>Password</b></label>
+    <input type="password" placeholder="Enter Password" name="psw" required>
+        
+    <button type="submit" value="Login">Login</button>
+    <label>
+      <input type="checkbox" checked="checked" name="remember"> Remember me
+    </label>
+  </div>
+
+  <div class="container" style="background-color:#f1f1f1">
+    <button id="myButton" type="button" class="signupbtn" value="Add">Signup</button>
+    <script type="text/javascript">
+      document.getElementById("myButton").onclick = function () {
+          location.href = "/add";
+      };
+  </script>
+    <span class="psw">Forgot <a href="#">password?</a></span>
+  </div>
+</form>
+
 </body>
 </html>

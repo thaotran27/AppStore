@@ -28,7 +28,7 @@ CREATE TABLE IF NOT EXISTS User1(
  );
   
  CREATE TABLE IF NOT EXISTS GPU_Listing(
- Listingid CHAR(64) CHECK (Listingid NOT LIKE '%[^0-9]%'),
+ Listingid NUMERIC CHECK (Listingid >= 0),
  GPU_model VARCHAR(32),
  GPU_brand VARCHAR(32),
  PRIMARY KEY (Listingid, GPU_model, GPU_brand),
@@ -42,7 +42,7 @@ CREATE TABLE IF NOT EXISTS User1(
  Borrower_id VARCHAR(16) REFERENCES User1(Customerid) ON UPDATE CASCADE ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
  GPU_model VARCHAR(32),
  GPU_brand VARCHAR(32),
- Listingid CHAR(64) CHECK (Listingid NOT LIKE '%[^0-9]%'),
+ Listingid NUMERIC CHECK (Listingid >= 0),
  FOREIGN KEY (Listingid, GPU_model, GPU_brand) REFERENCES GPU_Listing(Listingid, GPU_model, GPU_brand) ON UPDATE CASCADE ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
  Start_day DATE NOT NULL,
  End_day DATE NOT NULL);
