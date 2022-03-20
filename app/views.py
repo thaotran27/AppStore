@@ -1,13 +1,10 @@
 from django.shortcuts import render, redirect
 from django.db import connection
-<<<<<<< HEAD
+# from django.http import HttpResponse
+# import logging
 from datetime import datetime
 from datetime import date
 from datetime import timedelta
-=======
-# from django.http import HttpResponse
-# import logging
->>>>>>> 2f576ead898c6e81d10635e0823f24a03c9a211f
 
 # Create your views here.
 def index(request):
@@ -160,6 +157,7 @@ def view_listing(request, id):
     result_dict = {'view_listing': view_listing}
 
     return render(request,'app/view_listing.html',result_dict)
+
 
 
 def rental(request, Listingid):
