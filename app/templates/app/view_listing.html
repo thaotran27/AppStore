@@ -1,0 +1,40 @@
+<html>
+<body>
+    <h2>Details for {{listing.1}} {{listing.2}}</h2>
+    <a href="/listing">Back to home</a>
+    <br/><br/>
+    <table style='text-align:left'>
+        <tr>
+            <th>ID</th>
+            <td>:</td>
+            <td> {{ listing.0 }} </td>
+        </tr>
+        <tr>
+            <th>GPU Model</th>
+            <td>:</td>
+            <td> {{ listing.1 }} </td>
+        </tr>
+        <tr>
+            <th>GPU Brand</th>
+            <td>:</td>
+            <td> {{ listing.2 }} </td>
+        </tr>
+        <tr>
+            <th>Available start date</th>
+            <td>:</td>
+            <td> {{ listing.4 }} </td>
+        </tr>
+        <tr>
+            <th>Available end date</th>
+            <td>:</td>
+            <td> {{ listing.5 }} </td>
+        </tr>
+
+        <tr>
+            <th>Price</th>
+            <td>:</td>
+            <td> {{ listing.6 }} </td>
+        </tr>
+    </table>
+</body>
+</html>

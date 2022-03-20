@@ -1,3 +1,5 @@
+from cmath import log
+from curses.ascii import HT
 from django.shortcuts import render, redirect
 from django.db import connection
 from django.http import HttpResponse
@@ -8,28 +10,30 @@ def index(request):
     """Shows the main page"""
     context = {}
     status = ''
-
-    if request.POST:
+    if request.user.is_authenticated:
+        return HttpResponse('loggind in')
+    else:
+        if request.POST:
         ## Check if customer account already exists
-        with connection.cursor() as cursor:
-            ## Get email
-            cursor.execute("SELECT * FROM User1 WHERE Email = %s", [request.POST['email']])
-            customer_email = cursor.fetchone()
-            logging.debug(customer_email)
-            ## Get password
-            cursor.execute("SELECT * FROM User1 WHERE Pass_word = %s", [request.POST['psw']])
-            customer_password = cursor.fetchone()
-            logging.debug(customer_password)
-            ## Check if login with admin account
-            if request.POST['email'] == "admin@admin.com" and request.POST['psw'] == "admin123":
-                return redirect('appstore_admin')
-            elif customer_email != None and customer_password != None:
-                return redirect('listing')
-            else:
-                return HttpResponse('<h1>No such user</h1>')
+            with connection.cursor() as cursor:
+                ## Get email
+                cursor.execute("SELECT * FROM User1 WHERE Email = %s", [request.POST['email']])
+                customer_email = cursor.fetchone()
+                logging.debug(customer_email)
+                ## Get password
+                cursor.execute("SELECT * FROM User1 WHERE Pass_word = %s", [request.POST['psw']])
+                customer_password = cursor.fetchone()
+                logging.debug(customer_password)
+                ## Check if login with admin account
+                if request.POST['email'] == "admin@admin.com" and request.POST['psw'] == "admin123":
+                    return redirect('appstore_admin')
+                elif customer_email != None and customer_password != None:
+                    return redirect('listing')
+                else:
+                    return HttpResponse('<h1>No such user</h1>')
+        context['status']=status
+        return render(request,'app/index.html',context)
 
-    context['status']=status
-    return render(request,'app/index.html',context)
 
 # Create your views here.
 def appstore_admin(request):
@@ -80,7 +84,7 @@ def add(request):
                 cursor.execute("INSERT INTO User1 VALUES (%s, %s, %s, %s, %s, %s, %s)"
                         , [request.POST['first_name'], request.POST['last_name'], request.POST['email'],
                            request.POST['customerid'] , 0, request.POST['phonenumber'], request.POST['password'] ])
-                return redirect('appstore_admin')    
+                return redirect('listing')    
             else:
                 status = 'Customer with ID %s already exists' % (request.POST['customerid'])
 
@@ -122,14 +126,68 @@ def edit(request, id):
     return render(request, "app/edit.html", context)
 
 # Create your views here.
-def listing(request):
+def listing(request,id=1):
     """Shows the main page"""
 
     ## Use raw query to get all objects
     with connection.cursor() as cursor:
-        cursor.execute("SELECT * FROM GPU_Listing ORDER BY Listingid")
-        listings = cursor.fetchall()
+        if int(id) ==1:
+            cursor.execute("SELECT * FROM GPU_Listing ORDER BY Listingid DESC")
+            listings = cursor.fetchall()
+        elif int(id) == 2:
+            cursor.execute("SELECT * FROM GPU_Listing ORDER BY Listingid")
+            listings = cursor.fetchall()
+        elif int(id) == 3:
+            cursor.execute("SELECT * FROM GPU_Listing ORDER BY Price DESC")
+            listings = cursor.fetchall()
+        elif int(id) == 4:
+            cursor.execute("SELECT * FROM GPU_Listing ORDER BY Price")
+            listings = cursor.fetchall()
+        
 
     result_dict = {'records': listings}
 
     return render(request,'app/listing.html',result_dict)
+
+def view_listing(request, id):
+    """Shows the main page"""
+    
+    ## Use raw query to get a customer
+    with connection.cursor() as cursor:
+        cursor.execute("SELECT * FROM GPU_Listing", [id])
+        current_listing = cursor.fetchone()
+    result_dict = {'listing': current_listing}
+
+    return render(request,'app/view_listing.html',result_dict)
+
+def add_listing(request):
+    """Shows the main page"""
+    context = {}
+    status = ''
+    current_user = 'cdanielli0'
+    logging.debug(current_user)
+    with connection.cursor() as cursor:
+
+            # cursor.execute("SELECT * FROM GPU_Listing WHERE customerid = %s", [request.POST['customerid']])
+            # customer = cursor.fetchone()
+        cursor.execute("SELECT * FROM GPU_Listing ORDER BY Listingid DESC LIMIT 1")
+        customer = cursor.fetchall()
+        nextid = customer[0][0] + 1
+
+        if request.POST:
+            ## Check if customerid is already in the table
+            if customer == None:
+                    ##TODO: date validation
+                cursor.execute("INSERT INTO GPU_Listing VALUES (%s, %s, %s, %s, %s,  %s, %s)"
+                        , [nextid, request.POST['gpu_model'], request.POST['gpu_brand'], current_user,
+                        request.POST['start_date'] , request.POST['end_date'], request.POST['price'] ])
+                return redirect('listing')    
+            else:
+                nextid = 1
+                cursor.execute("INSERT INTO GPU_Listing VALUES (%s, %s, %s, %s, %s, %s, %s)"
+                        ,[nextid, request.POST['gpu_model'], request.POST['gpu_brand'], current_user,
+                        request.POST['start_date'] , request.POST['end_date'], request.POST['price']])
+                return redirect('listing')  
+
+    context['status'] = status
+    return render(request, "app/add_listing.html", context)
