@@ -1,5 +1,7 @@
 from django.shortcuts import render, redirect
 from django.db import connection
+# from django.http import HttpResponse
+# import logging
 
 # Create your views here.
 def index(request):
@@ -11,18 +13,26 @@ def index(request):
         ## Check if customer account already exists
         with connection.cursor() as cursor:
             ## Get email
+            global login_email 
+            login_email = request.POST['email']
             cursor.execute("SELECT * FROM User1 WHERE Email = %s", [request.POST['email']])
             customer_email = cursor.fetchone()
+            # logging.debug(customer_email)
 
             ## Get password
             cursor.execute("SELECT * FROM User1 WHERE Pass_word = %s", [request.POST['psw']])
             customer_password = cursor.fetchone()
+            # logging.debug(customer_password)
 
             ## Check if login with admin account
             if request.POST['email'] == "admin@admin.com" and request.POST['psw'] == "admin123":
                 return redirect('appstore_admin')
             elif customer_email != None and customer_password != None:
                 return redirect('listing')
+            else:
+                # return HttpResponse('<h1>No such user</h1>')
+                return render(request,'app/index.html', {'error_message': ' Login Failed! Enter the username and password correctly', })
+
 
     context['status']=status
     return render(request,'app/index.html',context)
@@ -76,7 +86,10 @@ def add(request):
                 cursor.execute("INSERT INTO User1 VALUES (%s, %s, %s, %s, %s, %s, %s)"
                         , [request.POST['first_name'], request.POST['last_name'], request.POST['email'],
                            request.POST['customerid'] , 0, request.POST['phonenumber'], request.POST['password'] ])
-                return redirect('appstore_admin')    
+                if login_email=="admin@admin.com":
+                    return redirect('appstore_admin')
+                else:
+                    return redirect('listing')
             else:
                 status = 'Customer with ID %s already exists' % (request.POST['customerid'])
 
