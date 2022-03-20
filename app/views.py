@@ -4,36 +4,43 @@ from django.shortcuts import render, redirect
 from django.db import connection
 from django.http import HttpResponse
 import logging
+from datetime import datetime
+from datetime import date
+from datetime import timedelta
 
 # Create your views here.
 def index(request):
     """Shows the main page"""
     context = {}
     status = ''
-    if request.user.is_authenticated:
-        return HttpResponse('loggind in')
-    else:
-        if request.POST:
-        ## Check if customer account already exists
-            with connection.cursor() as cursor:
-                ## Get email
-                cursor.execute("SELECT * FROM User1 WHERE Email = %s", [request.POST['email']])
-                customer_email = cursor.fetchone()
-                logging.debug(customer_email)
-                ## Get password
-                cursor.execute("SELECT * FROM User1 WHERE Pass_word = %s", [request.POST['psw']])
-                customer_password = cursor.fetchone()
-                logging.debug(customer_password)
-                ## Check if login with admin account
-                if request.POST['email'] == "admin@admin.com" and request.POST['psw'] == "admin123":
-                    return redirect('appstore_admin')
-                elif customer_email != None and customer_password != None:
-                    return redirect('listing')
-                else:
-                    return HttpResponse('<h1>No such user</h1>')
-        context['status']=status
-        return render(request,'app/index.html',context)
 
+    if request.POST:
+        ## Check if customer account already exists
+        with connection.cursor() as cursor:
+            ## Get email
+            global login_email 
+            login_email = request.POST['email']
+            cursor.execute("SELECT * FROM User1 WHERE Email = %s", [request.POST['email']])
+            customer_email = cursor.fetchone()
+            # logging.debug(customer_email)
+
+            ## Get password
+            cursor.execute("SELECT * FROM User1 WHERE Pass_word = %s", [request.POST['psw']])
+            customer_password = cursor.fetchone()
+            # logging.debug(customer_password)
+
+            ## Check if login with admin account
+            if request.POST['email'] == "admin@admin.com" and request.POST['psw'] == "admin123":
+                return redirect('appstore_admin')
+            elif customer_email != None and customer_password != None:
+                return redirect('listing')
+            else:
+                # return HttpResponse('<h1>No such user</h1>')
+                return render(request,'app/index.html', {'error_message': ' Login Failed! Enter the username and password correctly', })
+
+
+    context['status']=status
+    return render(request,'app/index.html',context)
 
 # Create your views here.
 def appstore_admin(request):
@@ -84,7 +91,10 @@ def add(request):
                 cursor.execute("INSERT INTO User1 VALUES (%s, %s, %s, %s, %s, %s, %s)"
                         , [request.POST['first_name'], request.POST['last_name'], request.POST['email'],
                            request.POST['customerid'] , 0, request.POST['phonenumber'], request.POST['password'] ])
-                return redirect('listing')    
+                if login_email=="admin@admin.com":
+                    return redirect('appstore_admin')
+                else:
+                    return redirect('listing')
             else:
                 status = 'Customer with ID %s already exists' % (request.POST['customerid'])
 
@@ -149,16 +159,56 @@ def listing(request,id=1):
 
     return render(request,'app/listing.html',result_dict)
 
+# Create your views here.
 def view_listing(request, id):
     """Shows the main page"""
     
-    ## Use raw query to get a customer
+    ## Use raw query to get a GPU
     with connection.cursor() as cursor:
-        cursor.execute("SELECT * FROM GPU_Listing", [id])
-        current_listing = cursor.fetchone()
-    result_dict = {'listing': current_listing}
+        cursor.execute("SELECT * FROM GPU", [id])
+        view_listing = cursor.fetchone()
+    result_dict = {'view_listing': view_listing}
 
     return render(request,'app/view_listing.html',result_dict)
+
+
+
+def rental(request, Listingid):
+    """Shows the main page"""
+    context = {}
+    status = ''
+
+    if request.POST:
+        ## Check if customerid is already in the table
+        with connection.cursor() as cursor:
+
+            cursor.execute("SELECT * FROM GPU_Listing WHERE Listingid = %s", [Listingid])
+            listing = cursor.fetchone()
+            ## No customer with same id
+            if (datetime.strptime(request.POST['Start_day'], '%Y-%m-%d').date() >= listing[4] and datetime.strptime(request.POST['End_day'], '%Y-%m-%d').date() <= listing[5]):
+                ##TODO: date validation
+                cursor.execute("INSERT INTO Rental VALUES (%s, %s, %s, %s, %s, %s)"
+                        , [request.POST['Borrower_id'], listing[1], listing[2],
+                           int(Listingid) , request.POST['Start_day'], request.POST['End_day']])
+                cursor.execute("DELETE FROM GPU_Listing WHERE Listingid = %s", [Listingid])
+                cursor.execute("SELECT * FROM GPU_Listing g1 WHERE g1.listingid >= all (SELECT g2.listingid FROM GPU_Listing g2)")
+                last_entry = cursor.fetchone()
+                if (datetime.strptime(request.POST['Start_day'], '%Y-%m-%d').date() == listing[4]):
+                    cursor.execute("INSERT INTO GPU_Listing VALUES(%s, %s,%s,%s,%s,%s,%s)", [last_entry[0] + 1 ,listing[1], listing[2], listing[3], 
+                                                                                         datetime.strptime(request.POST['End_day'], '%Y-%m-%d').date() + timedelta(days = 1), listing[5], listing[6]])
+                if (datetime.strptime(request.POST['Start_day'], '%Y-%m-%d').date() > listing[4]):
+                    cursor.execute("INSERT INTO GPU_Listing VALUES(%s, %s,%s,%s,%s,%s,%s)", [last_entry[0] + 1 ,listing[1], listing[2], listing[3], 
+                                                                                         listing[4], datetime.strptime(request.POST['Start_day'], '%Y-%m-%d').date()  - timedelta(days = 1), listing[6]])
+                    cursor.execute("INSERT INTO GPU_Listing VALUES(%s, %s,%s,%s,%s,%s,%s)", [last_entry[0] + 2 ,listing[1], listing[2], listing[3], 
+                                                                                         datetime.strptime(request.POST['End_day'], '%Y-%m-%d').date() + timedelta(days = 1), listing[5], listing[6]])
+                return redirect('listing')    
+            else:
+                status = 'Invalid Rental Dates'
+
+
+    context['status'] = status
+ 
+    return render(request, "app/rental.html", context)
 
 def add_listing(request):
     """Shows the main page"""

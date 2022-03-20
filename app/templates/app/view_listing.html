@@ -1,39 +1,58 @@
 <html>
 <body>
-    <h2>Details for {{listing.1}} {{listing.2}}</h2>
-    <a href="/listing">Back to home</a>
+    <h2>Details for {{view_listing.0}} {{view_listing.1}}</h2>
+    <a href="/listing">Back to listing</a>
     <br/><br/>
     <table style='text-align:left'>
         <tr>
-            <th>ID</th>
-            <td>:</td>
-            <td> {{ listing.0 }} </td>
-        </tr>
-        <tr>
             <th>GPU Model</th>
             <td>:</td>
-            <td> {{ listing.1 }} </td>
+            <td> {{ view_listing.0 }} </td>
         </tr>
         <tr>
             <th>GPU Brand</th>
             <td>:</td>
-            <td> {{ listing.2 }} </td>
+            <td> {{ view_listing.1 }} </td>
         </tr>
         <tr>
-            <th>Available start date</th>
+            <th>Memory Size</th>
             <td>:</td>
-            <td> {{ listing.4 }} </td>
+            <td> {{ view_listing.2 }} </td>
         </tr>
         <tr>
-            <th>Available end date</th>
+            <th>Memory Type</th>
             <td>:</td>
-            <td> {{ listing.5 }} </td>
+            <td> {{ view_listing.3 }} </td>
         </tr>
-
         <tr>
-            <th>Price</th>
+            <th>Memory Interface</th>
             <td>:</td>
-            <td> {{ listing.6 }} </td>
+            <td> {{ view_listing.4 }} </td>
+        </tr>
+        <tr>
+            <th>Base Clock</th>
+            <td>:</td>
+            <td> {{ view_listing.5 }} </td>
+        </tr>
+        <tr>
+            <th>Memory Clock</th>
+            <td>:</td>
+            <td> {{ view_listing.6 }} </td>
+        </tr>
+        <tr>
+            <th>Shaders</th>
+            <td>:</td>
+            <td> {{ view_listing.7 }} </td>
+        </tr>
+        <tr>
+            <th>TMU</th>
+            <td>:</td>
+            <td> {{ view_listing.8 }} </td>
+        </tr>
+        <tr>
+            <th>ROP</th>
+            <td>:</td>
+            <td> {{ view_listing.9 }} </td>
         </tr>
     </table>
 </body>
