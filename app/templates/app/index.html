@@ -82,8 +82,14 @@ span.psw {
 
     <label for="psw"><b>Password</b></label>
     <input type="password" placeholder="Enter Password" name="psw" required>
-        
-    <button type="submit" value="Login">Login</button>
+    
+    <form method="POST" style="display: top;">
+      {% csrf_token %}
+      <button type="onclick" value="Login">Login</button>
+    </form>
+    <h5 style="font-size:14px; color:#c70505; ">{{ error_message}}</h5>
+    
+
     <label>
       <input type="checkbox" checked="checked" name="remember"> Remember me
     </label>
