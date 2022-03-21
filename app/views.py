@@ -45,7 +45,8 @@ def appstore_admin(request):
     if request.POST:
         if request.POST['action'] == 'delete':
             with connection.cursor() as cursor:
-                cursor.execute("DELETE FROM User1", [request.POST['id']])
+                cursor.execute("DELETE FROM User1 WHERE Customerid = %s", [request.POST['id']])
+            print(request.POST['id'])
 
     ## Use raw query to get all objects
     with connection.cursor() as cursor:
