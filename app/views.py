@@ -197,3 +197,56 @@ def rental(request, Listingid):
     context['status'] = status
  
     return render(request, "app/rental.html", context)
+
+# Create your views here.
+def personal(request, id):
+    """Shows the main page"""
+
+    # dictionary for initial data with
+    # field names as keys
+    result_dict ={}
+    status = ''
+
+    # get currently login user
+    with connection.cursor() as cursor:
+        cursor.execute("SELECT * FROM User1 WHERE Email = %s", [login_email])
+        personal = cursor.fetchone()
+
+
+    # get current lend of user
+    with connection.cursor() as cursor:
+        cursor.execute("SELECT * FROM GPU_Listing WHERE Customerid = %s AND Available_end_day >= %s", [personal[3], date.today()])
+        personal_listing = cursor.fetchall()
+    result_dict['personal_listing'] = personal_listing
+
+    # get current rent of user
+    with connection.cursor() as cursor:
+        cursor.execute("SELECT * FROM Rental WHERE Borrower_id = %s AND End_day >= %s", [personal[3], date.today()])
+        rent_listing = cursor.fetchall()
+    result_dict['rent_listing']= rent_listing
+
+    # get Lend history of user
+    with connection.cursor() as cursor:
+        cursor.execute("SELECT g.GPU_Model, g.GPU_Brand, g.Available_start_day, g.Available_end_day, (r.End_day-r.Start_day+1) as duration, g.Price FROM Rental r, GPU_Listing g WHERE r.Listingid=g.Listingid AND g.Customerid = %s AND g.Available_end_day < %s", [personal[3], date.today()])
+        lend_history = cursor.fetchall()
+        if (len(lend_history)>0):
+            lend_history_conv = list(lend_history[0])
+            lend_history_conv.append(rent_history_conv[5]*rent_history_conv[4])    
+            result_dict['rent_history_conv'] = rent_history_conv
+    result_dict['lend_history']= lend_history
+
+    # get Rent history of user
+    with connection.cursor() as cursor:
+        cursor.execute("SELECT r.GPU_Model, r.GPU_Brand, r.Start_day, r.End_day, (r.End_day-r.Start_day+1) as duration, g.Price FROM Rental r, GPU_Listing g WHERE r.Listingid=g.Listingid AND r.Borrower_id = %s AND r.End_day < %s", [personal[3], date.today()])
+        rent_history = cursor.fetchall()
+        if (len(rent_history)>0):
+            rent_history_conv = list(rent_history[0])
+            rent_history_conv.append(rent_history_conv[5]*rent_history_conv[4])    
+            result_dict['rent_history_conv'] = rent_history_conv
+    result_dict['rent_history']= rent_history
+    
+
+    result_dict["personal"] = personal
+    result_dict["status"] = status
+ 
+    return render(request, "app/personal.html", result_dict)
