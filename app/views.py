@@ -202,7 +202,7 @@ def rental(request, Listingid):
     #use this snippet in everyview function to verify user. ends here
 
     """Shows the main page"""
-    context = {}
+    #context = {}
     status = ''
 
     if request.POST:
@@ -210,7 +210,6 @@ def rental(request, Listingid):
         with connection.cursor() as cursor:
             cursor.execute("SELECT * FROM GPU_Listing WHERE Listingid = %s", [Listingid])
             GPU_choice = cursor.fetchone()
-            result_dict = {'GPU' : GPU_choice}
             cursor.execute("SELECT * FROM GPU_Listing WHERE Listingid = %s", [Listingid])
             listing = cursor.fetchone()
             ## No customer with same id
@@ -239,10 +238,10 @@ def rental(request, Listingid):
             else:
                 status = 'Invalid Rental Dates'
 
-
-    context['status'] = status
+    result_dict = {'GPU' : GPU_choice, 'status' : status}
+    #context['status'] = status
  
-    return render(request, "app/rental.html", context, result_dict)
+    return render(request, "app/rental.html", result_dict)
 
 # Create your views here.
 def personal(request, id):
