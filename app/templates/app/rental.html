@@ -2,7 +2,28 @@
 <body>
     <h2>Rental confirmation</h2>
     
+    <table border=1>
+        <thead>
+            <th>Listing Number</th>
+            <th>GPU Model</th>
+            <th>GPU Name</th>
+            <th>Price</th>
+            <th>Available Start Date</th>
+            <th>Available End Date</th>
+        </thead>
+        {% for listing in GPU_Choice %}
+        <tr>
+            <td> {{ listing.0 }} </td>
+            <td> 
+                <a href="{% url 'view_listing'  listing.0  %}">{{ listing.1 }}</a>
+            </td>
 
+            <td> {{ listing.2 }} </td>
+            <td> {{ listing.6 }} </td>
+            <td> {{ listing.4 }}</td>
+            <td> {{ listing.5 }}</td>
+        </tr>
+        {% endfor %}
     <p style="color:red">{{ status|safe }}</p>
     <!-- Create a Form -->
     <form method="POST">

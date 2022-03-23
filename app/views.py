@@ -208,7 +208,8 @@ def rental(request, Listingid):
     if request.POST:
         ## Check if customerid is already in the table
         with connection.cursor() as cursor:
-
+            cursor.execute("SELECT * FROM GPU_Listing WHERE Listingid = %s", [Listingid])
+            GPU_choice = cursor.fetchone()
             cursor.execute("SELECT * FROM GPU_Listing WHERE Listingid = %s", [Listingid])
             listing = cursor.fetchone()
             ## No customer with same id
