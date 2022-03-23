@@ -193,6 +193,14 @@ def view_listing(request, id):
 
 
 def rental(request, Listingid):
+    #use this snippet in everyview function to verify user
+    login_email = request.session.get('email', 0)
+    logging.debug(login_email)
+    if login_email == 0:
+        login_email = request.session['email']
+        return HttpResponseRedirect(reverse('index'))
+    #use this snippet in everyview function to verify user. ends here
+
     """Shows the main page"""
     context = {}
     status = ''
@@ -206,8 +214,13 @@ def rental(request, Listingid):
             ## No customer with same id
             if (datetime.strptime(request.POST['Start_day'], '%Y-%m-%d').date() >= listing[4] and datetime.strptime(request.POST['End_day'], '%Y-%m-%d').date() <= listing[5]):
                 ##TODO: date validation
+                cursor.execute("SELECT Customerid FROM User1 WHERE Email = %s", [request.post['email']])
+                Borrower_id = cursor.fetchone()
+                #cursor.execute("INSERT INTO Rental VALUES (%s, %s, %s, %s, %s, %s)"
+                #        , [request.POST['Borrower_id'], listing[1], listing[2],
+                #           int(Listingid) , request.POST['Start_day'], request.POST['End_day']])
                 cursor.execute("INSERT INTO Rental VALUES (%s, %s, %s, %s, %s, %s)"
-                        , [request.POST['Borrower_id'], listing[1], listing[2],
+                        , [Borrower_id, listing[1], listing[2],
                            int(Listingid) , request.POST['Start_day'], request.POST['End_day']])
                 cursor.execute("DELETE FROM GPU_Listing WHERE Listingid = %s", [Listingid])
                 cursor.execute("SELECT * FROM GPU_Listing g1 WHERE g1.listingid >= all (SELECT g2.listingid FROM GPU_Listing g2)")
