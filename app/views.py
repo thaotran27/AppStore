@@ -204,13 +204,12 @@ def rental(request, Listingid):
     """Shows the main page"""
     #context = {}
     status = ''
-    GPU_choice = ''
+    cursor.execute("SELECT * FROM GPU_Listing") #WHERE Listingid = %s", [Listingid])
+    GPU_choice = cursor.fetchall()
 
     if request.POST:
         ## Check if customerid is already in the table
         with connection.cursor() as cursor:
-            cursor.execute("SELECT * FROM GPU_Listing") #WHERE Listingid = %s", [Listingid])
-            GPU_choice = cursor.fetchall()
             cursor.execute("SELECT * FROM GPU_Listing WHERE Listingid = %s", [Listingid])
             listing = cursor.fetchone()
             ## No customer with same id
