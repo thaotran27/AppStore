@@ -204,6 +204,7 @@ def rental(request, Listingid):
     """Shows the main page"""
     #context = {}
     status = ''
+    GPU_choice = ''
 
     if request.POST:
         ## Check if customerid is already in the table
