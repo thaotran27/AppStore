@@ -1,3 +1,10 @@
+/***************************
+
+  Populate the customers table
+
+****************************/
+
+
 insert into User1 (First_name, Last_name, Email, Customerid, Wallet_balance, Phone_number, Pass_word, Credit_card_number, Credit_card_type) values ('Kirby', 'Effnert', 'keffnert0@google.ru', 'keffnert0', 895, '7605439035', 'Umy2RR', '5100139650649886', 'mastercard');
 insert into User1 (First_name, Last_name, Email, Customerid, Wallet_balance, Phone_number, Pass_word, Credit_card_number, Credit_card_type) values ('Niko', 'Ive', 'nive1@chronoengine.com', 'nive1', 831, '8117409749', 'SeU2ObG', '337941230225731', 'americanexpress');
 insert into User1 (First_name, Last_name, Email, Customerid, Wallet_balance, Phone_number, Pass_word, Credit_card_number, Credit_card_type) values ('Daphene', 'Skae', 'dskae2@jimdo.com', 'dskae2', 926, '8911107263', 'cz5IYA249p', '5209985710705815', 'mastercard');

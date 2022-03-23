@@ -150,6 +150,7 @@ def listing(request,id=1):
         login_email = request.session['email']
         return HttpResponseRedirect(reverse('index'))
     #use this snippet in everyview function to verify user. ends here
+    print(login_email)
 
     ## Use raw query to get all objects
     with connection.cursor() as cursor:
@@ -231,7 +232,13 @@ def rental(request, Listingid):
 
 # Create your views here.
 def personal(request, id):
-    """Shows the main page"""
+    #use this snippet in everyview function to verify user
+    login_email = request.session.get('email', 0)
+    logging.debug(login_email)
+    if login_email == 0:
+        login_email = request.session['email']
+        return HttpResponseRedirect(reverse('index'))
+    #use this snippet in everyview function to verify user. ends here
 
     # dictionary for initial data with
     # field names as keys
