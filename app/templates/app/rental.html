@@ -47,6 +47,15 @@
             <td> {{ listing.5 }}</td>
         </tr>
         {% endfor %}
-
+    </table>
+    <table border=1>
+        <thead>
+            <th>Wallet Balance</th>
+        </thead>
+        {% for Balance in Borrower_id %}
+        <tr>
+            <td> {{Balance.0}}</td>
+        </tr>
+    </table>
 </body>
 </html>

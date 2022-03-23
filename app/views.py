@@ -207,7 +207,8 @@ def rental(request, Listingid):
     with connection.cursor() as cursor:
         cursor.execute("SELECT * FROM GPU_Listing WHERE Listingid = %s", [Listingid])
         GPU_choice = cursor.fetchall()
-
+        cursor.execute("SELECT * FROM User1 WHERE Email = %s", [request.session['email']])
+        Borrower_details = cursor.fetchone()
     if request.POST:
         ## Check if customerid is already in the table
         with connection.cursor() as cursor:
@@ -216,13 +217,11 @@ def rental(request, Listingid):
             ## No customer with same id
             if (datetime.strptime(request.POST['Start_day'], '%Y-%m-%d').date() >= listing[4] and datetime.strptime(request.POST['End_day'], '%Y-%m-%d').date() <= listing[5]):
                 ##TODO: date validation
-                cursor.execute("SELECT Customerid FROM User1 WHERE Email = %s", [request.session['email']])
-                Borrower_id = cursor.fetchone()
                 #cursor.execute("INSERT INTO Rental VALUES (%s, %s, %s, %s, %s, %s)"
                 #        , [request.POST['Borrower_id'], listing[1], listing[2],
                 #           int(Listingid) , request.POST['Start_day'], request.POST['End_day']])
                 cursor.execute("INSERT INTO Rental VALUES (%s, %s, %s, %s, %s, %s)"
-                        , [Borrower_id, listing[1], listing[2],
+                        , [Borrower_details[3], listing[1], listing[2],
                            int(Listingid) , request.POST['Start_day'], request.POST['End_day']])
                 cursor.execute("DELETE FROM GPU_Listing WHERE Listingid = %s", [Listingid])
                 cursor.execute("SELECT * FROM GPU_Listing g1 WHERE g1.listingid >= all (SELECT g2.listingid FROM GPU_Listing g2)")
@@ -239,7 +238,7 @@ def rental(request, Listingid):
             else:
                 status = 'Invalid Rental Dates'
 
-    result_dict = {'GPU' : GPU_choice, 'status' : status}
+    result_dict = {'GPU' : GPU_choice, 'status' : status, 'Borrower_id' : Borrower_details[4]}
     #context['status'] = status
  
     return render(request, "app/rental.html", result_dict)
