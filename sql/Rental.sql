@@ -3,11 +3,11 @@
   Populate the games table
 
 ****************************/
-INSERT INTO Rental VALUES ('gpleven4', 'GeForce GTX 1660 Ti Max-Q', 'NVIDIA', '4', '2021-04-17', '2021-04-18');
-INSERT INTO Rental VALUES ('kream5', 'GeForce RTX 2080 Max-Q', 'NVIDIA', '5', '2021-04-27', '2021-04-28');
-INSERT INTO Rental VALUES ('nmcgrowther8', 'GeForce RTX 4090', 'NVIDIA', '6', '2021-04-18', '2021-04-19');
-INSERT INTO Rental VALUES ('spawlikf', 'GeForce RTX 4060', 'NVIDIA', '7', '2021-05-04', '2021-05-05');
-INSERT INTO Rental VALUES ('bheaysmano', 'Tesla PG500-216', 'NVIDIA', '8', '2021-05-07', '2021-05-08');
+--INSERT INTO Rental VALUES ('cgoodrickez', 'T1000 8 GB', 'NVIDIA', '15', '2021-01-08', '2021-01-09');
+--INSERT INTO Rental VALUES ('dswannie10', 'GeForce MX230', 'NVIDIA', '18', '2021-03-05', '2021-03-06');
+--INSERT INTO Rental VALUES ('pbertomier11', 'Tesla V100 DGXS 32 GB', 'NVIDIA', '6', '2021-02-24', '2021-02-25');
+--INSERT INTO Rental VALUES ('cimison12', 'P102-100', 'NVIDIA', '9', '2021-01-26', '2021-01-07');
+--INSERT INTO Rental VALUES ('mpenbarthy13', 'Quadro P520 Mobile', 'NVIDIA', '28', '2021-02-18', '2021-02-19');
 
 
 
