@@ -31,5 +31,6 @@ urlpatterns = [
     path('add_listing', app.views.add_listing, name='add_listing'),
     path('view_listing/<str:id>', app.views.view_listing, name='view_listing'),
     path('rental/<str:Listingid>', app.views.rental, name = 'rental'),
-    path('top_up', app.views.top_up, name='top_up'),
+    path('personal/<str:id>', app.views.personal, name='personal'),
+    path('top_up', app.views.top_up, name='top_up')
 ]

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+<body>
+    <a href="/listing">Back to listing</a>
+    <h2>Hi {{personal.0}}!</h2>
+    <h2>Email: {{personal.2}}</h2>
+    <h2>UserId: {{personal.3}}</h2>
+    <h2> Wallet Balance: {{personal.4}}</h2>
+    <br/><br/>
+    <table style='text-align:left', border=1>
+        <thead>
+            <th colspan="5" style="text-align: center;">Current Listing</th>
+        </thead>
+        <thead>
+            <th>GPU Model</th>
+            <th>GPU Brand</th>
+            <th>Available Start Day</th>
+            <th>Available End Day</th>
+            <th>Price per day</th>
+        </thead>
+        {% for personal_listing_id in personal_listing %}
+        <tr>
+            <td> {{ personal_listing_id.1 }} </td>
+            <td> {{ personal_listing_id.2 }} </td>
+            <td> {{ personal_listing_id.4 }} </td>
+            <td> {{ personal_listing_id.5 }} </td>
+            <td> {{ personal_listing_id.6 }} </td>
+        </tr>
+        {% endfor %}      
+    </table>
+    <br/><br/>
+    <table style='text-align:left', border=1>
+        <thead>
+            <th colspan="4" style="text-align: center;">Current Renting</th>
+        </thead>
+        <thead>
+            <th>GPU Model</th>
+            <th>GPU Brand</th>
+            <th>Start Day</th>
+            <th>Available End Day</th>
+            <!-- <th>Price (per day)</th> -->
+        </thead>
+        {% for rent_listing_id in rent_listing %}
+        <tr>
+            <td> {{ rent_listing_id.1 }} </td>
+            <td> {{ rent_listing_id.2 }} </td>
+            <td> {{ rent_listing_id.4 }} </td>
+            <td> {{ rent_listing_id.5 }} </td>
+            <!-- <td> {{ personal_listing_id.6 }} </td> -->
+        </tr>
+        {% endfor %}      
+    </table>
+    <br/><br/>
+    <table style='text-align:left', border=1>
+        <thead>
+            <th colspan="5" style="text-align: center;">Lend History</th>
+        </thead>
+        <thead>
+            <th>GPU Model</th>
+            <th>GPU Brand</th>
+            <th>Available Start Day</th>
+            <th>Available End Day</th>
+            <th>Total Earned</th>
+        </thead>
+        {% for lend_history_id in lend_history %}
+        <tr>
+            <td> {{ lend_history_id.0 }} </td>
+            <td> {{ lend_history_id.1 }} </td>
+            <td> {{ lend_history_id.2 }} </td>
+            <td> {{ lend_history_id.3 }} </td>
+            <td> {{ lend_history_conv.6 }} </td>
+        </tr>
+        {% endfor %}      
+    </table>
+    <br/><br/>
+    <table style='text-align:left', border=1>
+        <thead>
+            <th colspan="5" style="text-align: center;">Rent History</th>
+        </thead>
+        <thead>
+            <th>GPU Model</th>
+            <th>GPU Brand</th>
+            <th>Start Day</th>
+            <th>End Day</th>
+            <th>Total Paid</th>
+        </thead>
+        {% for rent_history_id in rent_history %}
+        <tr>
+            <td> {{ rent_history_id.0 }} </td>
+            <td> {{ rent_history_id.1 }} </td>
+            <td> {{ rent_history_id.2 }} </td>
+            <td> {{ rent_history_id.3 }} </td>
+            <td> {{ rent_history_conv.6 }} </td>
+        </tr>
+        {% endfor %}      
+    </table>
+</body>
+</html>
