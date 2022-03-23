@@ -1,0 +1,25 @@
+<html>
+<body>
+    <p style="color:red">{{ status|safe }}</p>
+    <!-- Create a Form -->
+    <form method="POST">
+        <!-- Security token by Django -->
+        {% csrf_token %}
+        <!-- form -->
+        <div id="div_id_gpu_model" class="control-group"> <label for="id_gpu_model" class="control-label requiredField">
+        GPU Model<span class="asteriskField">*</span> </label> <div class="controls"> <input type="text" name="gpu_model" maxlength="64" class="textinput textInput" required="" id="id_gpu_model"> </div> </div> 
+        <div id="div_id_gpu_brand" class="control-group"> <label for="id_gpu_brand" class="control-label requiredField">
+        GPU Brand<span class="asteriskField">*</span> </label> <div class="controls"> <input type="text" name="gpu_brand" maxlength="64" class="textinput textInput" required="" id="id_gpu_brand"> </div> </div> 
+        <div id="div_id_start_date" class="control-group"> <label for="id_start_date" class="control-label requiredField">
+        Available Start Date<span class="asteriskField">*</span> </label> <div class="controls"> <input type="date" name="start_date" required="" id="id_start_date"> </div> </div> 
+        <div id="div_id_end_date" class="control-group"> <label for="id_end_date" class="control-label requiredField">
+        Available End Date<span class="asteriskField">*</span> </label> <div class="controls"> <input type="date" name="end_date" required="" id="id_end_date"> </div> </div> 
+        <div id="div_id_price" class="control-group"> <label for="id_price" class="control-label requiredField">
+        Price<span class="asteriskField">*</span> </label> <div class="controls"> <input type="number" name="price" required="" id="id_price"> </div> </div> 
+
+        <br>
+        <button type="submit" value="Add">Add</button>
+    </form>
+</body>
+</html>
+

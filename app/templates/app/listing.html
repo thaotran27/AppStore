@@ -3,8 +3,14 @@
 <body>
     <h2>GPU Listing</h2>
     <img src="https://cdn.eteknix.com/wp-content/uploads/2016/09/Logo-on-white.jpg" width="20%"   alt="NUS logo"/><br/>
-    <a href="add">List New GPU</a>
+    <a href="{% url 'add_listing' %}">List New GPU</a>
+    <a href="{% url 'top_up' %}">Top up balance</a>
     <br/><br/>
+    <a href="{% url 'listing' 1 %}"><button>Most recent</button></a>
+    <a href="{% url 'listing' 2 %}"><button>Least recent</button></a>
+    <a href="{% url 'listing' 3 %}"><button>Price High to Low</button></a>
+    <a href="{% url 'listing' 4 %}"><button>Price Low to High</button></a>
+    
     <table border=1>
         <thead>
             <th>Listing Number</th>
@@ -18,7 +24,7 @@
         <tr>
             <td> {{ listing.0 }} </td>
             <td> 
-                <a href="view_listing/{{ listing.1 }}">{{ listing.1 }}</a>
+                <a href="{% url 'view_listing'  listing.0  %}">{{ listing.1 }}</a>
             </td>
 
             <td> {{ listing.2 }} </td>

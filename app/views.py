@@ -1,23 +1,29 @@
+from cmath import log
+from curses.ascii import HT
 from django.shortcuts import render, redirect
 from django.db import connection
-# from django.http import HttpResponse
-# import logging
+from django.http import HttpResponse
+import logging
 from datetime import datetime
 from datetime import date
 from datetime import timedelta
+from django.urls import reverse
+from django.http import HttpResponseRedirect
 
 # Create your views here.
 def index(request):
     """Shows the main page"""
     context = {}
     status = ''
+    login_email = request.session.get('email', 0)
+    if login_email != 0:
+        return HttpResponseRedirect(reverse('listing'))
 
     if request.POST:
         ## Check if customer account already exists
         with connection.cursor() as cursor:
             ## Get email
-            global login_email 
-            login_email = request.POST['email']
+            request.session['email'] = request.POST['email']
             cursor.execute("SELECT * FROM User1 WHERE Email = %s", [request.POST['email']])
             customer_email = cursor.fetchone()
             # logging.debug(customer_email)
@@ -44,7 +50,7 @@ def index(request):
 def appstore_admin(request):
     """Shows the main page"""
 
-    ## Delete customer
+    ## Delete listing
     if request.POST:
         if request.POST['action'] == 'delete':
             with connection.cursor() as cursor:
@@ -56,7 +62,7 @@ def appstore_admin(request):
         cursor.execute("SELECT * FROM User1")
         customers = cursor.fetchall()
 
-    result_dict = {'records': customers}
+    result_dict = {'records': listing}
 
     return render(request,'app/appstore_admin.html',result_dict)
 
@@ -135,13 +141,31 @@ def edit(request, id):
     return render(request, "app/edit.html", context)
 
 # Create your views here.
-def listing(request):
+def listing(request,id=1):
     """Shows the main page"""
+    #use this snippet in everyview function to verify user
+    login_email = request.session.get('email', 0)
+    logging.debug(login_email)
+    if login_email == 0:
+        login_email = request.session['email']
+        return HttpResponseRedirect(reverse('index'))
+    #use this snippet in everyview function to verify user. ends here
 
     ## Use raw query to get all objects
     with connection.cursor() as cursor:
-        cursor.execute("SELECT * FROM GPU_Listing ORDER BY Listingid")
-        listings = cursor.fetchall()
+        if int(id) ==1:
+            cursor.execute("SELECT * FROM GPU_Listing ORDER BY Listingid DESC")
+            listings = cursor.fetchall()
+        elif int(id) == 2:
+            cursor.execute("SELECT * FROM GPU_Listing ORDER BY Listingid")
+            listings = cursor.fetchall()
+        elif int(id) == 3:
+            cursor.execute("SELECT * FROM GPU_Listing ORDER BY Price DESC")
+            listings = cursor.fetchall()
+        elif int(id) == 4:
+            cursor.execute("SELECT * FROM GPU_Listing ORDER BY Price")
+            listings = cursor.fetchall()
+        
 
     result_dict = {'records': listings}
 
@@ -150,6 +174,13 @@ def listing(request):
 # Create your views here.
 def view_listing(request, id):
     """Shows the main page"""
+    #use this snippet in everyview function to verify user
+    login_email = request.session.get('email', 0)
+    logging.debug(login_email)
+    if login_email == 0:
+        login_email = request.session['email']
+        return HttpResponseRedirect(reverse('index'))
+    #use this snippet in everyview function to verify user. ends here
     
     ## Use raw query to get a GPU
     with connection.cursor() as cursor:
@@ -250,3 +281,59 @@ def personal(request, id):
     result_dict["status"] = status
  
     return render(request, "app/personal.html", result_dict)
+
+def add_listing(request):
+    #use this snippet in everyview function to verify user
+    login_email = request.session.get('email', 0)
+    logging.debug(login_email)
+    if login_email == 0:
+        login_email = request.session['email']
+        return HttpResponseRedirect(reverse('index'))
+    #use this snippet in everyview function to verify user. ends here
+    context = {}
+    status = ''
+    current_user = login_email
+    with connection.cursor() as cursor:
+
+        cursor.execute("SELECT * FROM GPU_Listing ORDER BY Listingid DESC")
+        listing_data = cursor.fetchall()
+        nextid = listing_data[0][0] + 1
+        cursor.execute("SELECT * FROM User1 WHERE Email = %s", [login_email])
+        customer2 = cursor.fetchall()
+        current_user = customer2[0][3]
+
+        if request.POST:
+                    ##TODO: date validation
+            if listing_data == None:  
+                next_id = 1
+            cursor.execute("INSERT INTO GPU_Listing VALUES (%s, %s, %s, %s, %s, %s, %s)"
+                    ,[next_id, request.POST['gpu_model'], request.POST['gpu_brand'], current_user,
+                    request.POST['start_date'] , request.POST['end_date'], request.POST['price']])
+            return redirect('listing')  
+
+    context['status'] = status
+    return render(request, "app/add_listing.html", context)
+
+def top_up(request):
+    #use this snippet in everyview function to verify user
+    login_email = request.session.get('email', 0)
+    logging.debug(login_email)
+    if login_email == 0:
+        login_email = request.session['email']
+        return HttpResponseRedirect(reverse('index'))
+    #use this snippet in everyview function to verify user. ends here
+    context = {}
+    status = ''
+    current_user = login_email
+    with connection.cursor() as cursor:
+        cursor.execute("SELECT Wallet_balance FROM User1 WHERE Email =  %s", [login_email])
+        user_balance = int(cursor.fetchone()[0])
+        
+        if request.POST:
+            new_balance = user_balance + int(request.POST['value'])
+            cursor.execute("UPDATE User1 SET Wallet_balance = %s WHERE Email = %s", [new_balance, login_email])
+            return redirect('listing')  
+    context['status'] = status
+    result_dict = {'user_balance': user_balance}
+    return render(request,'app/top_up.html',result_dict)
+

@@ -1,0 +1,16 @@
+<html>
+<body>
+    <p style="color:red">{{ status|safe }}</p>
+    <!-- Create a Form -->
+    <h2>Current value</h2>
+    <p>{{ user_balance }}</p>
+    <form method="POST">
+        <!-- Security token by Django -->
+        {% csrf_token %}
+        <!-- form -->
+        <div id="div_id_value" class="control-group"> <label for="id_value" class="control-label requiredField">
+        Top Up value<span class="asteriskField">*</span> </label> <div class="controls"> <input type="number" name="value" required="" id="id_value"> </div> </div> 
+        <button type="submit" value="Add">Add</button>
+    </form>
+</body>
+</html>
