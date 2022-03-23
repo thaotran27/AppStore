@@ -210,6 +210,7 @@ def rental(request, Listingid):
         with connection.cursor() as cursor:
             cursor.execute("SELECT * FROM GPU_Listing WHERE Listingid = %s", [Listingid])
             GPU_choice = cursor.fetchone()
+            result_dict = {'GPU' : GPU_choice}
             cursor.execute("SELECT * FROM GPU_Listing WHERE Listingid = %s", [Listingid])
             listing = cursor.fetchone()
             ## No customer with same id
@@ -241,7 +242,7 @@ def rental(request, Listingid):
 
     context['status'] = status
  
-    return render(request, "app/rental.html", context)
+    return render(request, "app/rental.html", context, result_dict)
 
 # Create your views here.
 def personal(request, id):
