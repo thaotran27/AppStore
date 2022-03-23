@@ -33,6 +33,7 @@ def index(request):
             cursor.execute("SELECT * FROM User1 WHERE Pass_word = %s", [request.POST['psw']])
             customer_password = cursor.fetchone()
             # logging.debug(customer_password)
+            print(request.POST['email'])
 
             ## Check if login with admin account
             if request.POST['email'] == "admin@admin.com" and request.POST['psw'] == "admin123":
@@ -75,7 +76,7 @@ def appstore_admin(request):
         cursor.execute("SELECT * FROM User1")
         customers = cursor.fetchall()
 
-    result_dict = {'records': listing}
+    result_dict = {'records': customers}
 
     return render(request,'app/appstore_admin.html',result_dict)
 
@@ -130,7 +131,7 @@ def edit(request, id):
     # fetch the object related to passed id
     with connection.cursor() as cursor:
         cursor.execute("SELECT * FROM User1 WHERE customerid = %s", [id])
-        obj = cursor.fetchone()
+        cust = cursor.fetchone()
 
     status = ''
     # save the data from the form
@@ -143,10 +144,10 @@ def edit(request, id):
                         request.POST['customerid'] , request.POST['walletbalance'], request.POST['phonenumber'], request.POST['password'], id ])
             status = 'Customer edited successfully!'
             cursor.execute("SELECT * FROM customers WHERE customerid = %s", [id])
-            obj = cursor.fetchone()
+            cust = cursor.fetchone()
 
 
-    context["obj"] = obj
+    context["cust"] = cust
     context["status"] = status
  
     return render(request, "app/edit.html", context)
