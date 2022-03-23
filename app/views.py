@@ -238,7 +238,7 @@ def rental(request, Listingid):
             else:
                 status = 'Invalid Rental Dates'
 
-    result_dict = {'GPU' : GPU_choice, 'status' : status, 'Borrower_id' : Borrower_details[4]}
+    result_dict = {'GPU' : GPU_choice, 'status' : status, 'Borrower' : Borrower_details}
     #context['status'] = status
  
     return render(request, "app/rental.html", result_dict)
