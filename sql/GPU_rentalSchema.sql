@@ -10,7 +10,7 @@ CREATE TABLE IF NOT EXISTS User1(
  Email VARCHAR(64) UNIQUE NOT NULL,
  Customerid VARCHAR(16) PRIMARY KEY,
  Wallet_balance NUMERIC NOT NULL CHECK (wallet_balance >= 0),
- Phone_number CHAR(10) CHECK (phone_number NOT LIKE '%[^0-9]%') NOT NULL,
+ Phone_number NUMERIC NOT NULL,
  Pass_word VARCHAR(64) NOT NULL,
  Credit_card_number NUMERIC NOT NULL,
  Credit_card_type VARCHAR(64) NOT NULL);
