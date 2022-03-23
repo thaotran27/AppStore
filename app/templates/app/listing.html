@@ -7,6 +7,10 @@
     <br/><br/>
     <a href="{% url 'top_up' %}">Top up balance</a>
     <br/><br/>
+    <a href="{% url 'log_out' %}">Log out</a>
+    <br/><br/>
+    <a href="{% url 'personal' current_user.3 %}">{{current_user.0}}</a>
+    <br/><br/>
     <a href="{% url 'listing' 1 %}"><button>Most recent</button></a>
     <a href="{% url 'listing' 2 %}"><button>Least recent</button></a>
     <a href="{% url 'listing' 3 %}"><button>Price High to Low</button></a>
