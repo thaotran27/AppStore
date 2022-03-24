@@ -16,7 +16,10 @@ def index(request):
     context = {}
     status = ''
     login_email = request.session.get('email', 0)
-    if login_email != 0:
+    if login_email == "admin@admin.com":
+        return HttpResponseRedirect(reverse('appstore_admin'))
+    elif login_email != 0:
+        # return HttpResponse(login_email)
         return HttpResponseRedirect(reverse('listing'))
 
     if request.POST:
@@ -46,9 +49,27 @@ def index(request):
     context['status']=status
     return render(request,'app/index.html',context)
 
+def log_out(request):
+    """Shows the main page"""
+    context = {}
+    status = ''
+    login_email = request.session.get('email', 0)
+    if login_email != 0:
+        # return HttpResponse(login_email)
+        del request.session['email']
+        return HttpResponseRedirect(reverse('index'))
+    else:
+        return HttpResponseRedirect(reverse('index'))
+
 # Create your views here.
 def appstore_admin(request):
     """Shows the main page"""
+    #use this snippet in everyview function to verify user
+    login_email = request.session.get('email', 0)
+    logging.debug(login_email)
+    if login_email == 0:
+        return HttpResponseRedirect(reverse('index'))
+    #use this snippet in everyview function to verify user. ends here
 
     ## Delete listing
     if request.POST:
@@ -62,7 +83,7 @@ def appstore_admin(request):
         cursor.execute("SELECT * FROM User1")
         customers = cursor.fetchall()
 
-    result_dict = {'records': listing}
+    result_dict = {'records': customers}
 
     return render(request,'app/appstore_admin.html',result_dict)
 
@@ -96,10 +117,8 @@ def add(request):
                 cursor.execute("INSERT INTO User1 VALUES (%s, %s, %s, %s, %s, %s, %s)"
                         , [request.POST['first_name'], request.POST['last_name'], request.POST['email'],
                            request.POST['customerid'] , 0, request.POST['phonenumber'], request.POST['password'] ])
-                if login_email=="admin@admin.com":
-                    return redirect('appstore_admin')
-                else:
-                    return redirect('listing')
+
+                return redirect('index')
             else:
                 status = 'Customer with ID %s already exists' % (request.POST['customerid'])
 
@@ -119,7 +138,7 @@ def edit(request, id):
     # fetch the object related to passed id
     with connection.cursor() as cursor:
         cursor.execute("SELECT * FROM User1 WHERE customerid = %s", [id])
-        obj = cursor.fetchone()
+        cust = cursor.fetchone()
 
     status = ''
     # save the data from the form
@@ -132,10 +151,10 @@ def edit(request, id):
                         request.POST['customerid'] , request.POST['walletbalance'], request.POST['phonenumber'], request.POST['password'], id ])
             status = 'Customer edited successfully!'
             cursor.execute("SELECT * FROM customers WHERE customerid = %s", [id])
-            obj = cursor.fetchone()
+            cust = cursor.fetchone()
 
 
-    context["obj"] = obj
+    context["cust"] = cust
     context["status"] = status
  
     return render(request, "app/edit.html", context)
@@ -147,12 +166,13 @@ def listing(request,id=1):
     login_email = request.session.get('email', 0)
     logging.debug(login_email)
     if login_email == 0:
-        login_email = request.session['email']
         return HttpResponseRedirect(reverse('index'))
     #use this snippet in everyview function to verify user. ends here
 
     ## Use raw query to get all objects
     with connection.cursor() as cursor:
+        cursor.execute("SELECT * FROM User1 WHERE Email =  %s", [login_email])
+        current_user = cursor.fetchone()
         if int(id) ==1:
             cursor.execute("SELECT * FROM GPU_Listing ORDER BY Listingid DESC")
             listings = cursor.fetchall()
@@ -167,7 +187,7 @@ def listing(request,id=1):
             listings = cursor.fetchall()
         
 
-    result_dict = {'records': listings}
+    result_dict = {'records': listings, 'current_user': current_user}
 
     return render(request,'app/listing.html',result_dict)
 
@@ -178,7 +198,6 @@ def view_listing(request, id):
     login_email = request.session.get('email', 0)
     logging.debug(login_email)
     if login_email == 0:
-        login_email = request.session['email']
         return HttpResponseRedirect(reverse('index'))
     #use this snippet in everyview function to verify user. ends here
     
@@ -246,6 +265,12 @@ def rental(request, Listingid):
 # Create your views here.
 def personal(request, id):
     """Shows the main page"""
+    #use this snippet in everyview function to verify user
+    login_email = request.session.get('email', 0)
+    logging.debug(login_email)
+    if login_email == 0:
+        return HttpResponseRedirect(reverse('index'))
+    #use this snippet in everyview function to verify user. ends here
 
     # dictionary for initial data with
     # field names as keys
@@ -301,7 +326,6 @@ def add_listing(request):
     login_email = request.session.get('email', 0)
     logging.debug(login_email)
     if login_email == 0:
-        login_email = request.session['email']
         return HttpResponseRedirect(reverse('index'))
     #use this snippet in everyview function to verify user. ends here
     context = {}
@@ -311,7 +335,7 @@ def add_listing(request):
 
         cursor.execute("SELECT * FROM GPU_Listing ORDER BY Listingid DESC")
         listing_data = cursor.fetchall()
-        nextid = listing_data[0][0] + 1
+        next_id = listing_data[0][0] + 1
         cursor.execute("SELECT * FROM User1 WHERE Email = %s", [login_email])
         customer2 = cursor.fetchall()
         current_user = customer2[0][3]
@@ -333,7 +357,6 @@ def top_up(request):
     login_email = request.session.get('email', 0)
     logging.debug(login_email)
     if login_email == 0:
-        login_email = request.session['email']
         return HttpResponseRedirect(reverse('index'))
     #use this snippet in everyview function to verify user. ends here
     context = {}
