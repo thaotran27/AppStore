@@ -235,9 +235,9 @@ def rental(request, Listingid):
             ## No customer with same id
             if (datetime.strptime(request.POST['Start_day'], '%Y-%m-%d').date() >= listing[4] and datetime.strptime(request.POST['End_day'], '%Y-%m-%d').date() <= listing[5]):
                 ##TODO: date validation
-                #cursor.execute("INSERT INTO Rental VALUES (%s, %s, %s, %s, %s, %s)"
-                #        , [request.POST['Borrower_id'], listing[1], listing[2],
-                #           int(Listingid) , request.POST['Start_day'], request.POST['End_day']])
+                cursor.execute("INSERT INTO Rental VALUES (%s, %s, %s, %s, %s, %s)"
+                        , [request.POST['Borrower_id'], listing[1], listing[2],
+                           int(Listingid) , request.POST['Start_day'], request.POST['End_day']])
                 cursor.execute("INSERT INTO Rental VALUES (%s, %s, %s, %s, %s, %s)"
                         , [Borrower_details[3], listing[1], listing[2],
                            int(Listingid) , request.POST['Start_day'], request.POST['End_day']])
