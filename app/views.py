@@ -353,6 +353,9 @@ def add_listing(request):
             cursor.execute("INSERT INTO GPU_Listing VALUES (%s, %s, %s, %s, %s, %s, %s)"
                     ,[next_id, request.POST['gpu_model'], request.POST['gpu_brand'], current_user,
                     request.POST['start_date'] , request.POST['end_date'], request.POST['price']])
+            cursor.execute("INSERT INTO GPU_Listing_Archive VALUES (%s, %s, %s, %s, %s)"
+                    ,[next_id, request.POST['gpu_model'], request.POST['gpu_brand'], current_user,
+                    request.POST['price']])
             return redirect('listing')  
 
     context['status'] = status
