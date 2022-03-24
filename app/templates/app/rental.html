@@ -34,45 +34,45 @@
             <th>Available Start Date</th>
             <th>Available End Date</th>
         </thead>
-        {% for listing in GPU %}
+        <!--{% for listing in GPU %} -->
         <tr>
-            <td> {{ listing.0 }} </td>
+            <td> {{ GPU.0 }} </td>
             <td> 
-                <a href="{% url 'view_listing'  listing.0  %}">{{ listing.1 }}</a>
+                <a href="{% url 'view_listing'  GPU.0  %}">{{ GPU.1 }}</a>
             </td>
 
-            <td> {{ listing.2 }} </td>
-            <td> {{ listing.6 }} </td>
-            <td> {{ listing.4 }}</td>
-            <td> {{ listing.5 }}</td>
+            <td> {{ GPU.2 }} </td>
+            <td> {{ GPU.6 }} </td>
+            <td> {{ GPU.4 }}</td>
+            <td> {{ GPU.5 }}</td>
         </tr>
-        {% endfor %}
+        <!--{% endfor %}-->
     </table>
     <table border=1>
         <thead>
             <th>Wallet Balance</th>
-            <th>b</th>
+            <!--<th>b</th>
             <th>c</th>
             <th>d</th>
             <th>e</th>
             <th>f</th>
             <th>g</th>
             <th>h</th>
-            <th>i</th>
+            <th>i</th> -->
         </thead>
-        {% for details in Borrower %}
+        <!--{% for details in Borrower %}-->
         <tr>
-            <td> {{ details.4 }} </td>
-            <td> {{ details.0 }} </td>
+            <td> {{ Borrower.4 }} </td>
+            <!--<td> {{ details.0 }} </td>
             <td> {{ details.1 }} </td>
             <td> {{ details.2 }} </td>
             <td> {{ details.3 }} </td>
             <td> {{ details.5 }} </td>
             <td> {{ details.6 }} </td>
             <td> {{ details.7 }} </td>
-            <td> {{ details.8 }} </td>
+            <td> {{ details.8 }} </td>-->
         </tr>
-        {% endfor %}
+        <!--{% endfor %}-->
     </table>
 </body>
 </html>
