@@ -16,7 +16,9 @@ def index(request):
     context = {}
     status = ''
     login_email = request.session.get('email', 0)
-    if login_email != 0:
+    if login_email == "admin@admin.com":
+        return HttpResponseRedirect(reverse('appstore_admin'))
+    elif login_email != 0:
         # return HttpResponse(login_email)
         return HttpResponseRedirect(reverse('listing'))
 
@@ -33,7 +35,6 @@ def index(request):
             cursor.execute("SELECT * FROM User1 WHERE Pass_word = %s", [request.POST['psw']])
             customer_password = cursor.fetchone()
             # logging.debug(customer_password)
-            print(request.POST['email'])
 
             ## Check if login with admin account
             if request.POST['email'] == "admin@admin.com" and request.POST['psw'] == "admin123":
@@ -63,6 +64,12 @@ def log_out(request):
 # Create your views here.
 def appstore_admin(request):
     """Shows the main page"""
+    #use this snippet in everyview function to verify user
+    login_email = request.session.get('email', 0)
+    logging.debug(login_email)
+    if login_email == 0:
+        return HttpResponseRedirect(reverse('index'))
+    #use this snippet in everyview function to verify user. ends here
 
     ## Delete listing
     if request.POST:
@@ -159,7 +166,6 @@ def listing(request,id=1):
     login_email = request.session.get('email', 0)
     logging.debug(login_email)
     if login_email == 0:
-        login_email = request.session['email']
         return HttpResponseRedirect(reverse('index'))
     #use this snippet in everyview function to verify user. ends here
 
@@ -192,7 +198,6 @@ def view_listing(request, id):
     login_email = request.session.get('email', 0)
     logging.debug(login_email)
     if login_email == 0:
-        login_email = request.session['email']
         return HttpResponseRedirect(reverse('index'))
     #use this snippet in everyview function to verify user. ends here
     
@@ -250,7 +255,6 @@ def personal(request, id):
     login_email = request.session.get('email', 0)
     logging.debug(login_email)
     if login_email == 0:
-        login_email = request.session['email']
         return HttpResponseRedirect(reverse('index'))
     #use this snippet in everyview function to verify user. ends here
 
@@ -308,7 +312,6 @@ def add_listing(request):
     login_email = request.session.get('email', 0)
     logging.debug(login_email)
     if login_email == 0:
-        login_email = request.session['email']
         return HttpResponseRedirect(reverse('index'))
     #use this snippet in everyview function to verify user. ends here
     context = {}
@@ -340,7 +343,6 @@ def top_up(request):
     login_email = request.session.get('email', 0)
     logging.debug(login_email)
     if login_email == 0:
-        login_email = request.session['email']
         return HttpResponseRedirect(reverse('index'))
     #use this snippet in everyview function to verify user. ends here
     context = {}
