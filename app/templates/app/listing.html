@@ -31,6 +31,7 @@
             <th>Price</th>
             <th>Available Start Date</th>
             <th>Available End Date</th>
+            <th>Action</th>
         </thead>
         {% for listing in records %}
         <tr>
@@ -43,6 +44,7 @@
             <td> {{ listing.6 }} </td>
             <td> {{ listing.4 }}</td>
             <td> {{ listing.5 }}</td>
+            <td> <a href="rental/{{listing.0}}"><button>Rent</button></a></td>
         </tr>
         {% endfor %}
     </table>
