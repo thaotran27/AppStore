@@ -4,7 +4,7 @@
 
 ****************************/
 
-insert into GPU_Listing_Archive_Archive (Listingid, GPU_model, GPU_brand, Customerid, Price) values (1, 'GeForce RTX 3080 Ti 20 GB', 'NVIDIA', 'dskae2', 11);
+insert into GPU_Listing_Archive (Listingid, GPU_model, GPU_brand, Customerid, Price) values (1, 'GeForce RTX 3080 Ti 20 GB', 'NVIDIA', 'dskae2', 11);
 insert into GPU_Listing_Archive (Listingid, GPU_model, GPU_brand, Customerid, Price) values (2, 'Quadro P3200 Max-Q', 'NVIDIA', 'ctulk1c', 39);
 insert into GPU_Listing_Archive (Listingid, GPU_model, GPU_brand, Customerid, Price) values (3, 'GeForce RTX 2070 Mobile', 'NVIDIA', 'mpenbarthy13', 15);
 insert into GPU_Listing_Archive (Listingid, GPU_model, GPU_brand, Customerid, Price) values (4, 'GeForce RTX 3060 Max-Q', 'NVIDIA', 'rpagen24', 18);
