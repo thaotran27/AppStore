@@ -224,9 +224,9 @@ def rental(request, Listingid):
     status = ''
     with connection.cursor() as cursor:
         cursor.execute("SELECT * FROM GPU_Listing WHERE Listingid = %s", [Listingid])
-        GPU_choice = cursor.fetchone()
+        GPU_choice = cursor.fetchall()
         cursor.execute("SELECT * FROM User1 WHERE Email = %s", [request.session['email']])
-        Borrower_details = cursor.fetchone()
+        Borrower_details = cursor.fetchall()
     if request.POST:
         ## Check if customerid is already in the table
         with connection.cursor() as cursor:
