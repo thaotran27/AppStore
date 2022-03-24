@@ -216,7 +216,6 @@ def rental(request, Listingid):
     login_email = request.session.get('email', 0)
     logging.debug(login_email)
     if login_email == 0:
-        login_email = request.session['email']
         return HttpResponseRedirect(reverse('index'))
     #use this snippet in everyview function to verify user. ends here
 
@@ -226,7 +225,7 @@ def rental(request, Listingid):
     with connection.cursor() as cursor:
         cursor.execute("SELECT * FROM GPU_Listing WHERE Listingid = %s", [Listingid])
         GPU_choice = cursor.fetchall()
-        cursor.execute("SELECT * FROM User1 WHERE Email = %s", [request.session['email']])
+        cursor.execute("SELECT * FROM User1 WHERE Email = %s", [login_email])
         Borrower_details = cursor.fetchone()
     if request.POST:
         ## Check if customerid is already in the table
