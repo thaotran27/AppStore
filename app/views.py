@@ -224,7 +224,7 @@ def rental(request, Listingid):
     status = ''
     with connection.cursor() as cursor:
         cursor.execute("SELECT * FROM GPU_Listing WHERE Listingid = %s", [Listingid])
-        GPU_choice = cursor.fetchall()
+        GPU_choice = cursor.fetchone()
         cursor.execute("SELECT * FROM User1 WHERE Email = %s", [request.session['email']])
         Borrower_details = cursor.fetchall()
     if request.POST:
