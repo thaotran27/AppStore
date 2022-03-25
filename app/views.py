@@ -346,7 +346,7 @@ def personal(request, id):
         lend_history = cursor.fetchall()
         if (len(lend_history)>0):
             lend_history_conv = list(lend_history[0])
-            lend_history_conv.append(lent_history_conv[5]*lend_history_conv[4])    
+            lend_history_conv.append(lend_history_conv[5]*lend_history_conv[4])    
             result_dict['rent_history_conv'] = lend_history_conv
     result_dict['lend_history']= lend_history
 
