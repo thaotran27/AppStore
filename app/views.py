@@ -15,12 +15,17 @@ def index(request):
     """Shows the main page"""
     context = {}
     status = ''
+
     login_email = request.session.get('email', 0)
     if login_email == "admin@admin.com":
         return HttpResponseRedirect(reverse('appstore_admin'))
     elif login_email != 0:
         # return HttpResponse(login_email)
-        return HttpResponseRedirect(reverse('listing'))
+        with connection.cursor() as cursor:
+             cursor.execute("SELECT * FROM User1 WHERE Email = %s", [login_email])
+             row = cursor.fetchone()
+             if row != None:
+                 return HttpResponseRedirect(reverse('listing'))
 
     if request.POST:
         ## Check if customer account already exists
@@ -114,9 +119,9 @@ def add(request):
             ## No customer with same id
             if customer == None:
                 ##TODO: date validation
-                cursor.execute("INSERT INTO User1 VALUES (%s, %s, %s, %s, %s, %s, %s)"
+                cursor.execute("INSERT INTO User1 VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)"
                         , [request.POST['first_name'], request.POST['last_name'], request.POST['email'],
-                           request.POST['customerid'] , 0, request.POST['phonenumber'], request.POST['password'] ])
+                           request.POST['customerid'] , 0, request.POST['phonenumber'], request.POST['password'], request.POST['credit_card_nbr'], request.POST['credit_card_type'] ])
 
                 return redirect('index')
             else:
