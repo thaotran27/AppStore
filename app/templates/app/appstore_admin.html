@@ -1,9 +1,18 @@
 {% load static %}
 <html>
+<style>
+    .logoutbtn {
+        width: auto;
+        padding: 5px 20px;
+        background-color: #f50c0c;
+    }
+</style>
 <body>
     <h2>Admin Dashboard</h2>
     <img src="{% static 'app/images/nus.jpg' %}" width="20%"   alt="NUS logo"/><br/>
     <a href="add">New Customer</a>
+    <br/><br/>
+    <a href="{% url 'log_out' %}"><button type="button" class="logoutbtn">Logout</button></a>
     <br/><br/>
     <table border=1>
         <thead>

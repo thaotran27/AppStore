@@ -33,4 +33,5 @@ psql ${URI} -f sql/GPU_rentalSchema.sql
 psql ${URI} -f sql/User.sql
 psql ${URI} -f sql/GPU.sql
 psql ${URI} -f sql/GPU_Listing.sql
+psql ${URI} -f sql/GPU_Listing_Archive.sql
 psql ${URI} -f sql/Rental.sql

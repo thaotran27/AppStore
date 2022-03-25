@@ -17,7 +17,9 @@ def index(request):
     status = ''
 
     login_email = request.session.get('email', 0)
-    if login_email != 0:
+    if login_email == "admin@admin.com":
+        return HttpResponseRedirect(reverse('appstore_admin'))
+    elif login_email != 0:
         # return HttpResponse(login_email)
         with connection.cursor() as cursor:
              cursor.execute("SELECT * FROM User1 WHERE Email = %s", [login_email])
@@ -67,6 +69,12 @@ def log_out(request):
 # Create your views here.
 def appstore_admin(request):
     """Shows the main page"""
+    #use this snippet in everyview function to verify user
+    login_email = request.session.get('email', 0)
+    logging.debug(login_email)
+    if login_email == 0:
+        return HttpResponseRedirect(reverse('index'))
+    #use this snippet in everyview function to verify user. ends here
 
     ## Delete listing
     if request.POST:
@@ -80,7 +88,7 @@ def appstore_admin(request):
         cursor.execute("SELECT * FROM User1")
         customers = cursor.fetchall()
 
-    result_dict = {'records': listing}
+    result_dict = {'records': customers}
 
     return render(request,'app/appstore_admin.html',result_dict)
 
@@ -135,7 +143,7 @@ def edit(request, id):
     # fetch the object related to passed id
     with connection.cursor() as cursor:
         cursor.execute("SELECT * FROM User1 WHERE customerid = %s", [id])
-        obj = cursor.fetchone()
+        cust = cursor.fetchone()
 
     status = ''
     # save the data from the form
@@ -148,10 +156,10 @@ def edit(request, id):
                         request.POST['customerid'] , request.POST['walletbalance'], request.POST['phonenumber'], request.POST['password'], id ])
             status = 'Customer edited successfully!'
             cursor.execute("SELECT * FROM customers WHERE customerid = %s", [id])
-            obj = cursor.fetchone()
+            cust = cursor.fetchone()
 
 
-    context["obj"] = obj
+    context["cust"] = cust
     context["status"] = status
  
     return render(request, "app/edit.html", context)
@@ -195,7 +203,6 @@ def view_listing(request, id):
     login_email = request.session.get('email', 0)
     logging.debug(login_email)
     if login_email == 0:
-        login_email = request.session['email']
         return HttpResponseRedirect(reverse('index'))
     #use this snippet in everyview function to verify user. ends here
     
@@ -210,21 +217,35 @@ def view_listing(request, id):
 
 
 def rental(request, Listingid):
-    """Shows the main page"""
-    context = {}
-    status = ''
+    #use this snippet in everyview function to verify user
+    login_email = request.session.get('email', 0)
+    logging.debug(login_email)
+    if login_email == 0:
+        return HttpResponseRedirect(reverse('index'))
+    #use this snippet in everyview function to verify user. ends here
 
+    """Shows the main page"""
+    #context = {}
+    status = ''
+    with connection.cursor() as cursor:
+        cursor.execute("SELECT * FROM GPU_Listing WHERE Listingid = %s", [Listingid])
+        GPU_choice = cursor.fetchall()
+        cursor.execute("SELECT * FROM User1 WHERE Email = %s", [request.session['email']])
+        Borrower_details = cursor.fetchall()
     if request.POST:
         ## Check if customerid is already in the table
         with connection.cursor() as cursor:
-
             cursor.execute("SELECT * FROM GPU_Listing WHERE Listingid = %s", [Listingid])
             listing = cursor.fetchone()
+            cursor.execute("SELECT * FROM User1 WHERE Email = %s", [request.session['email']])
+            Borrower = cursor.fetchone()
             ## No customer with same id
             if (datetime.strptime(request.POST['Start_day'], '%Y-%m-%d').date() >= listing[4] and datetime.strptime(request.POST['End_day'], '%Y-%m-%d').date() <= listing[5]):
                 ##TODO: date validation
+                #cursor.execute("INSERT INTO Rental VALUES (%s, %s, %s, %s, %s, %s)",[request.POST['Borrower_id'], listing[1], listing[2],
+                #           int(Listingid) , request.POST['Start_day'], request.POST['End_day']])
                 cursor.execute("INSERT INTO Rental VALUES (%s, %s, %s, %s, %s, %s)"
-                        , [request.POST['Borrower_id'], listing[1], listing[2],
+                        , [Borrower[3], listing[1], listing[2],
                            int(Listingid) , request.POST['Start_day'], request.POST['End_day']])
                 cursor.execute("DELETE FROM GPU_Listing WHERE Listingid = %s", [Listingid])
                 cursor.execute("SELECT * FROM GPU_Listing g1 WHERE g1.listingid >= all (SELECT g2.listingid FROM GPU_Listing g2)")
@@ -232,19 +253,25 @@ def rental(request, Listingid):
                 if (datetime.strptime(request.POST['Start_day'], '%Y-%m-%d').date() == listing[4]):
                     cursor.execute("INSERT INTO GPU_Listing VALUES(%s, %s,%s,%s,%s,%s,%s)", [last_entry[0] + 1 ,listing[1], listing[2], listing[3], 
                                                                                          datetime.strptime(request.POST['End_day'], '%Y-%m-%d').date() + timedelta(days = 1), listing[5], listing[6]])
+                    cursor.execute("INSERT INTO GPU_Listing_Archive VALUES(%s, %s,%s,%s,%s)", [last_entry[0] + 1 ,listing[1], listing[2], listing[3], 
+                                                                                          listing[6]])                                                                     
                 if (datetime.strptime(request.POST['Start_day'], '%Y-%m-%d').date() > listing[4]):
                     cursor.execute("INSERT INTO GPU_Listing VALUES(%s, %s,%s,%s,%s,%s,%s)", [last_entry[0] + 1 ,listing[1], listing[2], listing[3], 
                                                                                          listing[4], datetime.strptime(request.POST['Start_day'], '%Y-%m-%d').date()  - timedelta(days = 1), listing[6]])
                     cursor.execute("INSERT INTO GPU_Listing VALUES(%s, %s,%s,%s,%s,%s,%s)", [last_entry[0] + 2 ,listing[1], listing[2], listing[3], 
                                                                                          datetime.strptime(request.POST['End_day'], '%Y-%m-%d').date() + timedelta(days = 1), listing[5], listing[6]])
+                    cursor.execute("INSERT INTO GPU_Listing_Archive VALUES(%s, %s,%s,%s,%s)", [last_entry[0] + 1 ,listing[1], listing[2], listing[3], 
+                                                                                          listing[6]])
+                    cursor.execute("INSERT INTO GPU_Listing_Archive VALUES(%s, %s,%s,%s,%s)", [last_entry[0] + 2 ,listing[1], listing[2], listing[3], 
+                                                                                         listing[6]])                                                                     
                 return redirect('listing')    
             else:
                 status = 'Invalid Rental Dates'
 
-
-    context['status'] = status
+    result_dict = {'GPU' : GPU_choice, 'status' : status, 'Borrower' : Borrower_details}
+    #context['status'] = status
  
-    return render(request, "app/rental.html", context)
+    return render(request, "app/rental.html", result_dict)
 
 # Create your views here.
 def personal(request, id):
@@ -253,7 +280,6 @@ def personal(request, id):
     login_email = request.session.get('email', 0)
     logging.debug(login_email)
     if login_email == 0:
-        login_email = request.session['email']
         return HttpResponseRedirect(reverse('index'))
     #use this snippet in everyview function to verify user. ends here
 
@@ -311,7 +337,6 @@ def add_listing(request):
     login_email = request.session.get('email', 0)
     logging.debug(login_email)
     if login_email == 0:
-        login_email = request.session['email']
         return HttpResponseRedirect(reverse('index'))
     #use this snippet in everyview function to verify user. ends here
     context = {}
@@ -333,6 +358,9 @@ def add_listing(request):
             cursor.execute("INSERT INTO GPU_Listing VALUES (%s, %s, %s, %s, %s, %s, %s)"
                     ,[next_id, request.POST['gpu_model'], request.POST['gpu_brand'], current_user,
                     request.POST['start_date'] , request.POST['end_date'], request.POST['price']])
+            cursor.execute("INSERT INTO GPU_Listing_Archive VALUES (%s, %s, %s, %s, %s)"
+                    ,[next_id, request.POST['gpu_model'], request.POST['gpu_brand'], current_user,
+                    request.POST['price']])
             return redirect('listing')  
 
     context['status'] = status
@@ -343,7 +371,6 @@ def top_up(request):
     login_email = request.session.get('email', 0)
     logging.debug(login_email)
     if login_email == 0:
-        login_email = request.session['email']
         return HttpResponseRedirect(reverse('index'))
     #use this snippet in everyview function to verify user. ends here
     context = {}

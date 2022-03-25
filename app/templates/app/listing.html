@@ -1,5 +1,12 @@
 {% load static %}
 <html>
+<style>
+.logoutbtn {
+  width: auto;
+  padding: 5px 20px;
+  background-color: #f50c0c;
+}
+</style>
 <body>
     <h2>GPU Listing</h2>
     <img src="https://cdn.eteknix.com/wp-content/uploads/2016/09/Logo-on-white.jpg" width="20%"   alt="NUS logo"/><br/>
@@ -7,9 +14,9 @@
     <br/><br/>
     <a href="{% url 'top_up' %}">Top up balance</a>
     <br/><br/>
-    <a href="{% url 'log_out' %}">Log out</a>
-    <br/><br/>
     <a href="{% url 'personal' current_user.3 %}">{{current_user.0}}</a>
+    <br/><br/>
+    <a href="{% url 'log_out' %}"><button type="button" class="logoutbtn">Logout</button></a>
     <br/><br/>
     <a href="{% url 'listing' 1 %}"><button>Most recent</button></a>
     <a href="{% url 'listing' 2 %}"><button>Least recent</button></a>
@@ -24,6 +31,7 @@
             <th>Price</th>
             <th>Available Start Date</th>
             <th>Available End Date</th>
+            <th>Action</th>
         </thead>
         {% for listing in records %}
         <tr>
@@ -36,6 +44,7 @@
             <td> {{ listing.6 }} </td>
             <td> {{ listing.4 }}</td>
             <td> {{ listing.5 }}</td>
+            <td> <a href="{% url 'rental'  listing.0  %}"><button>Rent</button></a></td>
         </tr>
         {% endfor %}
     </table>
