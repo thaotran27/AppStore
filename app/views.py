@@ -151,9 +151,9 @@ def edit(request, id):
     if request.POST:
         ##TODO: date validation
         with connection.cursor() as cursor:
-            cursor.execute("UPDATE User1 SET first_name = %s, last_name = %s, email = %s, customerid = %s, wallet_balance = %s, phone_number = %s, pass_word = %s WHERE customerid = %s"
+            cursor.execute("UPDATE User1 SET first_name = %s, last_name = %s, email = %s, customerid = %s, wallet_balance = %s, phone_number = %s, pass_word = %s, Credit_card_number = %s, Credit_card_type = %s WHERE customerid = %s"
                     , [request.POST['first_name'], request.POST['last_name'], request.POST['email'],
-                        request.POST['customerid'] , request.POST['walletbalance'], request.POST['phonenumber'], request.POST['password'], id ])
+                        request.POST['customerid'] , request.POST['walletbalance'], request.POST['phonenumber'], request.POST['password'], request.POST['credit_card_number'], request.POST['credit_card_number'], id ])
             status = 'Customer edited successfully!'
             cursor.execute("SELECT * FROM User1 WHERE customerid = %s", [id])
             cust = cursor.fetchone()
@@ -346,8 +346,8 @@ def personal(request, id):
         lend_history = cursor.fetchall()
         if (len(lend_history)>0):
             lend_history_conv = list(lend_history[0])
-            lend_history_conv.append(rent_history_conv[5]*rent_history_conv[4])    
-            result_dict['rent_history_conv'] = rent_history_conv
+            lend_history_conv.append(rent_history_conv[5]*lend_history_conv[4])    
+            result_dict['rent_history_conv'] = lend_history_conv
     result_dict['lend_history']= lend_history
 
     # get Rent history of user
