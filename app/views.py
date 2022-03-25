@@ -15,10 +15,15 @@ def index(request):
     """Shows the main page"""
     context = {}
     status = ''
+
     login_email = request.session.get('email', 0)
     if login_email != 0:
         # return HttpResponse(login_email)
-        return HttpResponseRedirect(reverse('listing'))
+        with connection.cursor() as cursor:
+             cursor.execute("SELECT * FROM User1 WHERE Email = %s", [login_email])
+             row = cursor.fetchone()
+             if row != None:
+                 return HttpResponseRedirect(reverse('listing'))
 
     if request.POST:
         ## Check if customer account already exists
@@ -158,7 +163,6 @@ def listing(request,id=1):
     login_email = request.session.get('email', 0)
     logging.debug(login_email)
     if login_email == 0:
-        login_email = request.session['email']
         return HttpResponseRedirect(reverse('index'))
     #use this snippet in everyview function to verify user. ends here
 
