@@ -155,7 +155,7 @@ def edit(request, id):
                     , [request.POST['first_name'], request.POST['last_name'], request.POST['email'],
                         request.POST['customerid'] , request.POST['walletbalance'], request.POST['phonenumber'], request.POST['password'], id ])
             status = 'Customer edited successfully!'
-            cursor.execute("SELECT * FROM customers WHERE customerid = %s", [id])
+            cursor.execute("SELECT * FROM User1 WHERE customerid = %s", [id])
             cust = cursor.fetchone()
 
 
