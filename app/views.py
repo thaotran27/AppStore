@@ -336,28 +336,20 @@ def personal(request, id):
 
     # get current rent of user
     with connection.cursor() as cursor:
-        cursor.execute("SELECT * FROM Rental WHERE Borrower_id = %s AND End_day >= %s", [personal[3], date.today()])
+        cursor.execute("SELECT r.GPU_Model, r.GPU_Brand, r.Start_day, r.End_day, ((r.End_day-r.Start_day+1)* g.Price) as total_paid FROM Rental r, GPU_Listing_Archive g WHERE r.Listingid=g.Listingid AND r.Borrower_id = %s AND r.End_day > %s", [personal[3], date.today()])
         rent_listing = cursor.fetchall()
     result_dict['rent_listing']= rent_listing
 
     # get Lend history of user
     with connection.cursor() as cursor:
-        cursor.execute("SELECT g.GPU_Model, g.GPU_Brand, r.Start_day, r.End_day, (r.End_day-r.Start_day+1) as duration, g.Price FROM Rental r, GPU_Listing_Archive g WHERE r.Listingid=g.Listingid AND g.Customerid = %s", [personal[3]])
+        cursor.execute("SELECT g.GPU_Model, g.GPU_Brand, r.Start_day, r.End_day, ((r.End_day-r.Start_day+1)* g.Price) as total_earned FROM Rental r, GPU_Listing_Archive g WHERE r.Listingid=g.Listingid AND g.Customerid = %s", [personal[3]])
         lend_history = cursor.fetchall()
-        if (len(lend_history)>0):
-            lend_history_conv = list(lend_history[0])
-            lend_history_conv.append(lend_history_conv[5]*lend_history_conv[4])    
-            result_dict['rent_history_conv'] = lend_history_conv
     result_dict['lend_history']= lend_history
 
     # get Rent history of user
     with connection.cursor() as cursor:
-        cursor.execute("SELECT r.GPU_Model, r.GPU_Brand, r.Start_day, r.End_day, (r.End_day-r.Start_day+1) as duration, g.Price FROM Rental r, GPU_Listing g WHERE r.Listingid=g.Listingid AND r.Borrower_id = %s AND r.End_day < %s", [personal[3], date.today()])
+        cursor.execute("SELECT r.GPU_Model, r.GPU_Brand, r.Start_day, r.End_day, ((r.End_day-r.Start_day+1)* g.Price) as total_paid FROM Rental r, GPU_Listing_Archive g WHERE r.Listingid=g.Listingid AND r.Borrower_id = %s AND r.End_day < %s", [personal[3], date.today()])
         rent_history = cursor.fetchall()
-        if (len(rent_history)>0):
-            rent_history_conv = list(rent_history[0])
-            rent_history_conv.append(rent_history_conv[5]*rent_history_conv[4])    
-            result_dict['rent_history_conv'] = rent_history_conv
     result_dict['rent_history']= rent_history
     
 

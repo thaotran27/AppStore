@@ -32,21 +32,23 @@
     <br/><br/>
     <table style='text-align:left', border=1>
         <thead>
-            <th colspan="4" style="text-align: center;">Current Renting</th>
+            <th colspan="5" style="text-align: center;">Current Renting</th>
         </thead>
         <thead>
             <th>GPU Model</th>
             <th>GPU Brand</th>
             <th>Start Day</th>
-            <th>Available End Day</th>
+            <th>End Day</th>
+            <th>Total Paid</th>
             <!-- <th>Price (per day)</th> -->
         </thead>
         {% for rent_listing_id in rent_listing %}
         <tr>
+            <td> {{ rent_listing_id.0 }} </td>
             <td> {{ rent_listing_id.1 }} </td>
             <td> {{ rent_listing_id.2 }} </td>
+            <td> {{ rent_listing_id.3 }} </td>
             <td> {{ rent_listing_id.4 }} </td>
-            <td> {{ rent_listing_id.5 }} </td>
             <!-- <td> {{ personal_listing_id.6 }} </td> -->
         </tr>
         {% endfor %}      
@@ -69,7 +71,7 @@
             <td> {{ lend_history_id.1 }} </td>
             <td> {{ lend_history_id.2 }} </td>
             <td> {{ lend_history_id.3 }} </td>
-            <td> {{ lend_history_conv.6 }} </td>
+            <td> {{ lend_history_id.4 }} </td>
         </tr>
         {% endfor %}      
     </table>
@@ -91,7 +93,7 @@
             <td> {{ rent_history_id.1 }} </td>
             <td> {{ rent_history_id.2 }} </td>
             <td> {{ rent_history_id.3 }} </td>
-            <td> {{ rent_history_conv.6 }} </td>
+            <td> {{ rent_history_id.4 }} </td>
         </tr>
         {% endfor %}      
     </table>
