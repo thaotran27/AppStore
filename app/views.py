@@ -366,6 +366,7 @@ def add_listing(request):
     context['status'] = status
     return render(request, "app/add_listing.html", context)
 
+#to-do: integrity check on top up, only accept positive values
 def top_up(request):
     #use this snippet in everyview function to verify user
     login_email = request.session.get('email', 0)
