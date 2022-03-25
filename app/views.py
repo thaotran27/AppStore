@@ -246,8 +246,8 @@ def rental(request, Listingid):
 
                 elif int(total_cost) <= int(Borrower[4]):
 
-                    Borrower[4] = int(Borrower[4]) - int(total_cost)    
-                    cursor.execute("UPDATE User1 SET Wallet_balance = %s WHERE Email = %s", [Borrower[4],request.session['email']])
+                    cost = int(Borrower[4]) - int(total_cost)    
+                    cursor.execute("UPDATE User1 SET Wallet_balance = %s WHERE Email = %s", [cost,request.session['email']])
 
                     cursor.execute("INSERT INTO Rental VALUES (%s, %s, %s, %s, %s, %s)"
                         , [Borrower[3], listing[1], listing[2],
