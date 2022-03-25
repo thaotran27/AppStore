@@ -98,7 +98,7 @@ def view(request, id):
     
     ## Use raw query to get a customer
     with connection.cursor() as cursor:
-        cursor.execute("SELECT * FROM User1", [id])
+        cursor.execute("SELECT * FROM User1 WHERE customerid = %s", [id])
         customer = cursor.fetchone()
     result_dict = {'cust': customer}
 
