@@ -241,13 +241,13 @@ def rental(request, Listingid):
                 #           int(Listingid) , request.POST['Start_day'], request.POST['End_day']])
                 number_of_days = (datetime.strptime(request.POST['End_day'], '%Y-%m-%d').date()-datetime.strptime(request.POST['Start_day'], '%Y-%m-%d').date()).days + 1
                 total_cost = number_of_days * listing[6]
-                if int(total_cost) > int(Borrower[3]):
-                    return render(request,'app/rental.html', {'error_message': ' Cost of rental exceeds wallet balance, choose new dates' })
+                if int(total_cost) > int(Borrower[4]):
+                    return render(request,'app/rental.html', {'error_message': ' Cost of rental exceeds wallet balance, choose new dates or top up wallet' })
 
-                elif int(total_cost) <= int(Borrower[3]):
+                elif int(total_cost) <= int(Borrower[4]):
 
-                    Borrower[3] = int(Borrower[3]) - int(total_cost)    
-                    cursor.execute("UPDATE User1 SET Wallet_balance = %s WHERE Email = %s", [Borrower[3],request.session['email']])
+                    Borrower[4] = int(Borrower[4]) - int(total_cost)    
+                    cursor.execute("UPDATE User1 SET Wallet_balance = %s WHERE Email = %s", [Borrower[4],request.session['email']])
 
                     cursor.execute("INSERT INTO Rental VALUES (%s, %s, %s, %s, %s, %s)"
                         , [Borrower[3], listing[1], listing[2],
