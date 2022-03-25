@@ -243,6 +243,7 @@ def rental(request, Listingid):
                 total_cost = number_of_days * listing[6]
                 if int(total_cost) > int(Borrower[4]):
                     return render(request,'app/rental.html', {'error_message': ' Cost of rental exceeds wallet balance, choose new dates or top up wallet','GPU' : GPU_choice, 'status' : status, 'Borrower' : Borrower_details })
+                elif (datetime.strptime(request.POST['Start_day'], '%Y-%m-%d').date() < listing[4])
 
                 elif int(total_cost) <= int(Borrower[4]):
 
