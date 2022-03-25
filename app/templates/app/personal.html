@@ -63,7 +63,7 @@
             <th>End Day</th>
             <th>Total Earned</th>
         </thead>
-        {% for lend_history_id in lend_history %}
+        {% for lend_history_id in lend_history_conv %}
         <tr>
             <td> {{ lend_history_id.0 }} </td>
             <td> {{ lend_history_id.1 }} </td>
@@ -85,7 +85,7 @@
             <th>End Day</th>
             <th>Total Paid</th>
         </thead>
-        {% for rent_history_id in rent_history %}
+        {% for rent_history_id in rent_history_conv %}
         <tr>
             <td> {{ rent_history_id.0 }} </td>
             <td> {{ rent_history_id.1 }} </td>
