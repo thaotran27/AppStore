@@ -330,7 +330,7 @@ def personal(request, id):
 
     # get current lend of user
     with connection.cursor() as cursor:
-        cursor.execute("SELECT * FROM GPU_Listing WHERE Customerid = %s AND Available_end_day >= %s", [personal[3], date.today()])
+        cursor.execute("SELECT * FROM GPU_Listing WHERE Customerid = %s", [personal[3]])
         personal_listing = cursor.fetchall()
     result_dict['personal_listing'] = personal_listing
 
@@ -342,7 +342,7 @@ def personal(request, id):
 
     # get Lend history of user
     with connection.cursor() as cursor:
-        cursor.execute("SELECT g.GPU_Model, g.GPU_Brand, g.Available_start_day, g.Available_end_day, (r.End_day-r.Start_day+1) as duration, g.Price FROM Rental r, GPU_Listing g WHERE r.Listingid=g.Listingid AND g.Customerid = %s AND g.Available_end_day < %s", [personal[3], date.today()])
+        cursor.execute("SELECT g.GPU_Model, g.GPU_Brand, r.Start_day, r.End_day, (r.End_day-r.Start_day+1) as duration, g.Price FROM Rental r, GPU_Listing_Archive g WHERE r.Listingid=g.Listingid AND g.Customerid = %s", [personal[3]])
         lend_history = cursor.fetchall()
         if (len(lend_history)>0):
             lend_history_conv = list(lend_history[0])
