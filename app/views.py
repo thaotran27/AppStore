@@ -412,13 +412,18 @@ def top_up(request):
     status = ''
     current_user = login_email
     with connection.cursor() as cursor:
-        cursor.execute("SELECT Wallet_balance FROM User1 WHERE Email =  %s", [login_email])
-        user_balance = int(cursor.fetchone()[0])
+        cursor.execute("SELECT * FROM User1 WHERE Email =  %s", [login_email])
+        temp = cursor.fetchone()
+        user_balance = int(temp[4])
         
         if request.POST:
-            new_balance = user_balance + int(request.POST['value'])
-            cursor.execute("UPDATE User1 SET Wallet_balance = %s WHERE Email = %s", [new_balance, login_email])
-            return redirect('listing')  
+            card_nbr = int(request.POST['card_number'])
+            if card_nbr != int(temp[7]):
+                return render(request,'app/top_up.html', {'user_balance': user_balance,'error_message': 'Payment failed! Key in your correct credit card number', })
+            else:
+                new_balance = user_balance + int(request.POST['value'])
+                cursor.execute("UPDATE User1 SET Wallet_balance = %s WHERE Email = %s", [new_balance, login_email])
+                return redirect('listing')  
     context['status'] = status
     result_dict = {'user_balance': user_balance}
     return render(request,'app/top_up.html',result_dict)
