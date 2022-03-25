@@ -98,7 +98,7 @@ def view(request, id):
     
     ## Use raw query to get a customer
     with connection.cursor() as cursor:
-        cursor.execute("SELECT * FROM User1", [id])
+        cursor.execute("SELECT * FROM User1 WHERE customerid = %s", [id])
         customer = cursor.fetchone()
     result_dict = {'cust': customer}
 
@@ -244,27 +244,38 @@ def rental(request, Listingid):
                 ##TODO: date validation
                 #cursor.execute("INSERT INTO Rental VALUES (%s, %s, %s, %s, %s, %s)",[request.POST['Borrower_id'], listing[1], listing[2],
                 #           int(Listingid) , request.POST['Start_day'], request.POST['End_day']])
-                cursor.execute("INSERT INTO Rental VALUES (%s, %s, %s, %s, %s, %s)"
+                number_of_days = (datetime.strptime(request.POST['End_day'], '%Y-%m-%d').date()-datetime.strptime(request.POST['Start_day'], '%Y-%m-%d').date()).days + 1
+                total_cost = number_of_days * listing[6]
+                if int(total_cost) > int(Borrower[4]):
+                    return render(request,'app/rental.html', {'error_message': 'Cost of rental exceeds wallet balance, choose new dates or top up wallet','GPU' : GPU_choice, 'status' : status, 'Borrower' : Borrower_details })
+                #elif ((datetime.strptime(request.POST['Start_day'], '%Y-%m-%d').date() < listing[4]) or datetime.strptime(request.POST['End_day'], '%Y-%m-%d').date() > listing[5]):
+                #    return render(request,'app/rental.html', {'error_message': 'Invalid dates, ensure that the start rental date and end rental date are within range','GPU' : GPU_choice, 'status' : status, 'Borrower' : Borrower_details })
+                elif int(total_cost) <= int(Borrower[4]):
+
+                    cost = int(Borrower[4]) - int(total_cost)    
+                    cursor.execute("UPDATE User1 SET Wallet_balance = %s WHERE Email = %s", [cost,request.session['email']])
+
+                    cursor.execute("INSERT INTO Rental VALUES (%s, %s, %s, %s, %s, %s)"
                         , [Borrower[3], listing[1], listing[2],
                            int(Listingid) , request.POST['Start_day'], request.POST['End_day']])
-                cursor.execute("DELETE FROM GPU_Listing WHERE Listingid = %s", [Listingid])
-                cursor.execute("SELECT * FROM GPU_Listing g1 WHERE g1.listingid >= all (SELECT g2.listingid FROM GPU_Listing g2)")
-                last_entry = cursor.fetchone()
-                if (datetime.strptime(request.POST['Start_day'], '%Y-%m-%d').date() == listing[4]):
-                    cursor.execute("INSERT INTO GPU_Listing VALUES(%s, %s,%s,%s,%s,%s,%s)", [last_entry[0] + 1 ,listing[1], listing[2], listing[3], 
+                    cursor.execute("DELETE FROM GPU_Listing WHERE Listingid = %s", [Listingid])
+                    cursor.execute("SELECT * FROM GPU_Listing g1 WHERE g1.listingid >= all (SELECT g2.listingid FROM GPU_Listing g2)")
+                    last_entry = cursor.fetchone()
+                    if (datetime.strptime(request.POST['Start_day'], '%Y-%m-%d').date() == listing[4]):
+                        cursor.execute("INSERT INTO GPU_Listing VALUES(%s, %s,%s,%s,%s,%s,%s)", [last_entry[0] + 1 ,listing[1], listing[2], listing[3], 
                                                                                          datetime.strptime(request.POST['End_day'], '%Y-%m-%d').date() + timedelta(days = 1), listing[5], listing[6]])
-                    cursor.execute("INSERT INTO GPU_Listing_Archive VALUES(%s, %s,%s,%s,%s)", [last_entry[0] + 1 ,listing[1], listing[2], listing[3], 
+                        cursor.execute("INSERT INTO GPU_Listing_Archive VALUES(%s, %s,%s,%s,%s)", [last_entry[0] + 1 ,listing[1], listing[2], listing[3], 
                                                                                           listing[6]])                                                                     
-                if (datetime.strptime(request.POST['Start_day'], '%Y-%m-%d').date() > listing[4]):
-                    cursor.execute("INSERT INTO GPU_Listing VALUES(%s, %s,%s,%s,%s,%s,%s)", [last_entry[0] + 1 ,listing[1], listing[2], listing[3], 
+                    if (datetime.strptime(request.POST['Start_day'], '%Y-%m-%d').date() > listing[4]):
+                        cursor.execute("INSERT INTO GPU_Listing VALUES(%s, %s,%s,%s,%s,%s,%s)", [last_entry[0] + 1 ,listing[1], listing[2], listing[3], 
                                                                                          listing[4], datetime.strptime(request.POST['Start_day'], '%Y-%m-%d').date()  - timedelta(days = 1), listing[6]])
-                    cursor.execute("INSERT INTO GPU_Listing VALUES(%s, %s,%s,%s,%s,%s,%s)", [last_entry[0] + 2 ,listing[1], listing[2], listing[3], 
+                        cursor.execute("INSERT INTO GPU_Listing VALUES(%s, %s,%s,%s,%s,%s,%s)", [last_entry[0] + 2 ,listing[1], listing[2], listing[3], 
                                                                                          datetime.strptime(request.POST['End_day'], '%Y-%m-%d').date() + timedelta(days = 1), listing[5], listing[6]])
-                    cursor.execute("INSERT INTO GPU_Listing_Archive VALUES(%s, %s,%s,%s,%s)", [last_entry[0] + 1 ,listing[1], listing[2], listing[3], 
+                        cursor.execute("INSERT INTO GPU_Listing_Archive VALUES(%s, %s,%s,%s,%s)", [last_entry[0] + 1 ,listing[1], listing[2], listing[3], 
                                                                                           listing[6]])
-                    cursor.execute("INSERT INTO GPU_Listing_Archive VALUES(%s, %s,%s,%s,%s)", [last_entry[0] + 2 ,listing[1], listing[2], listing[3], 
+                        cursor.execute("INSERT INTO GPU_Listing_Archive VALUES(%s, %s,%s,%s,%s)", [last_entry[0] + 2 ,listing[1], listing[2], listing[3], 
                                                                                          listing[6]])                                                                     
-                return redirect('listing')    
+                    return redirect('listing')    
             else:
                 status = 'Invalid Rental Dates'
 
@@ -272,6 +283,29 @@ def rental(request, Listingid):
     #context['status'] = status
  
     return render(request, "app/rental.html", result_dict)
+
+#def check_out(request,Listingid):
+#    #use this snippet in everyview function to verify user
+#    login_email = request.session.get('email', 0)
+#    logging.debug(login_email)
+#    if login_email == 0:
+#        return HttpResponseRedirect(reverse('index'))
+#    #use this snippet in everyview function to verify user. ends here
+
+#    with connection.cursor() as cursor:
+#        cursor.execute("SELECT * FROM GPU_Listing WHERE Listingid = %s", [Listingid])
+#        GPU_choice = cursor.fetchall()
+#        cursor.execute("SELECT * FROM User1 WHERE Email = %s", [request.session['email']])
+#        Borrower_details = cursor.fetchall()
+
+#    rental 
+
+
+#    result_dict = {'GPU' : GPU_choice, 'Borrower' : Borrower_details}
+#    return render(request, "app/check_out.html", result_dict)
+
+
+
 
 # Create your views here.
 def personal(request, id):
@@ -296,7 +330,7 @@ def personal(request, id):
 
     # get current lend of user
     with connection.cursor() as cursor:
-        cursor.execute("SELECT * FROM GPU_Listing WHERE Customerid = %s AND Available_end_day >= %s", [personal[3], date.today()])
+        cursor.execute("SELECT * FROM GPU_Listing WHERE Customerid = %s", [personal[3]])
         personal_listing = cursor.fetchall()
     result_dict['personal_listing'] = personal_listing
 
@@ -308,7 +342,7 @@ def personal(request, id):
 
     # get Lend history of user
     with connection.cursor() as cursor:
-        cursor.execute("SELECT g.GPU_Model, g.GPU_Brand, g.Available_start_day, g.Available_end_day, (r.End_day-r.Start_day+1) as duration, g.Price FROM Rental r, GPU_Listing g WHERE r.Listingid=g.Listingid AND g.Customerid = %s AND g.Available_end_day < %s", [personal[3], date.today()])
+        cursor.execute("SELECT g.GPU_Model, g.GPU_Brand, r.Start_day, r.End_day, (r.End_day-r.Start_day+1) as duration, g.Price FROM Rental r, GPU_Listing_Archive g WHERE r.Listingid=g.Listingid AND g.Customerid = %s", [personal[3]])
         lend_history = cursor.fetchall()
         if (len(lend_history)>0):
             lend_history_conv = list(lend_history[0])
@@ -388,4 +422,6 @@ def top_up(request):
     context['status'] = status
     result_dict = {'user_balance': user_balance}
     return render(request,'app/top_up.html',result_dict)
+
+   
 
