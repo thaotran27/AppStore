@@ -98,7 +98,7 @@ def view(request, id):
     
     ## Use raw query to get a customer
     with connection.cursor() as cursor:
-        cursor.execute("SELECT * FROM User1", [id])
+        cursor.execute("SELECT * FROM User1 WHERE customerid = %s", [id])
         customer = cursor.fetchone()
     result_dict = {'cust': customer}
 
@@ -330,7 +330,7 @@ def personal(request, id):
 
     # get current lend of user
     with connection.cursor() as cursor:
-        cursor.execute("SELECT * FROM GPU_Listing WHERE Customerid = %s AND Available_end_day >= %s", [personal[3], date.today()])
+        cursor.execute("SELECT * FROM GPU_Listing WHERE Customerid = %s", [personal[3]])
         personal_listing = cursor.fetchall()
     result_dict['personal_listing'] = personal_listing
 
@@ -342,7 +342,7 @@ def personal(request, id):
 
     # get Lend history of user
     with connection.cursor() as cursor:
-        cursor.execute("SELECT g.GPU_Model, g.GPU_Brand, g.Available_start_day, g.Available_end_day, (r.End_day-r.Start_day+1) as duration, g.Price FROM Rental r, GPU_Listing g WHERE r.Listingid=g.Listingid AND g.Customerid = %s AND g.Available_end_day < %s", [personal[3], date.today()])
+        cursor.execute("SELECT g.GPU_Model, g.GPU_Brand, r.Start_day, r.End_day, (r.End_day-r.Start_day+1) as duration, g.Price FROM Rental r, GPU_Listing_Archive g WHERE r.Listingid=g.Listingid AND g.Customerid = %s", [personal[3]])
         lend_history = cursor.fetchall()
         if (len(lend_history)>0):
             lend_history_conv = list(lend_history[0])
@@ -400,6 +400,7 @@ def add_listing(request):
     context['status'] = status
     return render(request, "app/add_listing.html", context)
 
+#to-do: integrity check on top up, only accept positive values
 def top_up(request):
     #use this snippet in everyview function to verify user
     login_email = request.session.get('email', 0)
@@ -411,13 +412,18 @@ def top_up(request):
     status = ''
     current_user = login_email
     with connection.cursor() as cursor:
-        cursor.execute("SELECT Wallet_balance FROM User1 WHERE Email =  %s", [login_email])
-        user_balance = int(cursor.fetchone()[0])
+        cursor.execute("SELECT * FROM User1 WHERE Email =  %s", [login_email])
+        temp = cursor.fetchone()
+        user_balance = int(temp[4])
         
         if request.POST:
-            new_balance = user_balance + int(request.POST['value'])
-            cursor.execute("UPDATE User1 SET Wallet_balance = %s WHERE Email = %s", [new_balance, login_email])
-            return redirect('listing')  
+            card_nbr = int(request.POST['card_number'])
+            if card_nbr != int(temp[7]):
+                return render(request,'app/top_up.html', {'user_balance': user_balance,'error_message': 'Payment failed! Key in your correct credit card number', })
+            else:
+                new_balance = user_balance + int(request.POST['value'])
+                cursor.execute("UPDATE User1 SET Wallet_balance = %s WHERE Email = %s", [new_balance, login_email])
+                return redirect('listing')  
     context['status'] = status
     result_dict = {'user_balance': user_balance}
     return render(request,'app/top_up.html',result_dict)

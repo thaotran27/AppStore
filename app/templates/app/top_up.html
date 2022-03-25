@@ -8,9 +8,13 @@
         <!-- Security token by Django -->
         {% csrf_token %}
         <!-- form -->
+        <div id="div_card_nbr" class="control-group"> <label for="id_card_nbr" class="control-label requiredField">
+        Card number<span class="asteriskField">*</span> </label> <div class="controls"> <input type="number" name="card_number" required="" id="id_card_nbr" min="1"> </div> </div> 
         <div id="div_id_value" class="control-group"> <label for="id_value" class="control-label requiredField">
-        Top Up value<span class="asteriskField">*</span> </label> <div class="controls"> <input type="number" name="value" required="" id="id_value"> </div> </div> 
+        Top Up value<span class="asteriskField">*</span> </label> <div class="controls"> <input type="number" name="value" required="" id="id_value" min="1"> </div> </div> 
+        
         <button type="submit" value="Add">Add</button>
+        <h5 style="font-size:14px; color:#c70505; ">{{ error_message}}</h5>
     </form>
 </body>
 </html>
