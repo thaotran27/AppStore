@@ -119,9 +119,9 @@ def add(request):
             ## No customer with same id
             if customer == None:
                 ##TODO: date validation
-                cursor.execute("INSERT INTO User1 VALUES (%s, %s, %s, %s, %s, %s, %s)"
+                cursor.execute("INSERT INTO User1 VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)"
                         , [request.POST['first_name'], request.POST['last_name'], request.POST['email'],
-                           request.POST['customerid'] , 0, request.POST['phonenumber'], request.POST['password'] ])
+                           request.POST['customerid'] , 0, request.POST['phonenumber'], request.POST['password'], request.POST['credit_card_nbr'], request.POST['credit_card_type'] ])
 
                 return redirect('index')
             else:
