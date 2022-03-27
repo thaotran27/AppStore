@@ -85,7 +85,7 @@ def appstore_admin(request):
 
     ## Use raw query to get all objects
     with connection.cursor() as cursor:
-        cursor.execute("SELECT * FROM User1")
+        cursor.execute("SELECT * FROM User1 ORDER BY customerid ASC")
         customers = cursor.fetchall()
 
     result_dict = {'records': customers}
