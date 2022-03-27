@@ -1,0 +1,46 @@
+{% load static %}
+<html>
+<body>
+    <h2>Admin Customer Listing Dashboard</h2>
+    <img src="{% static 'app/images/nus.jpg' %}" width="20%"   alt="NUS logo"/><br/>
+    <a href="{% url 'appstore_admin' %}">Back to Main</a>
+    <br/><br/>
+    <form action="/admin_listing/" method="get" id="cust">
+        <label for="cust">Select Customer ID:</label>
+            <select name="cust" id="cust">
+                {% for customer in customers %}
+                    <option value={{customer.3}}>{{customer.3}}</option>
+                {% endfor %}
+            </select>
+        <input type="submit" value="Submit">
+    </form>
+    <form action="/admin_listing/" method="get" id="reset">
+        <input type="submit" value="Reset">
+    </form>
+   
+    <table border=1>
+        <thead>
+            <th>Customerid</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>GPU Model</th>
+            <th>GPU Brand</th>
+            <th>Price</th>
+            <th>Available Start Day</th>
+            <th>Available End Day</th>
+        </thead>
+        {% for custinfo_index in custinfo %}
+        <tr>
+            <td> {{ custinfo_index.0 }} </td>
+            <td> {{ custinfo_index.1 }} </td>
+            <td> {{ custinfo_index.2 }} </td>
+            <td> {{ custinfo_index.3 }} </td>
+            <td> {{ custinfo_index.4 }} </td>
+            <td> {{ custinfo_index.5 }}</td>
+            <td> {{ custinfo_index.6 }}</td>
+            <td> {{ custinfo_index.7 }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>

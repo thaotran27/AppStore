@@ -85,7 +85,7 @@ def appstore_admin(request):
 
     ## Use raw query to get all objects
     with connection.cursor() as cursor:
-        cursor.execute("SELECT * FROM User1")
+        cursor.execute("SELECT * FROM User1 ORDER BY customerid ASC")
         customers = cursor.fetchall()
 
     result_dict = {'records': customers}
@@ -420,5 +420,62 @@ def top_up(request):
     result_dict = {'user_balance': user_balance}
     return render(request,'app/top_up.html',result_dict)
 
-   
+# Create your views here.
+def admin_listing(request,custid=None):
+    """Shows the main page"""
+    #use this snippet in everyview function to verify user
+    login_email = request.session.get('email', 0)
+    logging.debug(login_email)
+    if login_email == 0:
+        return HttpResponseRedirect(reverse('index'))
+    #use this snippet in everyview function to verify user. ends here
+
+    ## Use raw query to get all objects
+    with connection.cursor() as cursor:
+        cursor.execute("SELECT * FROM User1 ORDER BY customerid ASC")
+        customers = cursor.fetchall()
+        customers_name = [customer[3] for customer in customers]
+        custid = request.GET.get('cust')
+        if request.GET.get('reset'):
+            custid = None
+        if custid is None:
+            cursor.execute("select u.customerid, u.first_name, u.last_name, g1.gpu_model, g1.gpu_brand, g1.price, g2.available_start_day, g2.available_end_day from user1 u left outer join gpu_listing_archive g1 on u.customerid=g1.customerid left outer join gpu_listing g2 on u.customerid=g2.customerid and g1.gpu_model=g2.gpu_model and g1.gpu_brand=g2.gpu_brand order by u.customerid asc")
+            custinfo = cursor.fetchall()
+        else:
+            cursor.execute("select u.customerid, u.first_name, u.last_name, g1.gpu_model, g1.gpu_brand, g1.price, g2.available_start_day, g2.available_end_day from user1 u left outer join gpu_listing_archive g1 on u.customerid=g1.customerid left outer join gpu_listing g2 on u.customerid=g2.customerid and g1.gpu_model=g2.gpu_model and g1.gpu_brand=g2.gpu_brand where u.customerid= %s", [custid])
+            custinfo = cursor.fetchall()
+        
+
+    result_dict = {'custinfo': custinfo, 'customers': customers, 'customers_name': customers_name}
+
+    return render(request,'app/admin_listing.html',result_dict)
+
+def admin_rental(request,id=""):
+    """Shows the main page"""
+    #use this snippet in everyview function to verify user
+    login_email = request.session.get('email', 0)
+    logging.debug(login_email)
+    if login_email == 0:
+        return HttpResponseRedirect(reverse('index'))
+    #use this snippet in everyview function to verify user. ends here
+
+    ## Use raw query to get all objects
+    with connection.cursor() as cursor:
+        cursor.execute("SELECT * FROM User1 ORDER BY customerid ASC")
+        customers = cursor.fetchall()
+        customers_name = [customer[3] for customer in customers]
+        custid = request.GET.get('cust')
+        if request.GET.get('reset'):
+            custid = None
+        if custid is None:
+            cursor.execute("select u.customerid, u.first_name, u.last_name, g1.gpu_model, g1.gpu_brand, g1.price, r.start_day, r.end_day from user1 u left outer join gpu_listing_archive g1 on u.customerid=g1.customerid left outer join rental r on u.customerid=r.borrower_id and g1.gpu_model=r.gpu_model and g1.gpu_brand=r.gpu_brand order by u.customerid asc")
+            custinfo = cursor.fetchall()
+        else:
+            cursor.execute("select u.customerid, u.first_name, u.last_name, g1.gpu_model, g1.gpu_brand, g1.price, r.start_day, r.end_day from user1 u left outer join gpu_listing_archive g1 on u.customerid=g1.customerid left outer join rental r on u.customerid=r.borrower_id and g1.gpu_model=r.gpu_model and g1.gpu_brand=r.gpu_brand where u.customerid= %s", [custid])
+            custinfo = cursor.fetchall()
+        
+
+    result_dict = {'custinfo': custinfo, 'customers': customers, 'customers_name': customers_name}
+
+    return render(request,'app/admin_rental.html',result_dict)
 

@@ -6,13 +6,25 @@
         padding: 5px 20px;
         background-color: #f50c0c;
     }
+    .listingbtn {
+        width: auto;
+        padding: 5px 20px;
+        background-color: #04d31f;
+    }
+    .rentalbtn {
+        width: auto;
+        padding: 5px 20px;
+        background-color: #0464e2;
+    }
 </style>
 <body>
     <h2>Admin Dashboard</h2>
     <img src="{% static 'app/images/nus.jpg' %}" width="20%"   alt="NUS logo"/><br/>
     <a href="add">New Customer</a>
     <br/><br/>
-    <a href="{% url 'log_out' %}"><button type="button" class="logoutbtn">Logout</button></a>
+    <a href="{% url 'log_out' %}"><button id="logout" type="button" class="logoutbtn">Logout</button></a>
+    <a href="{% url 'admin_listing' %}"><button id="listingbtn" type="button" class="listingbtn">Listing</button></a>
+    <a href="{% url 'admin_rental' %}"><button id="rentalbtn" type="button" class="rentalbtn">Rental</button></a>
     <br/><br/>
     <table border=1>
         <thead>
