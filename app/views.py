@@ -7,6 +7,7 @@ import logging
 from datetime import datetime
 from datetime import date
 from datetime import timedelta
+from dateutil.relativedelta import relativedelta
 from django.urls import reverse
 from django.http import HttpResponseRedirect
 
@@ -232,18 +233,34 @@ def listing(request,id=1):
     with connection.cursor() as cursor:
         cursor.execute("SELECT * FROM User1 WHERE Email =  %s", [login_email])
         current_user = cursor.fetchone()
-        if int(id) ==1:
-            cursor.execute("SELECT * FROM GPU_Listing ORDER BY Listingid DESC")
-            listings = cursor.fetchall()
-        elif int(id) == 2:
-            cursor.execute("SELECT * FROM GPU_Listing ORDER BY Listingid")
-            listings = cursor.fetchall()
-        elif int(id) == 3:
-            cursor.execute("SELECT * FROM GPU_Listing ORDER BY Price DESC")
-            listings = cursor.fetchall()
-        elif int(id) == 4:
-            cursor.execute("SELECT * FROM GPU_Listing ORDER BY Price")
-            listings = cursor.fetchall()
+        if request.GET.get('id') is None:
+            if int(id) ==1:
+                cursor.execute("SELECT * FROM GPU_Listing ORDER BY Listingid DESC")
+                listings = cursor.fetchall()
+            elif int(id) == 2:
+                cursor.execute("SELECT * FROM GPU_Listing ORDER BY Listingid")
+                listings = cursor.fetchall()
+            elif int(id) == 3:
+                cursor.execute("SELECT * FROM GPU_Listing ORDER BY Price DESC")
+                listings = cursor.fetchall()
+            elif int(id) == 4:
+                cursor.execute("SELECT * FROM GPU_Listing ORDER BY Price")
+                listings = cursor.fetchall()
+        elif request.GET.get('id') is not None:
+            if request.GET.get('id') == "Reset":
+                cursor.execute("SELECT * FROM GPU_Listing ORDER BY Listingid DESC")
+                listings = cursor.fetchall()
+            else: 
+                id = int(request.GET.get('id'))
+                if id == 5:
+                    cursor.execute("SELECT * FROM Gpu_Listing g, (SELECT r1.gpu_model AS most_rented_model, r1.gpu_brand AS most_rented_brand, COUNT(*)	FROM rental r1 WHERE r1.start_day > %s GROUP BY r1.gpu_model, r1.gpu_brand HAVING COUNT(*) >= ALL (SELECT COUNT(*) FROM rental r2 WHERE r2.start_day > %s GROUP BY r2.gpu_model, r2.gpu_brand)) r WHERE g.gpu_model=r.most_rented_model AND g.gpu_brand=r.most_rented_brand", [date.today()-timedelta(days=14), date.today()-timedelta(days=14)])
+                    listings = cursor.fetchall()
+                elif id == 6:
+                    cursor.execute("SELECT * FROM Gpu_Listing g, (SELECT r1.gpu_model AS most_rented_model, r1.gpu_brand AS most_rented_brand, COUNT(*)	FROM rental r1 WHERE r1.start_day > %s GROUP BY r1.gpu_model, r1.gpu_brand HAVING COUNT(*) >= ALL (SELECT COUNT(*) FROM rental r2 WHERE r2.start_day > %s GROUP BY r2.gpu_model, r2.gpu_brand)) r WHERE g.gpu_model=r.most_rented_model AND g.gpu_brand=r.most_rented_brand", [date.today()-timedelta(days=30), date.today()-timedelta(days=30)])
+                    listings = cursor.fetchall()
+                elif id == 7:
+                    cursor.execute("SELECT * FROM Gpu_Listing g, (SELECT r1.gpu_model AS most_rented_model, r1.gpu_brand AS most_rented_brand, COUNT(*)	FROM rental r1 WHERE r1.start_day > %s GROUP BY r1.gpu_model, r1.gpu_brand HAVING COUNT(*) >= ALL (SELECT COUNT(*) FROM rental r2 WHERE r2.start_day > %s GROUP BY r2.gpu_model, r2.gpu_brand)) r WHERE g.gpu_model=r.most_rented_model AND g.gpu_brand=r.most_rented_brand", [date.today()-relativedelta(months=+6), date.today()-relativedelta(months=+6)])
+                    listings = cursor.fetchall()
         
 
     result_dict = {'records': listings, 'current_user': current_user}
@@ -505,7 +522,7 @@ def admin_listing(request,custid=None):
 
     return render(request,'app/admin_listing.html',result_dict)
 
-def admin_rental(request,id=""):
+def admin_rental(request,custid=None):
     """Shows the main page"""
     #use this snippet in everyview function to verify user
     login_email = request.session.get('email', 0)
