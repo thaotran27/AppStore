@@ -22,6 +22,17 @@
     <a href="{% url 'listing' 2 %}"><button>Least recent</button></a>
     <a href="{% url 'listing' 3 %}"><button>Price High to Low</button></a>
     <a href="{% url 'listing' 4 %}"><button>Price Low to High</button></a>
+    <br/><br/>
+    <form action="/listing/" method="get" id="dur">
+        <label for="dur">View most rented GPU:</label>
+            <select name="id" id="dur">
+                <option value="Reset">--</option>
+                <option value="5">Past 2 weeks</option>
+                <option value="6">Past 1 month</option>
+                <option value="7">Past 6 months</option>
+            </select>
+        <input type="submit" value="Submit">
+    </form>
     
     <table border=1>
         <thead>
