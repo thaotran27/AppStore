@@ -540,10 +540,10 @@ def admin_rental(request,custid=None):
         if request.GET.get('reset'):
             custid = None
         if custid is None or custid=="Reset":
-            cursor.execute("select u.customerid, u.first_name, u.last_name, g1.gpu_model, g1.gpu_brand, g1.price, r.start_day, r.end_day from user1 u left outer join gpu_listing_archive g1 on u.customerid=g1.customerid left outer join rental r on u.customerid=r.borrower_id and g1.gpu_model=r.gpu_model and g1.gpu_brand=r.gpu_brand and g1.listingid=g2.listingid order by u.customerid asc")
+            cursor.execute("select u.customerid, u.first_name, u.last_name, g1.gpu_model, g1.gpu_brand, g1.price, r.start_day, r.end_day from user1 u left outer join gpu_listing_archive g1 on u.customerid=g1.customerid left outer join rental r on u.customerid=r.borrower_id and g1.gpu_model=r.gpu_model and g1.gpu_brand=r.gpu_brand order by u.customerid asc")
             custinfo = cursor.fetchall()
         else:
-            cursor.execute("select u.customerid, u.first_name, u.last_name, g1.gpu_model, g1.gpu_brand, g1.price, r.start_day, r.end_day from user1 u left outer join gpu_listing_archive g1 on u.customerid=g1.customerid left outer join rental r on u.customerid=r.borrower_id and g1.gpu_model=r.gpu_model and g1.gpu_brand=r.gpu_brand and g1.listingid=g2.listingid where u.customerid= %s", [custid])
+            cursor.execute("select u.customerid, u.first_name, u.last_name, g1.gpu_model, g1.gpu_brand, g1.price, r.start_day, r.end_day from user1 u left outer join gpu_listing_archive g1 on u.customerid=g1.customerid left outer join rental r on u.customerid=r.borrower_id and g1.gpu_model=r.gpu_model and g1.gpu_brand=r.gpu_brand where u.customerid= %s", [custid])
             custinfo = cursor.fetchall()
         
 
