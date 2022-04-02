@@ -1,0 +1,60 @@
+{% load static %}
+<html>
+<style>
+    .logoutbtn {
+        width: auto;
+        padding: 5px 20px;
+        background-color: #f50c0c;
+        color: rgb(255, 255, 255);
+        border-radius: 5px;
+    }
+    .custbtn {
+        width: auto;
+        padding: 5px 20px;
+        background-color: #03c61d;
+        color: rgb(255, 255, 255);
+        border-radius: 5px;
+    }
+    .rental_and_listing_btn {
+        width: auto;
+        padding: 5px 20px;
+        background-color: #0464e2;
+        color: rgb(255, 255, 255);
+        border-radius: 5px;
+    }
+</style>
+<body>
+    <h2>Customer Details</h2>
+    <img src="{% static 'app/images/nus.jpg' %}" width="20%"   alt="NUS logo"/><br/>
+    <a href="appstore_admin">Back to Main</a>
+    <br><br/>
+    <a href="add">Add New Customer</a>
+    <br/><br/>
+    <a href="{% url 'log_out' %}"><button id="logout" type="button" class="logoutbtn">Logout</button></a>
+    <br/><br/>
+    <table border=1>
+        <thead>
+            <th>ID</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Action</th>
+        </thead>
+        {% for cust in records %}
+        <tr>
+            <td> {{ cust.3 }} </td>
+            <td> {{ cust.0 }} </td>
+            <td> {{ cust.1 }} </td>
+            <td>
+                <a href="view/{{cust.3}}"><button>View</button></a> | 
+                <a href="edit/{{cust.3}}"><button>Edit</button></a>
+                | 
+                <form method="POST" style="display: inline;">
+                {% csrf_token %}
+                <input type="hidden" name="id" value="{{cust.3}}"/>
+                <button onclick="return confirm('Are you sure you want to delete {{cust.3}}?');" type="submit" name="action" value="delete">Delete</button> 
+              </form></td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
