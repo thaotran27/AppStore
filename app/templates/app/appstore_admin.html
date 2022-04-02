@@ -5,50 +5,82 @@
         width: auto;
         padding: 5px 20px;
         background-color: #f50c0c;
+        color: rgb(255, 255, 255);
+        border-radius: 5px;
     }
-    .listingbtn {
+    .custbtn {
         width: auto;
         padding: 5px 20px;
-        background-color: #04d31f;
+        background-color: #03c61d;
+        color: rgb(255, 255, 255);
+        border-radius: 5px;
     }
-    .rentalbtn {
+    .rental_and_listing_btn {
         width: auto;
         padding: 5px 20px;
         background-color: #0464e2;
+        color: rgb(255, 255, 255);
+        border-radius: 5px;
     }
 </style>
 <body>
     <h2>Admin Dashboard</h2>
     <img src="{% static 'app/images/nus.jpg' %}" width="20%"   alt="NUS logo"/><br/>
-    <a href="add">New Customer</a>
     <br/><br/>
     <a href="{% url 'log_out' %}"><button id="logout" type="button" class="logoutbtn">Logout</button></a>
-    <a href="{% url 'admin_listing' %}"><button id="listingbtn" type="button" class="listingbtn">Listing</button></a>
-    <a href="{% url 'admin_rental' %}"><button id="rentalbtn" type="button" class="rentalbtn">Rental</button></a>
+    <a href="{% url 'customer_details' %}"><button id="custbtn" type="button" class="custbtn">Customers Details</button></a>
+    <a href="{% url 'admin_listing' %}"><button id="listingbtn" type="button" class="rental_and_listing_btn">Listing</button></a>
+    <a href="{% url 'admin_rental' %}"><button id="rentalbtn" type="button" class="rental_and_listing_btn">Rental</button></a>
+    <div id="total_month_rent" style="visibility: hidden">{{total_month_rent}}</div>
+    <div id="yearid" style="visibility: hidden">{{yearid}}</div>
     <br/><br/>
-    <table border=1>
-        <thead>
-            <th>ID</th>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>Action</th>
-        </thead>
-        {% for cust in records %}
-        <tr>
-            <td> {{ cust.3 }} </td>
-            <td> {{ cust.0 }} </td>
-            <td> {{ cust.1 }} </td>
-            <td>
-                <a href="view/{{cust.3}}"><button>View</button></a> | 
-                <a href="edit/{{cust.3}}"><button>Edit</button></a>
-                | 
-                <form method="POST" style="display: inline;">
-                {% csrf_token %}
-                <input type="hidden" name="id" value="{{cust.3}}"/>
-                <button onclick="return confirm('Are you sure you want to delete {{cust.3}}?');" type="submit" name="action" value="delete">Delete</button> 
-              </form></td>
-        </tr>
-        {% endfor %}
-    </table>
+    <h3>Rental Statistics</h3>
+    <form action="/appstore_admin/" method="get" id="year">
+        <label for="year">Statistics by Year:</label>
+            <select name="year" id="year">
+                {% for y in year %}
+                    <option value="{{ y }}">{{ y }}</option>
+                {% endfor %}
+            </select>
+        <input type="submit" value="Submit">
+    </form>
+    <form action="/appstore_admin/" method="get" id="reset">
+        <input type="submit" value="Reset">
+    
+    </form>
+
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
+    </script>
+
+    <canvas id="myChart" style="width:100%;max-width:600px"></canvas>
+
+        <script>
+            var year = document.getElementById("yearid").innerHTML
+            var listing = document.getElementById("total_month_rent").innerHTML;
+
+            var xValues = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+            var yValues = JSON.parse(listing)
+            console.log(typeof yValues[0])
+            var barColors = ["blue", "blue","blue","blue","blue", "blue", "blue", "blue", "blue", "blue", "blue", "blue"];
+
+        new Chart("myChart", {
+        type: "bar",
+        data: {
+            labels: xValues,
+            datasets: [{
+            backgroundColor: barColors,
+            data: yValues
+            }]
+        },
+        options: {
+            legend: {display: false},
+            title: {
+            display: true,
+            text: "Rental By Month in Year " + year
+            }
+        }
+        });
+        </script>
 </body>
 </html>
