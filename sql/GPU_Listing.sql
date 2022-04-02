@@ -10,7 +10,7 @@ insert into GPU_Listing (Listingid, GPU_model, GPU_brand, Customerid, Available_
 insert into GPU_Listing (Listingid, GPU_model, GPU_brand, Customerid, Available_start_day, Available_end_day, Price) values (4, 'GeForce GTX 1060 6 GB GP104', 'NVIDIA', 'mdrinnan15', '2022-05-14', '2023-12-08', 31);
 insert into GPU_Listing (Listingid, GPU_model, GPU_brand, Customerid, Available_start_day, Available_end_day, Price) values (5, 'A100 PCIe 80 GB', 'NVIDIA', 'trumboldq', '2022-07-11', '2023-07-29', 27);
 insert into GPU_Listing (Listingid, GPU_model, GPU_brand, Customerid, Available_start_day, Available_end_day, Price) values (6, 'GeForce GT 1030 DDR4', 'NVIDIA', 'ttomane', '2022-07-05', '2024-01-31', 18);
-insert into GPU_Listing (Listingid, GPU_model, GPU_brand, Customerid, Available_start_day, Available_end_day, Price) values (7, 'GeForce GTX 1660 Ti Max-Q', 'NVIDIA', 'wgrebert2c', '2022-05-22', '2023-12-18', 28);
+'''insert into GPU_Listing (Listingid, GPU_model, GPU_brand, Customerid, Available_start_day, Available_end_day, Price) values (7, 'GeForce GTX 1660 Ti Max-Q', 'NVIDIA', 'wgrebert2c', '2022-05-22', '2023-12-18', 28);
 insert into GPU_Listing (Listingid, GPU_model, GPU_brand, Customerid, Available_start_day, Available_end_day, Price) values (8, 'A16 PCIe', 'NVIDIA', 'dpiddletownf', '2022-06-10', '2023-05-19', 39);
 insert into GPU_Listing (Listingid, GPU_model, GPU_brand, Customerid, Available_start_day, Available_end_day, Price) values (9, 'T600 Mobile', 'NVIDIA', 'emacaindreish', '2022-06-22', '2023-08-11', 40);
 insert into GPU_Listing (Listingid, GPU_model, GPU_brand, Customerid, Available_start_day, Available_end_day, Price) values (10, 'Quadro RTX 3000 Mobile', 'NVIDIA', 'afookes1n', '2022-06-10', '2023-07-25', 17);
@@ -100,7 +100,7 @@ insert into GPU_Listing (Listingid, GPU_model, GPU_brand, Customerid, Available_
 insert into GPU_Listing (Listingid, GPU_model, GPU_brand, Customerid, Available_start_day, Available_end_day, Price) values (94, 'Quadro GV100', 'NVIDIA', 'bluipoldi', '2022-08-06', '2023-06-27', 5);
 insert into GPU_Listing (Listingid, GPU_model, GPU_brand, Customerid, Available_start_day, Available_end_day, Price) values (95, 'GeForce MX150 GP107', 'NVIDIA', 'ebrigham8', '2022-08-27', '2023-10-04', 7);
 insert into GPU_Listing (Listingid, GPU_model, GPU_brand, Customerid, Available_start_day, Available_end_day, Price) values (96, 'GeForce RTX 3070', 'NVIDIA', 'fspellecy6', '2022-08-18', '2023-09-02', 28);
-'''insert into GPU_Listing (Listingid, GPU_model, GPU_brand, Customerid, Available_start_day, Available_end_day, Price) values (97, 'GeForce GTX 1650 Mobile', 'NVIDIA', 'jduffyn5', '2022-08-19', '2023-08-21', 15);
+insert into GPU_Listing (Listingid, GPU_model, GPU_brand, Customerid, Available_start_day, Available_end_day, Price) values (97, 'GeForce GTX 1650 Mobile', 'NVIDIA', 'jduffyn5', '2022-08-19', '2023-08-21', 15);
 insert into GPU_Listing (Listingid, GPU_model, GPU_brand, Customerid, Available_start_day, Available_end_day, Price) values (98, 'GeForce GTX 1660 SUPER', 'NVIDIA', 'hellacottz', '2022-05-06', '2024-02-15', 16);
 insert into GPU_Listing (Listingid, GPU_model, GPU_brand, Customerid, Available_start_day, Available_end_day, Price) values (99, 'Tesla V100 DGXS 16 GB', 'NVIDIA', 'wconfordb', '2022-05-26', '2024-02-08', 28);
 insert into GPU_Listing (Listingid, GPU_model, GPU_brand, Customerid, Available_start_day, Available_end_day, Price) values (100, 'GeForce RTX 2070 SUPER Max-Q', 'NVIDIA', 'dtestin26', '2022-07-15', '2023-05-13', 16);
