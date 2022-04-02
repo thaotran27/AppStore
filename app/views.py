@@ -84,7 +84,7 @@ def appstore_admin(request, yearid=date.today().year):
         cursor.execute("select distinct extract(year from r.start_day) as year from gpu_listing_archive g join rental r on r.listingid=g.listingid order by year desc")
         years= cursor.fetchall()
         year = [int(year[0]) for year in years]
-        if year[0] < date.today().year:
+        if len(year) > 0 and year[0] < date.today().year:
             year.insert(0, date.today().year)
         yearid = request.GET.get('year')
 
