@@ -12,9 +12,10 @@ CREATE TABLE IF NOT EXISTS User1(
  Wallet_balance NUMERIC NOT NULL CHECK (wallet_balance >= 0),
  Phone_number NUMERIC NOT NULL CHECK (Phone_number <= 9999999999 and Phone_number > 999999999),
  Pass_word VARCHAR(64) NOT NULL,
- Credit_card_number NUMERIC NOT NULL, --CHECK (IF (Credit_card_type = 'mastercard', CHECK (Credit_card_number <= 5999999999999999 and Credit_card_number > 4999999999999999), Credit_card_type = Credit_card_type) or
-											--IF (Credit_card_type = 'visa', CHECK ((Credit_card_number <= 3999999999999999 and Credit_card_number > 2999999999999999) or (Credit_card_number <= 3999999999999 and Credit_card_number > 2999999999999)), Credit_card_type = Credit_card_type) or
-											--IF (Credit_card_type = 'americanexpress', CHECK ((Credit_card_number <= 349999999999999 and Credit_card_number > 339999999999999) or (Credit_card_number <= 379999999999999 and Credit_card_number > 369999999999999)), Credit_card_type = Credit_card_type))
+ Credit_card_number NUMERIC NOT NULL, CHECK (
+	 (Credit_card_type = 'mastercard' and Credit_card_number <= 5999999999999999 and Credit_card_number > 4999999999999999) or
+	(Credit_card_type = 'visa' and ((Credit_card_number <= 4999999999999999 and Credit_card_number > 3999999999999999) or (Credit_card_number <= 4999999999999 and Credit_card_number > 3999999999999))) or
+	(Credit_card_type = 'americanexpress' and ((Credit_card_number <= 349999999999999 and Credit_card_number > 339999999999999) or (Credit_card_number <= 379999999999999 and Credit_card_number > 369999999999999)))),
  Credit_card_type VARCHAR(64) NOT NULL CHECK (Credit_card_type = 'mastercard' or Credit_card_type = 'visa' or Credit_card_type = 'americanexpress'));
 	
  CREATE TABLE IF NOT EXISTS GPU(
