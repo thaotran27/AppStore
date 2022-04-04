@@ -80,6 +80,18 @@ def appstore_admin(request, yearid=date.today().year):
     
     ## Use raw query to get all objects
     with connection.cursor() as cursor:
+        #Remove expired listing and Update available start day
+        cursor.execute("SELECT * FROM GPU_Listing")
+        data = cursor.fetchall()
+        listingid = 0
+        for i in data:
+            listingid=i[0]
+            if i[4] < date.today() and i[5] >= date.today():
+                cursor.execute("UPDATE GPU_Listing SET Available_start_day = %s WHERE Listingid = %s", [date.today(), listingid])
+            elif i[5] < date.today():
+                cursor.execute("DELETE FROM GPU_Listing WHERE Listingid = %s", [listingid])
+        
+
         # Get year
         cursor.execute("select distinct extract(year from r.start_day) as year from gpu_listing_archive g join rental r on r.listingid=g.listingid order by year desc")
         years= cursor.fetchall()
@@ -231,6 +243,18 @@ def listing(request,id=1):
 
     ## Use raw query to get all objects
     with connection.cursor() as cursor:
+        #Remove expired listing and Update available start day
+        cursor.execute("SELECT * FROM GPU_Listing")
+        data = cursor.fetchall()
+        listingid = 0
+        for i in data:
+            listingid=i[0]
+            if i[4] < date.today() and i[5] >= date.today():
+                cursor.execute("UPDATE GPU_Listing SET Available_start_day = %s WHERE Listingid = %s", [date.today(), listingid])
+            elif i[5] < date.today():
+                cursor.execute("DELETE FROM GPU_Listing WHERE Listingid = %s", [listingid])
+        
+        # Get listing
         cursor.execute("SELECT * FROM User1 WHERE Email =  %s", [login_email])
         current_user = cursor.fetchone()
         if request.GET.get('id') is None:
