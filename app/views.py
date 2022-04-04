@@ -233,41 +233,38 @@ def listing(request):
     with connection.cursor() as cursor:
         cursor.execute("SELECT * FROM User1 WHERE Email =  %s", [login_email])
         current_user = cursor.fetchone()
-        cursor.execute("SELECT * FROM GPU_Listing ORDER BY Listingid DESC")
-        listings = cursor.fetchall()
+        cursor.execute("SELECT COUNT(*) FROM GPU_Listing")
+        num = cursor.fetchone()
+        # cursor.execute("SELECT * FROM GPU_Listing ORDER BY Listingid DESC")
+        # listings = cursor.fetchall()
         filter = request.GET.get('filter')
         min_price_filter = request.GET.get('min_price_filter', 0)
         max_price_filter = request.GET.get('max_price_filter', 1000)
+        min_memsize_filter = request.GET.get('mem_min', 0)
+        max_memsize_filter = request.GET.get('mem_max', 100)
         if request.GET.get('reset'):
             filter = None
         if filter is None:
             cursor.execute("SELECT * FROM GPU_Listing ORDER BY Listingid DESC")
             listings = cursor.fetchall()
+            num2 = num
         else:
-            order = ["Listingid DESC", "Listingid ASC", "Price DESC", "Price ASC"]
-            cursor.execute("SELECT * FROM GPU_listing WHERE price < {} AND price > {} ORDER BY {}".format(max_price_filter, min_price_filter,order[int(filter)-1]))
 
+            order = ["gl.Listingid DESC", "gl.Listingid ASC", "gl.Price DESC", "gl.Price ASC"]
+            # cursor.execute("SELECT * FROM GPU_listing WHERE price < {} AND price > {} ORDER BY {}".format(max_price_filter, min_price_filter,order[int(filter)-1]))
+            # cursor.execute("select REGEXP_REPLACE(Memory_size,'[[:alpha:]]','','g') as po_number_new from GPU")
+            price_condition = "gl.price < {} AND gl.price > {}".format(max_price_filter, min_price_filter)
+            memsize_condition = "CAST(REGEXP_REPLACE(g.Memory_size,'[[:alpha:]]','','g') AS FLOAT) < {} AND  CAST(REGEXP_REPLACE(g.Memory_size,'[[:alpha:]]','','g') AS FLOAT) > {}".format(max_memsize_filter, min_memsize_filter)
+            order_condition = "ORDER BY {}".format(order[int(filter)-1])
+            cursor.execute("SELECT * FROM GPU_listing gl, GPU g WHERE gl.GPU_model = g.GPU_model AND gl.GPU_brand = g.GPU_brand" + " AND " + price_condition + " AND " + memsize_condition + " " + order_condition)
+            # cursor.execute("SELECT * FROM GPU_listing gl, GPU g WHERE gl.GPU_model = g.GPU_model AND gl.GPU_brand = g.GPU_brand AND CAST(REGEXP_REPLACE(g.Memory_size,'[[:alpha:]]','','g') AS FLOAT) < {} AND  CAST(REGEXP_REPLACE(g.Memory_size,'[[:alpha:]]','','g') AS FLOAT) > {}".format(max_memsize_filter, min_memsize_filter))
             listings = cursor.fetchall()
-    # if request.POST:
-    #     with connection.cursor() as cursor:
-    #         cursor.execute("SELECT * FROM User1 WHERE Email =  %s", [login_email])
-    #         current_user = cursor.fetchone()
-    #         if int(id) ==1:
-    #             cursor.execute("SELECT * FROM GPU_Listing WHERE Price > %s ORDER BY Listingid DESC", [request.POST.get('min_price_filter',0)])
-    #             listings = cursor.fetchall()
-    #         elif int(id) == 2:
-    #             cursor.execute("SELECT * FROM GPU_Listing WHERE Price > %s ORDER BY Listingid", [request.POST.get('min_price_filter',0)])
-    #             listings = cursor.fetchall()
-    #         elif int(id) == 3:
-    #             cursor.execute("SELECT * FROM GPU_Listing WHERE Price > %s ORDER BY Price DESC", [request.POST.get('min_price_filter',0)])
-    #             listings = cursor.fetchall()
-    #         elif int(id) == 4:
-    #             cursor.execute("SELECT * FROM GPU_Listing WHERE Price > %s ORDER BY Price", [request.POST.get('min_price_filter',0)])
-    #             listings = cursor.fetchall()
-    #         pass
-        
+            cursor.execute("SELECT COUNT(*) FROM GPU_listing gl, GPU g WHERE gl.GPU_model = g.GPU_model AND gl.GPU_brand = g.GPU_brand AND CAST(REGEXP_REPLACE(g.Memory_size,'[[:alpha:]]','','g') AS FLOAT) < {} AND  CAST(REGEXP_REPLACE(g.Memory_size,'[[:alpha:]]','','g') AS FLOAT) > {}".format(max_memsize_filter, min_memsize_filter))
+            
+            # cursor.execute("SELECT COUNT(*) FROM GPU_listing WHERE price < {} AND price > {}".format(max_price_filter, min_price_filter,order[int(filter)-1]))
+            num2 = cursor.fetchone()
 
-    result_dict = {'records': listings, 'current_user': current_user}
+    result_dict = {'records': listings, 'current_user': current_user, 'num': num, 'num2': num2}
 
     return render(request,'app/listing.html',result_dict)
 
@@ -283,9 +280,9 @@ def view_listing(request, id):
     
     ## Use raw query to get a GPU
     with connection.cursor() as cursor:
-        cursor.execute("SELECT * FROM GPU", [id])
+        cursor.execute("SELECT g.GPU_model, g.GPU_brand, g.Memory_size, g.Memory_type, g.Memory_interface, g.Base_clock, g.Memory_clock, g.Shaders, g.TMU, g.ROP FROM GPU_listing gl, GPU g WHERE gl.GPU_model = g.GPU_model AND gl.GPU_brand = g.GPU_brand AND gl.Listingid = {}".format(id))
         view_listing = cursor.fetchone()
-    result_dict = {'view_listing': view_listing}
+    result_dict = {'view_listing': view_listing, 'listingid': id}
 
     return render(request,'app/view_listing.html',result_dict)
 
