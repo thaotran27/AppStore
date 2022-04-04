@@ -22,7 +22,7 @@ import app.views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('appstore_admin', app.views.appstore_admin, name='appstore_admin'),
+    re_path(r'^appstore_admin/(?:(?P<id>\w+)/)?$', app.views.appstore_admin, name='appstore_admin'),
     path('log_out', app.views.log_out, name='log_out'),
     path('add', app.views.add, name='add'),
     path('view/<str:id>', app.views.view, name='view'),
@@ -34,8 +34,7 @@ urlpatterns = [
     path('rental/<str:Listingid>', app.views.rental, name = 'rental'),
     path('personal/<str:id>', app.views.personal, name='personal'),
     path('top_up', app.views.top_up, name='top_up'),
-    # path('admin_listing', app.views.admin_listing, name='admin_listing'),
-    # path('admin_rental', app.views.admin_rental, name='admin_rental'),
+    path('customer_details', app.views.customer_details, name='customer_details'),
     re_path(r'^admin_listing/(?:(?P<id>\w+)/)?$', app.views.admin_listing, name='admin_listing'),
     re_path(r'^admin_rental/(?:(?P<id>\w+)/)?$', app.views.admin_rental, name='admin_rental')
 ]

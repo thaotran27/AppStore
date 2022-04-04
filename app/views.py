@@ -7,6 +7,7 @@ import logging
 from datetime import datetime
 from datetime import date
 from datetime import timedelta
+from dateutil.relativedelta import relativedelta
 from django.urls import reverse
 from django.http import HttpResponseRedirect
 
@@ -67,7 +68,47 @@ def log_out(request):
         return HttpResponseRedirect(reverse('index'))
 
 # Create your views here.
-def appstore_admin(request):
+def appstore_admin(request, yearid=date.today().year):
+    """Shows the main page"""
+    #use this snippet in everyview function to verify user
+    login_email = request.session.get('email', 0)
+    logging.debug(login_email)
+    if login_email == 0:
+        return HttpResponseRedirect(reverse('index'))
+    #use this snippet in everyview function to verify user. ends here
+
+    
+    ## Use raw query to get all objects
+    with connection.cursor() as cursor:
+        # Get year
+        cursor.execute("select distinct extract(year from r.start_day) as year from gpu_listing_archive g join rental r on r.listingid=g.listingid order by year desc")
+        years= cursor.fetchall()
+        year = [int(year[0]) for year in years]
+        if len(year) > 0 and year[0] < date.today().year:
+            year.insert(0, date.today().year)
+        yearid = request.GET.get('year')
+
+        if request.GET.get('reset'):
+            yearid = None
+        if yearid is None:
+            yearid = date.today().year
+            cursor.execute("select extract(month from r.start_day) as month, count(*) from rental r where extract(year from r.start_day) = %s group by month", [yearid])
+            listing = cursor.fetchall()
+        else:
+            cursor.execute("select extract(month from r.start_day) as month, count(*) from rental r where extract(year from r.start_day) = %s group by month", [yearid])
+            listing = cursor.fetchall()
+        month = [month[0] for month in listing]
+        count = [count[1] for count in listing]
+        total_month_rent = [0,0,0,0,0,0,0,0,0,0,0,0]
+        for i in range(len(month)):
+            total_month_rent[int(month[i])-1] = count[i]
+
+    result_dict = {'records': listing, 'year': year, 'yearid': yearid, 'total_month_rent': total_month_rent}
+
+    return render(request,'app/appstore_admin.html',result_dict)
+
+# Create your views here.
+def customer_details(request):
     """Shows the main page"""
     #use this snippet in everyview function to verify user
     login_email = request.session.get('email', 0)
@@ -81,7 +122,6 @@ def appstore_admin(request):
         if request.POST['action'] == 'delete':
             with connection.cursor() as cursor:
                 cursor.execute("DELETE FROM User1 WHERE Customerid = %s", [request.POST['id']])
-            print(request.POST['id'])
 
     ## Use raw query to get all objects
     with connection.cursor() as cursor:
@@ -90,11 +130,16 @@ def appstore_admin(request):
 
     result_dict = {'records': customers}
 
-    return render(request,'app/appstore_admin.html',result_dict)
+    return render(request,'app/customer_details.html',result_dict)
 
 # Create your views here.
 def view(request, id):
-    """Shows the main page"""
+    #use this snippet in everyview function to verify user
+    login_email = request.session.get('email', 0)
+    logging.debug(login_email)
+    if login_email == 0:
+        return HttpResponseRedirect(reverse('index'))
+    #use this snippet in everyview function to verify user. ends here
     
     ## Use raw query to get a customer
     with connection.cursor() as cursor:
@@ -106,7 +151,12 @@ def view(request, id):
 
 # Create your views here.
 def add(request):
-    """Shows the main page"""
+    #use this snippet in everyview function to verify user
+    login_email = request.session.get('email', 0)
+    logging.debug(login_email)
+    if login_email == 0:
+        return HttpResponseRedirect(reverse('index'))
+    #use this snippet in everyview function to verify user. ends here
     context = {}
     status = ''
 
@@ -134,7 +184,12 @@ def add(request):
 
 # Create your views here.
 def edit(request, id):
-    """Shows the main page"""
+    #use this snippet in everyview function to verify user
+    login_email = request.session.get('email', 0)
+    logging.debug(login_email)
+    if login_email == 0:
+        return HttpResponseRedirect(reverse('index'))
+    #use this snippet in everyview function to verify user. ends here
 
     # dictionary for initial data with
     # field names as keys
@@ -267,7 +322,8 @@ def rental(request, Listingid):
                 number_of_days = (datetime.strptime(request.POST['End_day'], '%Y-%m-%d').date()-datetime.strptime(request.POST['Start_day'], '%Y-%m-%d').date()).days + 1
                 total_cost = number_of_days * listing[6]
                 if int(total_cost) > int(Borrower[4]):
-                    return render(request,'app/rental.html', {'error_message': 'Cost of rental exceeds wallet balance, choose new dates or top up wallet','GPU' : GPU_choice, 'status' : status, 'Borrower' : Borrower_details })
+                    return render(request,'app/rental.html', {'status': 'Cost of rental exceeds wallet balance, choose new dates or top up wallet','GPU' : GPU_choice, #'status' : status,
+                     'Borrower' : Borrower_details })
                 #elif ((datetime.strptime(request.POST['Start_day'], '%Y-%m-%d').date() < listing[4]) or datetime.strptime(request.POST['End_day'], '%Y-%m-%d').date() > listing[5]):
                 #    return render(request,'app/rental.html', {'error_message': 'Invalid dates, ensure that the start rental date and end rental date are within range','GPU' : GPU_choice, 'status' : status, 'Borrower' : Borrower_details })
                 elif int(total_cost) <= int(Borrower[4]):
@@ -458,11 +514,11 @@ def admin_listing(request,custid=None):
         custid = request.GET.get('cust')
         if request.GET.get('reset'):
             custid = None
-        if custid is None:
-            cursor.execute("select u.customerid, u.first_name, u.last_name, g1.gpu_model, g1.gpu_brand, g1.price, g2.available_start_day, g2.available_end_day from user1 u left outer join gpu_listing_archive g1 on u.customerid=g1.customerid left outer join gpu_listing g2 on u.customerid=g2.customerid and g1.gpu_model=g2.gpu_model and g1.gpu_brand=g2.gpu_brand order by u.customerid asc")
+        if custid is None or custid=="Reset":
+            cursor.execute("select u.customerid, u.first_name, u.last_name, g1.gpu_model, g1.gpu_brand, g1.price, g2.available_start_day, g2.available_end_day from user1 u left outer join gpu_listing_archive g1 on u.customerid=g1.customerid left outer join gpu_listing g2 on u.customerid=g2.customerid and g1.gpu_model=g2.gpu_model and g1.gpu_brand=g2.gpu_brand and g1.listingid=g2.listingid order by u.customerid asc")
             custinfo = cursor.fetchall()
         else:
-            cursor.execute("select u.customerid, u.first_name, u.last_name, g1.gpu_model, g1.gpu_brand, g1.price, g2.available_start_day, g2.available_end_day from user1 u left outer join gpu_listing_archive g1 on u.customerid=g1.customerid left outer join gpu_listing g2 on u.customerid=g2.customerid and g1.gpu_model=g2.gpu_model and g1.gpu_brand=g2.gpu_brand where u.customerid= %s", [custid])
+            cursor.execute("select u.customerid, u.first_name, u.last_name, g1.gpu_model, g1.gpu_brand, g1.price, g2.available_start_day, g2.available_end_day from user1 u left outer join gpu_listing_archive g1 on u.customerid=g1.customerid left outer join gpu_listing g2 on u.customerid=g2.customerid and g1.gpu_model=g2.gpu_model and g1.gpu_brand=g2.gpu_brand and g1.listingid=g2.listingid where u.customerid= %s", [custid])
             custinfo = cursor.fetchall()
         
 
@@ -470,7 +526,7 @@ def admin_listing(request,custid=None):
 
     return render(request,'app/admin_listing.html',result_dict)
 
-def admin_rental(request,id=""):
+def admin_rental(request,custid=None):
     """Shows the main page"""
     #use this snippet in everyview function to verify user
     login_email = request.session.get('email', 0)
@@ -487,7 +543,7 @@ def admin_rental(request,id=""):
         custid = request.GET.get('cust')
         if request.GET.get('reset'):
             custid = None
-        if custid is None:
+        if custid is None or custid=="Reset":
             cursor.execute("select u.customerid, u.first_name, u.last_name, g1.gpu_model, g1.gpu_brand, g1.price, r.start_day, r.end_day from user1 u left outer join gpu_listing_archive g1 on u.customerid=g1.customerid left outer join rental r on u.customerid=r.borrower_id and g1.gpu_model=r.gpu_model and g1.gpu_brand=r.gpu_brand order by u.customerid asc")
             custinfo = cursor.fetchall()
         else:

@@ -1,7 +1,7 @@
 <html>
 <body>
     <h2>Rental confirmation</h2>
-    <p style="color:red">{{ status|safe }}</p>
+    <a href="https://gpu-rental2002.herokuapp.com/listing/">Back to listing</a>
     <!-- Create a Form -->
     <form method="POST">
         <!-- Security token by Django -->
@@ -21,7 +21,8 @@
         Borrower ID<span class="asteriskField">*</span> </label> <div class="controls"> <input type="text" name="Borrower_id" maxlength="16" class="textinput textInput" required="" id="id_borrowerid"> 
          </div> </div> <div id="div_id_country" class="control-group"> <label for="id_country" class="control-label requiredField">
         Country<span class="asteriskField">*</span> </label> <div class="controls"> <input type="text" name="country" maxlength="16" class="textinput textInput" required="" id="id_country"> </div> </div>  -->
-        <h5 style="font-size:14px; color:#c70505; ">{{ error_message}}</h5>
+        <p style="color:red">{{ status }}</p>
+        <!--<h5 style="color:red; ">{{error_message}}</h5> -->
         <br>
         <button type="submit" value="Rent">Rent</button>
     </form>
