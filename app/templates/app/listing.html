@@ -1,52 +1,94 @@
 {% load static %}
 <html>
-<style>
-.logoutbtn {
-  width: auto;
-  padding: 5px 20px;
-  background-color: #f50c0c;
-}
-</style>
-<body>
-    <h2>GPU Listing</h2>
-    <img src="https://cdn.eteknix.com/wp-content/uploads/2016/09/Logo-on-white.jpg" width="20%"   alt="NUS logo"/><br/>
-    <a href="{% url 'add_listing' %}">List New GPU</a>
-    <br/><br/>
-    <a href="{% url 'top_up' %}">Top up balance</a>
-    <br/><br/>
-    <a href="{% url 'personal' current_user.3 %}">{{current_user.0}}</a>
-    <br/><br/>
-    <a href="{% url 'log_out' %}"><button type="button" class="logoutbtn">Logout</button></a>
-    <br/><br/>
-    <a href="{% url 'listing' 1 %}"><button>Most recent</button></a>
-    <a href="{% url 'listing' 2 %}"><button>Least recent</button></a>
-    <a href="{% url 'listing' 3 %}"><button>Price High to Low</button></a>
-    <a href="{% url 'listing' 4 %}"><button>Price Low to High</button></a>
+    <head>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
     
-    <table border=1>
-        <thead>
-            <th>Listing Number</th>
-            <th>GPU Model</th>
-            <th>GPU Name</th>
-            <th>Price</th>
-            <th>Available Start Date</th>
-            <th>Available End Date</th>
-            <th>Action</th>
-        </thead>
-        {% for listing in records %}
-        <tr>
-            <td> {{ listing.0 }} </td>
-            <td> 
-                <a href="{% url 'view_listing'  listing.0  %}">{{ listing.1 }}</a>
-            </td>
+        <!-- Bootstrap CSS -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+        <style>
+            .dot {
+            height: 25px;
+            width: 25px;
+            background-color: #bbb;
+            border-radius: 100%;
+            display: inline-block;
+            }
+        </style>
+        <script>
+            function updateTextInput_min(val) {
+                document.getElementById('min_textInput').value=val; 
+            }
+            function updateTextInput_max(val) {
+                document.getElementById('max_textInput').value=val; 
+            }
+        </script>
+        <title>Home Page</title>
+      </head>
+<body>
+    <div class="container-fluid">
+        <div>
+        <h1>GPU Listing</h1>
+        <img src="https://cdn.eteknix.com/wp-content/uploads/2016/09/Logo-on-white.jpg" width="20%"   alt="NUS logo"/><br/>
+        <a href="{% url 'add_listing' %}"><button class="btn btn-primary">List New GPU</button></a>
+        <br/>
+        <br/>
+        
+        <form  action="/listing/" method="get" id="filter">
+            <label for="filter">Filter:</label>
+                <select name="filter" id="filter">
+                    <option value=1>Most recent</option>
+                    <option value=2>Least recent</option>
+                    <option value=3>Price High to Low</option>
+                    <option value=4>Price Low to High</option>
+                </select>
+            <p>Minimum price</p>
+            <input type="range" name="min_price_filter" value="0" min="0" max="100" onchange="updateTextInput_min(this.value);">
+            <input style="border: 0" type="text" id="min_textInput" value="" disabled>
+            <br>
+            <p>Maximum price</p>
+            <input type="range" name="max_price_filter" value="100"  min="0" max="100" onchange="updateTextInput_max(this.value);">
+            <input style="border: 0" type="text" id="max_textInput" value="" disabled>
+                
+            <input type="submit" value="Filter">
+        </form>
+        <!-- <form action="/listing/" method="get" id="reset">
+            <input type="submit" value="Reset">
+        </form> -->
+        <table class="table" border=1>
+            <thead class="thead-dark">
+                <th>Listing Number</th>
+                <th>GPU Model</th>
+                <th>GPU Name</th>
+                <th>Price</th>
+                <th>Available Start Date</th>
+                <th>Available End Date</th>
+                <th>Action</th>
+            </thead>
+            {% for listing in records %}
+            <tr>
+                <td> {{ listing.0 }} </td>
+                <td> 
+                    <a href="{% url 'view_listing'  listing.0  %}">{{ listing.1 }}</a>
+                </td>
 
-            <td> {{ listing.2 }} </td>
-            <td> {{ listing.6 }} </td>
-            <td> {{ listing.4 }}</td>
-            <td> {{ listing.5 }}</td>
-            <td> <a href="{% url 'rental'  listing.0  %}"><button>Rent</button></a></td>
-        </tr>
-        {% endfor %}
-    </table>
+                <td> {{ listing.2 }} </td>
+                <td> {{ listing.6 }} </td>
+                <td> {{ listing.4 }}</td>
+                <td> {{ listing.5 }}</td>
+                <td> <a href="{% url 'rental'  listing.0  %}"><button>Rent</button></a></td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+    <div class="position-absolute top-0 end-0" style="padding: 4rem;">
+        <!-- <a  href="{% url 'personal' current_user.3 %}"><button class="btn btn-primary">{{current_user.0}}</button></a>
+        <p>Balance: {{current_user.4}}</p> -->
+        <a href="{% url 'top_up' %}"><button class="btn btn-primary">Top up balance</button></a>
+        <br/><br/>
+        <a href="{% url 'log_out' %}"><button class="btn btn-danger" class="logoutbtn">Logout</button></a>
+    </div>
+</div>
 </body>
 </html>

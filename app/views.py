@@ -165,7 +165,7 @@ def edit(request, id):
     return render(request, "app/edit.html", context)
 
 # Create your views here.
-def listing(request,id=1):
+def listing(request):
     """Shows the main page"""
     #use this snippet in everyview function to verify user
     login_email = request.session.get('email', 0)
@@ -178,18 +178,38 @@ def listing(request,id=1):
     with connection.cursor() as cursor:
         cursor.execute("SELECT * FROM User1 WHERE Email =  %s", [login_email])
         current_user = cursor.fetchone()
-        if int(id) ==1:
+        cursor.execute("SELECT * FROM GPU_Listing ORDER BY Listingid DESC")
+        listings = cursor.fetchall()
+        filter = request.GET.get('filter')
+        min_price_filter = request.GET.get('min_price_filter', 0)
+        max_price_filter = request.GET.get('max_price_filter', 1000)
+        if request.GET.get('reset'):
+            filter = None
+        if filter is None:
             cursor.execute("SELECT * FROM GPU_Listing ORDER BY Listingid DESC")
             listings = cursor.fetchall()
-        elif int(id) == 2:
-            cursor.execute("SELECT * FROM GPU_Listing ORDER BY Listingid")
+        else:
+            order = ["Listingid DESC", "Listingid ASC", "Price DESC", "Price ASC"]
+            cursor.execute("SELECT * FROM GPU_listing WHERE price < {} AND price > {} ORDER BY {}".format(max_price_filter, min_price_filter,order[int(filter)-1]))
+
             listings = cursor.fetchall()
-        elif int(id) == 3:
-            cursor.execute("SELECT * FROM GPU_Listing ORDER BY Price DESC")
-            listings = cursor.fetchall()
-        elif int(id) == 4:
-            cursor.execute("SELECT * FROM GPU_Listing ORDER BY Price")
-            listings = cursor.fetchall()
+    # if request.POST:
+    #     with connection.cursor() as cursor:
+    #         cursor.execute("SELECT * FROM User1 WHERE Email =  %s", [login_email])
+    #         current_user = cursor.fetchone()
+    #         if int(id) ==1:
+    #             cursor.execute("SELECT * FROM GPU_Listing WHERE Price > %s ORDER BY Listingid DESC", [request.POST.get('min_price_filter',0)])
+    #             listings = cursor.fetchall()
+    #         elif int(id) == 2:
+    #             cursor.execute("SELECT * FROM GPU_Listing WHERE Price > %s ORDER BY Listingid", [request.POST.get('min_price_filter',0)])
+    #             listings = cursor.fetchall()
+    #         elif int(id) == 3:
+    #             cursor.execute("SELECT * FROM GPU_Listing WHERE Price > %s ORDER BY Price DESC", [request.POST.get('min_price_filter',0)])
+    #             listings = cursor.fetchall()
+    #         elif int(id) == 4:
+    #             cursor.execute("SELECT * FROM GPU_Listing WHERE Price > %s ORDER BY Price", [request.POST.get('min_price_filter',0)])
+    #             listings = cursor.fetchall()
+    #         pass
         
 
     result_dict = {'records': listings, 'current_user': current_user}

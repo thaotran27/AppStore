@@ -2,8 +2,9 @@
 <body>
     <p style="color:red">{{ status|safe }}</p>
     <!-- Create a Form -->
-    <h2>Current value</h2>
-    <p>{{ user_balance }}</p>
+    <a href="/listing">Back to listing</a>
+    <h2>Top up wallet</h2>
+    <p>Current balance: {{ user_balance }}</p>
     <form method="POST">
         <!-- Security token by Django -->
         {% csrf_token %}
