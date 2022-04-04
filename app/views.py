@@ -232,7 +232,7 @@ def edit(request, id):
     return render(request, "app/edit.html", context)
 
 # Create your views here.
-def listing(request,id=1):
+def listing(request):
     """Shows the main page"""
     #use this snippet in everyview function to verify user
     login_email = request.session.get('email', 0)
@@ -257,37 +257,38 @@ def listing(request,id=1):
         # Get listing
         cursor.execute("SELECT * FROM User1 WHERE Email =  %s", [login_email])
         current_user = cursor.fetchone()
-        if request.GET.get('id') is None:
-            if int(id) ==1:
-                cursor.execute("SELECT * FROM GPU_Listing ORDER BY Listingid DESC")
-                listings = cursor.fetchall()
-            elif int(id) == 2:
-                cursor.execute("SELECT * FROM GPU_Listing ORDER BY Listingid")
-                listings = cursor.fetchall()
-            elif int(id) == 3:
-                cursor.execute("SELECT * FROM GPU_Listing ORDER BY Price DESC")
-                listings = cursor.fetchall()
-            elif int(id) == 4:
-                cursor.execute("SELECT * FROM GPU_Listing ORDER BY Price")
-                listings = cursor.fetchall()
-        elif request.GET.get('id') is not None:
-            if request.GET.get('id') == "Reset":
-                cursor.execute("SELECT * FROM GPU_Listing ORDER BY Listingid DESC")
-                listings = cursor.fetchall()
-            else: 
-                id = int(request.GET.get('id'))
-                if id == 5:
-                    cursor.execute("SELECT * FROM Gpu_Listing g, (SELECT r1.gpu_model AS most_rented_model, r1.gpu_brand AS most_rented_brand, COUNT(*)	FROM rental r1 WHERE r1.start_day > %s GROUP BY r1.gpu_model, r1.gpu_brand HAVING COUNT(*) >= ALL (SELECT COUNT(*) FROM rental r2 WHERE r2.start_day > %s GROUP BY r2.gpu_model, r2.gpu_brand)) r WHERE g.gpu_model=r.most_rented_model AND g.gpu_brand=r.most_rented_brand", [date.today()-timedelta(days=14), date.today()-timedelta(days=14)])
-                    listings = cursor.fetchall()
-                elif id == 6:
-                    cursor.execute("SELECT * FROM Gpu_Listing g, (SELECT r1.gpu_model AS most_rented_model, r1.gpu_brand AS most_rented_brand, COUNT(*)	FROM rental r1 WHERE r1.start_day > %s GROUP BY r1.gpu_model, r1.gpu_brand HAVING COUNT(*) >= ALL (SELECT COUNT(*) FROM rental r2 WHERE r2.start_day > %s GROUP BY r2.gpu_model, r2.gpu_brand)) r WHERE g.gpu_model=r.most_rented_model AND g.gpu_brand=r.most_rented_brand", [date.today()-timedelta(days=30), date.today()-timedelta(days=30)])
-                    listings = cursor.fetchall()
-                elif id == 7:
-                    cursor.execute("SELECT * FROM Gpu_Listing g, (SELECT r1.gpu_model AS most_rented_model, r1.gpu_brand AS most_rented_brand, COUNT(*)	FROM rental r1 WHERE r1.start_day > %s GROUP BY r1.gpu_model, r1.gpu_brand HAVING COUNT(*) >= ALL (SELECT COUNT(*) FROM rental r2 WHERE r2.start_day > %s GROUP BY r2.gpu_model, r2.gpu_brand)) r WHERE g.gpu_model=r.most_rented_model AND g.gpu_brand=r.most_rented_brand", [date.today()-relativedelta(months=+6), date.today()-relativedelta(months=+6)])
-                    listings = cursor.fetchall()
-        
+        cursor.execute("SELECT COUNT(*) FROM GPU_Listing")
+        num = cursor.fetchone()
+        # cursor.execute("SELECT * FROM GPU_Listing ORDER BY Listingid DESC")
+        # listings = cursor.fetchall()
+        filter = request.GET.get('filter')
+        min_price_filter = request.GET.get('min_price_filter', 0)
+        max_price_filter = request.GET.get('max_price_filter', 1000)
+        min_memsize_filter = request.GET.get('mem_min', 0)
+        max_memsize_filter = request.GET.get('mem_max', 100)
+        if request.GET.get('reset'):
+            filter = None
+        if filter is None:
+            cursor.execute("SELECT * FROM GPU_Listing ORDER BY Listingid DESC")
+            listings = cursor.fetchall()
+            num2 = num
+        else:
 
-    result_dict = {'records': listings, 'current_user': current_user}
+            order = ["gl.Listingid DESC", "gl.Listingid ASC", "gl.Price DESC", "gl.Price ASC"]
+            # cursor.execute("SELECT * FROM GPU_listing WHERE price < {} AND price > {} ORDER BY {}".format(max_price_filter, min_price_filter,order[int(filter)-1]))
+            # cursor.execute("select REGEXP_REPLACE(Memory_size,'[[:alpha:]]','','g') as po_number_new from GPU")
+            price_condition = "gl.price < {} AND gl.price > {}".format(max_price_filter, min_price_filter)
+            memsize_condition = "CAST(REGEXP_REPLACE(g.Memory_size,'[[:alpha:]]','','g') AS FLOAT) < {} AND  CAST(REGEXP_REPLACE(g.Memory_size,'[[:alpha:]]','','g') AS FLOAT) > {}".format(max_memsize_filter, min_memsize_filter)
+            order_condition = "ORDER BY {}".format(order[int(filter)-1])
+            cursor.execute("SELECT * FROM GPU_listing gl, GPU g WHERE gl.GPU_model = g.GPU_model AND gl.GPU_brand = g.GPU_brand" + " AND " + price_condition + " AND " + memsize_condition + " " + order_condition)
+            # cursor.execute("SELECT * FROM GPU_listing gl, GPU g WHERE gl.GPU_model = g.GPU_model AND gl.GPU_brand = g.GPU_brand AND CAST(REGEXP_REPLACE(g.Memory_size,'[[:alpha:]]','','g') AS FLOAT) < {} AND  CAST(REGEXP_REPLACE(g.Memory_size,'[[:alpha:]]','','g') AS FLOAT) > {}".format(max_memsize_filter, min_memsize_filter))
+            listings = cursor.fetchall()
+            cursor.execute("SELECT COUNT(*) FROM GPU_listing gl, GPU g WHERE gl.GPU_model = g.GPU_model AND gl.GPU_brand = g.GPU_brand AND CAST(REGEXP_REPLACE(g.Memory_size,'[[:alpha:]]','','g') AS FLOAT) < {} AND  CAST(REGEXP_REPLACE(g.Memory_size,'[[:alpha:]]','','g') AS FLOAT) > {}".format(max_memsize_filter, min_memsize_filter))
+            
+            # cursor.execute("SELECT COUNT(*) FROM GPU_listing WHERE price < {} AND price > {}".format(max_price_filter, min_price_filter,order[int(filter)-1]))
+            num2 = cursor.fetchone()
+
+    result_dict = {'records': listings, 'current_user': current_user, 'num': num, 'num2': num2}
 
     return render(request,'app/listing.html',result_dict)
 
@@ -303,9 +304,9 @@ def view_listing(request, id):
     
     ## Use raw query to get a GPU
     with connection.cursor() as cursor:
-        cursor.execute("SELECT * FROM GPU", [id])
+        cursor.execute("SELECT g.GPU_model, g.GPU_brand, g.Memory_size, g.Memory_type, g.Memory_interface, g.Base_clock, g.Memory_clock, g.Shaders, g.TMU, g.ROP FROM GPU_listing gl, GPU g WHERE gl.GPU_model = g.GPU_model AND gl.GPU_brand = g.GPU_brand AND gl.Listingid = {}".format(id))
         view_listing = cursor.fetchone()
-    result_dict = {'view_listing': view_listing}
+    result_dict = {'view_listing': view_listing, 'listingid': id}
 
     return render(request,'app/view_listing.html',result_dict)
 
