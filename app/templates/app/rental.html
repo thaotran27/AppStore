@@ -38,7 +38,7 @@
     </form>
     <br/><br/>
     <table class='table' border=1>
-        <thead class="thead-dark">
+        <thead class="thead-dark" bgcolor="lightblue">
             <th>Listing Number</th>
             <th>GPU Model</th>
             <th>GPU Name</th>
@@ -61,13 +61,13 @@
         {% endfor %}
     </table>
     <table class='table' border=1>
-        <thead class="thead-dark">
+        <thead class="thead-dark" bgcolor="lightblue">
             <th>Wallet Balance</th>
 
         </thead>
         {% for details in Borrower %}
-        <tr>
-            <td> {{ details.4 }} </td>
+        <tr bgcolor="lightgreen">
+            <td style="font-size:25px"> {{ details.4 }} </td>
 
         </tr>
         {% endfor %}
