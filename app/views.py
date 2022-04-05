@@ -162,6 +162,33 @@ def view(request, id):
     return render(request,'app/view.html',result_dict)
 
 # Create your views here.
+def signup(request):
+    context = {}
+    status = ''
+
+    if request.POST:
+        ## Check if customerid is already in the table
+        with connection.cursor() as cursor:
+
+            cursor.execute("SELECT * FROM User1 WHERE customerid = %s", [request.POST['customerid']])
+            customer = cursor.fetchone()
+            ## No customer with same id
+            if customer == None:
+                ##TODO: date validation
+                cursor.execute("INSERT INTO User1 VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)"
+                        , [request.POST['first_name'], request.POST['last_name'], request.POST['email'],
+                           request.POST['customerid'] , 0, request.POST['phonenumber'], request.POST['password'], request.POST['credit_card_nbr'], request.POST['credit_card_type'] ])
+
+                return redirect('index')
+            else:
+                status = 'Customer with ID %s already exists' % (request.POST['customerid'])
+
+
+    context['status'] = status
+ 
+    return render(request, "app/signup.html", context)
+
+# Create your views here.
 def add(request):
     #use this snippet in everyview function to verify user
     login_email = request.session.get('email', 0)
@@ -185,7 +212,7 @@ def add(request):
                         , [request.POST['first_name'], request.POST['last_name'], request.POST['email'],
                            request.POST['customerid'] , 0, request.POST['phonenumber'], request.POST['password'], request.POST['credit_card_nbr'], request.POST['credit_card_type'] ])
 
-                return redirect('index')
+                return redirect('customer_details')
             else:
                 status = 'Customer with ID %s already exists' % (request.POST['customerid'])
 
