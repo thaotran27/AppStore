@@ -32,6 +32,15 @@
         </script>
         <title>Home Page</title>
       </head>
+    <style>
+    .filterbtn {
+        width: auto;
+        padding: 5px 20px;
+        background-color: #03c61d;
+        color: rgb(255, 255, 255);
+        border-radius: 5px;
+    }
+    </style>
 <body>
     <div class="container-fluid">
         <div>
@@ -73,7 +82,7 @@
             <p>Maximum Memory Size</p>
             <input id="input"  name="mem_max" type="range" min="0" value="40" max="40" onchange="updateTextInput_memsizemax(this.value);">
             <input style="border: 0" type="text" id="mem_max" value="" disabled>
-            <input type="submit" value="Filter">
+            <input type="submit" class="filterbtn" value="Filter">
         </form>
         <p class="badge bg-secondary">{{num2}} out of {{num.0}} result(s)</p>
         <table class="table" border=1>
