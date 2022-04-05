@@ -272,7 +272,7 @@ def listing(request):
             listings = cursor.fetchall()
             num2 = len(listings)
         elif filter != "Reset" and dur == "Reset":
-            order = ["gl.Available_start_day DESC", "gl.Available_start_day ASC", "gl.Price DESC", "gl.Price ASC"]
+            order = ["gl.Available_start_day ASC", "gl.Available_end_day DESC", "gl.Price DESC", "gl.Price ASC"]
             price_condition = "gl.price < {} AND gl.price > {}".format(max_price_filter, min_price_filter)
             memsize_condition = "CAST(REGEXP_REPLACE(g.Memory_size,'[[:alpha:]]','','g') AS FLOAT) < {} AND  CAST(REGEXP_REPLACE(g.Memory_size,'[[:alpha:]]','','g') AS FLOAT) > {}".format(max_memsize_filter, min_memsize_filter)
             order_condition = "ORDER BY {}".format(order[int(filter)-1])
@@ -590,10 +590,10 @@ def admin_rental(request,custid=None):
         if request.GET.get('reset'):
             custid = None
         if custid is None or custid=="Reset":
-            cursor.execute("select u.customerid, u.first_name, u.last_name, g1.gpu_model, g1.gpu_brand, g1.price, r.start_day, r.end_day from user1 u left outer join gpu_listing_archive g1 on u.customerid=g1.customerid left outer join rental r on u.customerid=r.borrower_id and g1.gpu_model=r.gpu_model and g1.gpu_brand=r.gpu_brand order by u.customerid asc")
+            cursor.execute("SELECT u.customerid, u.first_name, u.last_name, j.gpu_model, j.gpu_brand, j.price, j.start_day, j.end_day FROM User1 u LEFT OUTER JOIN (SELECT r.borrower_id AS borrower_id, r.GPU_Model AS GPU_model, r.GPU_Brand AS GPU_Brand, r.start_day AS start_day, r.end_day AS end_day, g.price AS price FROM GPU_Listing_Archive g, Rental r WHERE g.listingid=r.listingid) AS j ON u.customerid=j.borrower_id ORDER BY u.customerid ASC")
             custinfo = cursor.fetchall()
         else:
-            cursor.execute("select u.customerid, u.first_name, u.last_name, g1.gpu_model, g1.gpu_brand, g1.price, r.start_day, r.end_day from user1 u left outer join gpu_listing_archive g1 on u.customerid=g1.customerid left outer join rental r on u.customerid=r.borrower_id and g1.gpu_model=r.gpu_model and g1.gpu_brand=r.gpu_brand where u.customerid= %s", [custid])
+            cursor.execute("SELECT u.customerid, u.first_name, u.last_name, j.gpu_model, j.gpu_brand, j.price, j.start_day, j.end_day FROM User1 u LEFT OUTER JOIN (SELECT r.borrower_id AS borrower_id, r.GPU_Model AS GPU_model, r.GPU_Brand AS GPU_Brand, r.start_day AS start_day, r.end_day AS end_day, g.price AS price FROM GPU_Listing_Archive g, Rental r WHERE g.listingid=r.listingid) AS j ON u.customerid=j.borrower_id WHERE u.customerid= %s", [custid])
             custinfo = cursor.fetchall()
         
 
