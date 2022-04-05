@@ -259,34 +259,59 @@ def listing(request):
         current_user = cursor.fetchone()
         cursor.execute("SELECT COUNT(*) FROM GPU_Listing")
         num = cursor.fetchone()
-        # cursor.execute("SELECT * FROM GPU_Listing ORDER BY Listingid DESC")
-        # listings = cursor.fetchall()
+
         filter = request.GET.get('filter')
         min_price_filter = request.GET.get('min_price_filter', 0)
         max_price_filter = request.GET.get('max_price_filter', 1000)
         min_memsize_filter = request.GET.get('mem_min', 0)
         max_memsize_filter = request.GET.get('mem_max', 100)
-        if request.GET.get('reset'):
-            filter = None
-        if filter is None:
+        dur = request.GET.get('dur')
+
+        if (filter is None or dur is None) or (filter == "Reset" and dur == "Reset"):
             cursor.execute("SELECT * FROM GPU_Listing ORDER BY Listingid DESC")
             listings = cursor.fetchall()
-            num2 = num
-        else:
-
-            order = ["gl.Listingid DESC", "gl.Listingid ASC", "gl.Price DESC", "gl.Price ASC"]
-            # cursor.execute("SELECT * FROM GPU_listing WHERE price < {} AND price > {} ORDER BY {}".format(max_price_filter, min_price_filter,order[int(filter)-1]))
-            # cursor.execute("select REGEXP_REPLACE(Memory_size,'[[:alpha:]]','','g') as po_number_new from GPU")
+            num2 = len(listings)
+        elif filter != "Reset" and dur == "Reset":
+            order = ["gl.Available_start_day DESC", "gl.Available_start_day ASC", "gl.Price DESC", "gl.Price ASC"]
             price_condition = "gl.price < {} AND gl.price > {}".format(max_price_filter, min_price_filter)
             memsize_condition = "CAST(REGEXP_REPLACE(g.Memory_size,'[[:alpha:]]','','g') AS FLOAT) < {} AND  CAST(REGEXP_REPLACE(g.Memory_size,'[[:alpha:]]','','g') AS FLOAT) > {}".format(max_memsize_filter, min_memsize_filter)
             order_condition = "ORDER BY {}".format(order[int(filter)-1])
             cursor.execute("SELECT * FROM GPU_listing gl, GPU g WHERE gl.GPU_model = g.GPU_model AND gl.GPU_brand = g.GPU_brand" + " AND " + price_condition + " AND " + memsize_condition + " " + order_condition)
-            # cursor.execute("SELECT * FROM GPU_listing gl, GPU g WHERE gl.GPU_model = g.GPU_model AND gl.GPU_brand = g.GPU_brand AND CAST(REGEXP_REPLACE(g.Memory_size,'[[:alpha:]]','','g') AS FLOAT) < {} AND  CAST(REGEXP_REPLACE(g.Memory_size,'[[:alpha:]]','','g') AS FLOAT) > {}".format(max_memsize_filter, min_memsize_filter))
             listings = cursor.fetchall()
-            cursor.execute("SELECT COUNT(*) FROM GPU_listing gl, GPU g WHERE gl.GPU_model = g.GPU_model AND gl.GPU_brand = g.GPU_brand AND CAST(REGEXP_REPLACE(g.Memory_size,'[[:alpha:]]','','g') AS FLOAT) < {} AND  CAST(REGEXP_REPLACE(g.Memory_size,'[[:alpha:]]','','g') AS FLOAT) > {}".format(max_memsize_filter, min_memsize_filter))
-            
-            # cursor.execute("SELECT COUNT(*) FROM GPU_listing WHERE price < {} AND price > {}".format(max_price_filter, min_price_filter,order[int(filter)-1]))
-            num2 = cursor.fetchone()
+            num2 = len(listings)
+        elif filter == "Reset" and dur != "Reset":
+            if int(dur) == 5:
+                    cursor.execute("SELECT * FROM Gpu_Listing g, (SELECT r1.gpu_model AS most_rented_model, r1.gpu_brand AS most_rented_brand, COUNT(*)	FROM rental r1 WHERE r1.start_day > %s GROUP BY r1.gpu_model, r1.gpu_brand HAVING COUNT(*) >= ALL (SELECT COUNT(*) FROM rental r2 WHERE r2.start_day > %s GROUP BY r2.gpu_model, r2.gpu_brand)) r WHERE g.gpu_model=r.most_rented_model AND g.gpu_brand=r.most_rented_brand", [date.today()-timedelta(days=14), date.today()-timedelta(days=14)])
+                    listings = cursor.fetchall()
+                    num2 = len(listings)
+            elif int(dur) == 6:
+                    cursor.execute("SELECT * FROM Gpu_Listing g, (SELECT r1.gpu_model AS most_rented_model, r1.gpu_brand AS most_rented_brand, COUNT(*)	FROM rental r1 WHERE r1.start_day > %s GROUP BY r1.gpu_model, r1.gpu_brand HAVING COUNT(*) >= ALL (SELECT COUNT(*) FROM rental r2 WHERE r2.start_day > %s GROUP BY r2.gpu_model, r2.gpu_brand)) r WHERE g.gpu_model=r.most_rented_model AND g.gpu_brand=r.most_rented_brand", [date.today()-timedelta(days=30), date.today()-timedelta(days=30)])
+                    listings = cursor.fetchall()
+                    num2 = len(listings)
+            elif int(dur) == 7:
+                    cursor.execute("SELECT * FROM Gpu_Listing g, (SELECT r1.gpu_model AS most_rented_model, r1.gpu_brand AS most_rented_brand, COUNT(*)	FROM rental r1 WHERE r1.start_day > %s GROUP BY r1.gpu_model, r1.gpu_brand HAVING COUNT(*) >= ALL (SELECT COUNT(*) FROM rental r2 WHERE r2.start_day > %s GROUP BY r2.gpu_model, r2.gpu_brand)) r WHERE g.gpu_model=r.most_rented_model AND g.gpu_brand=r.most_rented_brand", [date.today()-relativedelta(months=+6), date.today()-relativedelta(months=+6)])
+                    listings = cursor.fetchall()
+                    num2 = len(listings)
+        elif filter != "Reset" and dur != "Reset":
+            order = ["gl.Available_start_day DESC", "gl.Available_start_day ASC", "gl.Price DESC", "gl.Price ASC"]
+            price_condition = "gl.price < {} AND gl.price > {}".format(max_price_filter, min_price_filter)
+            memsize_condition = "CAST(REGEXP_REPLACE(g.Memory_size,'[[:alpha:]]','','g') AS FLOAT) < {} AND  CAST(REGEXP_REPLACE(g.Memory_size,'[[:alpha:]]','','g') AS FLOAT) > {}".format(max_memsize_filter, min_memsize_filter)
+            order_condition = "ORDER BY {}".format(order[int(filter)-1])
+            filter_sql = "SELECT * FROM GPU_listing gl, GPU g, (SELECT r1.gpu_model AS most_rented_model, r1.gpu_brand AS most_rented_brand, COUNT(*) FROM rental r1 WHERE r1.start_day > %s GROUP BY r1.gpu_model, r1.gpu_brand HAVING COUNT(*) >= ALL (SELECT COUNT(*) FROM rental r2 WHERE r2.start_day > %s GROUP BY r2.gpu_model, r2.gpu_brand)) AS r WHERE gl.gpu_model=r.most_rented_model AND gl.gpu_brand=r.most_rented_brand AND gl.GPU_model = g.GPU_model AND gl.GPU_brand = g.GPU_brand" + " AND " + price_condition + " AND " + memsize_condition + " " + order_condition
+            if int(dur) == 5:
+                    cursor.execute(filter_sql, [date.today()-timedelta(days=14), date.today()-timedelta(days=14)])
+                    listings = cursor.fetchall()
+                    num2 = len(listings)
+                    print(num2)
+            elif int(dur) == 6:
+                    cursor.execute(filter_sql, [date.today()-timedelta(days=30), date.today()-timedelta(days=30)])
+                    listings = cursor.fetchall()
+                    num2 = len(listings)
+            elif int(dur) == 7:
+                    cursor.execute(filter_sql, [date.today()-relativedelta(months=+6), date.today()-relativedelta(months=+6)])
+                    listings = cursor.fetchall()
+                    num2 = len(listings)
+
 
     result_dict = {'records': listings, 'current_user': current_user, 'num': num, 'num2': num2}
 
