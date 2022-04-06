@@ -270,22 +270,7 @@ def listing(request):
 
     ## Use raw query to get all objects
     with connection.cursor() as cursor:
-<<<<<<< HEAD
         cursor.execute("UPDATE User1 SET Email = %s WHERE Email = %s", [login_email,login_email])
-=======
-        #Remove expired listing and Update available start day
-        cursor.execute("SELECT * FROM GPU_Listing")
-        data = cursor.fetchall()
-        listingid = 0
-        for i in data:
-            listingid=i[0]
-            if i[4] < date.today() and i[5] >= date.today():
-                cursor.execute("UPDATE GPU_Listing SET Available_start_day = %s WHERE Listingid = %s", [date.today(), listingid])
-            elif i[5] < date.today():
-                cursor.execute("DELETE FROM GPU_Listing WHERE Listingid = %s", [listingid])
-        
-        # Get listing
->>>>>>> c2bb37964ae6fb526c8a174b12a63b1f1596f7c1
         cursor.execute("SELECT * FROM User1 WHERE Email =  %s", [login_email])
         current_user = cursor.fetchone()
         cursor.execute("SELECT COUNT(*) FROM GPU_Listing")
