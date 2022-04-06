@@ -3,6 +3,8 @@
   Cleaning script
 
 *******************/
+DROP TRIGGER IF EXISTS Update_Timing ON User1;
+DROP FUNCTION IF EXISTS Date_now();
 DROP TRIGGER IF EXISTS Update_Listing ON GPU_Listing;
 DROP FUNCTION IF EXISTS Log_Listing();
 DROP VIEW IF EXISTS all_listing1;
