@@ -74,13 +74,13 @@
             <input style="border: 0" type="text" id="min_textInput" value="" disabled>
             <br>
             <p>Maximum price</p>
-            <input type="range" name="max_price_filter" value="100"  min="0" max="100" onchange="updateTextInput_max(this.value);">
+            <input type="range" name="max_price_filter" value={{max_price.0}}  min="0" max={{max_price.0}} onchange="updateTextInput_max(this.value);">
             <input style="border: 0" type="text" id="max_textInput" value="" disabled>
             <p>Minimum Memory Size</p>
             <input id="input" name="mem_min" type="range" min="0" value="0" max="40" onchange="updateTextInput_memsizemin(this.value);">
             <input style="border: 0" type="text" id="mem_min" value="" disabled>
             <p>Maximum Memory Size</p>
-            <input id="input"  name="mem_max" type="range" min="0" value="40" max="40" onchange="updateTextInput_memsizemax(this.value);">
+            <input id="input"  name="mem_max" type="range" min="0" value={{max_memsize.0}} max={{max_memsize.0}} onchange="updateTextInput_memsizemax(this.value);">
             <input style="border: 0" type="text" id="mem_max" value="" disabled>
             <input type="submit" class="filterbtn" value="Filter">
         </form>
