@@ -294,8 +294,22 @@ def listing(request):
         max_memsize_filter = request.GET.get('mem_max', 100)
         dur = request.GET.get('dur')
 
-        if (filter is None or dur is None) or (filter == "Reset" and dur == "Reset"):
+        # Get Max Price and Max Memsize for HTML range display
+        cursor.execute("SELECT MAX(price) FROM GPU_Listing")
+        max_price = cursor.fetchone()
+
+        cursor.execute("SELECT MAX(CAST(REGEXP_REPLACE(g.Memory_size,'[[:alpha:]]','','g') AS FLOAT)) FROM GPU g")
+        max_memsize = cursor.fetchone()
+
+        if (filter is None or dur is None) or (filter == "Reset" and dur == "Reset" and min_price_filter == "0" and max_price_filter == "100" and min_memsize_filter == "0" and max_memsize_filter == "40"):
             cursor.execute("SELECT * FROM GPU_Listing ORDER BY Listingid DESC")
+            listings = cursor.fetchall()
+            num2 = len(listings)
+        elif filter == "Reset" and dur == "Reset" and (min_price_filter != "0" or max_price_filter != "100" or min_memsize_filter != "0" or max_memsize_filter != "40"):
+            price_condition = "gl.price < {} AND gl.price > {}".format(max_price_filter, min_price_filter)
+            memsize_condition = "CAST(REGEXP_REPLACE(g.Memory_size,'[[:alpha:]]','','g') AS FLOAT) < {} AND  CAST(REGEXP_REPLACE(g.Memory_size,'[[:alpha:]]','','g') AS FLOAT) > {}".format(max_memsize_filter, min_memsize_filter)
+            order_condition = "ORDER BY Listingid DESC"
+            cursor.execute("SELECT * FROM GPU_listing gl, GPU g WHERE gl.GPU_model = g.GPU_model AND gl.GPU_brand = g.GPU_brand" + " AND " + price_condition + " AND " + memsize_condition + " " + order_condition)
             listings = cursor.fetchall()
             num2 = len(listings)
         elif filter != "Reset" and dur == "Reset":
@@ -340,7 +354,7 @@ def listing(request):
                     num2 = len(listings)
 
 
-    result_dict = {'records': listings, 'current_user': current_user, 'num': num, 'num2': num2}
+    result_dict = {'records': listings, 'current_user': current_user, 'num': num, 'num2': num2, 'max_price': max_price, 'max_memsize': max_memsize}
 
     return render(request,'app/listing.html',result_dict)
 
