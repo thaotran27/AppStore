@@ -34,5 +34,5 @@ psql ${URI} -f sql/Trigger_Functions.sql
 psql ${URI} -f sql/User.sql
 psql ${URI} -f sql/GPU.sql
 psql ${URI} -f sql/GPU_Listing.sql
-psql ${URI} -f sql/GPU_Listing_Archive.sql
+#psql ${URI} -f sql/GPU_Listing_Archive.sql
 psql ${URI} -f sql/Rental.sql

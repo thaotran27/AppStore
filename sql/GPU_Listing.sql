@@ -4,7 +4,7 @@
 
 ****************************/
 
-insert into GPU_Listing (Listingid, GPU_model, GPU_brand, Customerid, Available_start_day, Available_end_day, Price) values (1, 'Quadro RTX 5000', 'NVIDIA', 'bhallor1', '2022-05-17', '2023-11-09', 38);
+/*insert into GPU_Listing (Listingid, GPU_model, GPU_brand, Customerid, Available_start_day, Available_end_day, Price) values (1, 'Quadro RTX 5000', 'NVIDIA', 'bhallor1', '2022-05-17', '2023-11-09', 38);
 insert into GPU_Listing (Listingid, GPU_model, GPU_brand, Customerid, Available_start_day, Available_end_day, Price) values (2, 'GeForce MX350', 'NVIDIA', 'emacaindreish', '2022-08-14', '2023-07-06', 6);
 insert into GPU_Listing (Listingid, GPU_model, GPU_brand, Customerid, Available_start_day, Available_end_day, Price) values (3, 'GeForce RTX 3080 Ti Mobile', 'NVIDIA', 'bdradey8', '2022-08-06', '2023-04-02', 28);
 insert into GPU_Listing (Listingid, GPU_model, GPU_brand, Customerid, Available_start_day, Available_end_day, Price) values (4, 'GeForce GTX 1060 6 GB GP104', 'NVIDIA', 'mdrinnan15', '2022-05-14', '2023-12-08', 31);
@@ -296,7 +296,7 @@ insert into GPU_Listing (Listingid, GPU_model, GPU_brand, Customerid, Available_
 insert into GPU_Listing (Listingid, GPU_model, GPU_brand, Customerid, Available_start_day, Available_end_day, Price) values (290, 'P102-100', 'NVIDIA', 'espooner5', '2022-06-18', '2023-08-09', 37);
 insert into GPU_Listing (Listingid, GPU_model, GPU_brand, Customerid, Available_start_day, Available_end_day, Price) values (291, 'GRID A100A', 'NVIDIA', 'ttomane', '2022-07-17', '2023-12-16', 0);
 insert into GPU_Listing (Listingid, GPU_model, GPU_brand, Customerid, Available_start_day, Available_end_day, Price) values (292, 'GeForce RTX 2070 SUPER', 'NVIDIA', 'moreilly0', '2022-05-10', '2023-03-31', 7);
-insert into GPU_Listing (Listingid, GPU_model, GPU_brand, Customerid, Available_start_day, Available_end_day, Price) values (293, 'A100 SXM4 80 GB', 'NVIDIA', 'bheyburn2r', '2022-06-01', '2023-10-07', 8);
+*/insert into GPU_Listing (Listingid, GPU_model, GPU_brand, Customerid, Available_start_day, Available_end_day, Price) values (293, 'A100 SXM4 80 GB', 'NVIDIA', 'bheyburn2r', '2022-06-01', '2023-10-07', 8);
 insert into GPU_Listing (Listingid, GPU_model, GPU_brand, Customerid, Available_start_day, Available_end_day, Price) values (294, 'Tesla V100 SXM2 16 GB', 'NVIDIA', 'bsheridant', '2022-08-29', '2023-10-01', 45);
 insert into GPU_Listing (Listingid, GPU_model, GPU_brand, Customerid, Available_start_day, Available_end_day, Price) values (295, 'RTX A4000', 'NVIDIA', 'mdrinnan15', '2022-05-06', '2023-09-22', 31);
 insert into GPU_Listing (Listingid, GPU_model, GPU_brand, Customerid, Available_start_day, Available_end_day, Price) values (296, 'GeForce MX450 30.5W 8Gbps', 'NVIDIA', 'bdradey8', '2022-06-07', '2023-04-25', 20);
