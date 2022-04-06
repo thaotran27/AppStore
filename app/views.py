@@ -584,7 +584,7 @@ def admin_listing(request,custid=None):
 
     ## Use raw query to get all objects
     with connection.cursor() as cursor:
-        cursor.execute("DELETE User1 SET Email = %s WHERE Email = %s", [login_email,login_email])
+        cursor.execute("DELETE FROM User1 WHERE Email = %s", [login_email])
         cursor.execute("SELECT * FROM User1 ORDER BY customerid ASC")
         customers = cursor.fetchall()
         customers_name = [customer[3] for customer in customers]
