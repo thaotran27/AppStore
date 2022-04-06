@@ -410,7 +410,7 @@ def rental(request, Listingid):
                     cursor.execute("INSERT INTO Rental VALUES (%s, %s, %s, %s, %s, %s)"
                         , [Borrower[3], listing[1], listing[2],
                            int(Listingid) , request.POST['Start_day'], request.POST['End_day']])
-                    cursor.execute("SELECT * FROM GPU_Listing g1 WHERE g1.listingid >= all (SELECT g2.listingid FROM GPU_Listing g2)")
+                    cursor.execute("SELECT * FROM GPU_Listing_Archive g1 WHERE g1.listingid_Archive >= all (SELECT g2.listingid FROM GPU_Listing_Archive g2)")
                     last_entry = cursor.fetchone()
                     cursor.execute("DELETE FROM GPU_Listing WHERE Listingid = %s", [Listingid])
                     if (datetime.strptime(request.POST['Start_day'], '%Y-%m-%d').date() == listing[4]):
@@ -522,7 +522,7 @@ def add_listing(request):
     current_user = login_email
     with connection.cursor() as cursor:
 
-        cursor.execute("SELECT * FROM GPU_Listing ORDER BY Listingid DESC")
+        cursor.execute("SELECT * FROM GPU_Listing_Archive ORDER BY Listingid DESC")
         listing_data = cursor.fetchall()
         next_id = listing_data[0][0] + 1
         cursor.execute("SELECT * FROM User1 WHERE Email = %s", [login_email])
