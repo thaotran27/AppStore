@@ -1,0 +1,15 @@
+CREATE OR REPLACE FUNCTION Log_listing()
+	RETURNS TRIGGER
+	LANGUAGE PLPGSQL
+	AS
+$$
+BEGIN
+	INSERT INTO GPU_Listing_Archive VALUES (NEW.Listingid, NEW.GPU_model, NEW.GPU_brand, NEW.Customerid, NEW.Price);
+	RETURN NEW;
+END;
+$$;
+CREATE TRIGGER Update_listing 
+AFTER INSERT 
+ON GPU_Listing
+FOR EACH ROW
+EXECUTE PROCEDURE Log_listing();

@@ -28,8 +28,9 @@ done < ".env"
 URI="postgres://$DB_USER:$DB_PASSWORD@$DB_HOST:$DB_PORT/$DB_NAME"
 
 # Run the scripts to insert data.
-psql ${URI} -f sql/AppStoreClean.sql
+psql ${URI} -f sql/Clear_Data.sql
 psql ${URI} -f sql/GPU_rentalSchema.sql
+psql ${URI} -f sql/Trigger_Functions.sql
 psql ${URI} -f sql/User.sql
 psql ${URI} -f sql/GPU.sql
 psql ${URI} -f sql/GPU_Listing.sql
