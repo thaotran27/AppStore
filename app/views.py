@@ -318,6 +318,7 @@ def listing(request):
             elif int(dur) == 7:
                     cursor.execute("SELECT * FROM Gpu_Listing g, (SELECT r1.gpu_model AS most_rented_model, r1.gpu_brand AS most_rented_brand, COUNT(*)	FROM rental r1 WHERE r1.start_day > %s GROUP BY r1.gpu_model, r1.gpu_brand HAVING COUNT(*) >= ALL (SELECT COUNT(*) FROM rental r2 WHERE r2.start_day > %s GROUP BY r2.gpu_model, r2.gpu_brand)) r WHERE g.gpu_model=r.most_rented_model AND g.gpu_brand=r.most_rented_brand", [date.today()-relativedelta(months=+6), date.today()-relativedelta(months=+6)])
                     listings = cursor.fetchall()
+                    print(listings)
                     num2 = len(listings)
         elif filter != "Reset" and dur != "Reset":
             order = ["gl.Available_start_day DESC", "gl.Available_start_day ASC", "gl.Price DESC", "gl.Price ASC"]
@@ -329,7 +330,6 @@ def listing(request):
                     cursor.execute(filter_sql, [date.today()-timedelta(days=14), date.today()-timedelta(days=14)])
                     listings = cursor.fetchall()
                     num2 = len(listings)
-                    print(num2)
             elif int(dur) == 6:
                     cursor.execute(filter_sql, [date.today()-timedelta(days=30), date.today()-timedelta(days=30)])
                     listings = cursor.fetchall()
@@ -588,10 +588,10 @@ def admin_listing(request,custid=None):
         if request.GET.get('reset'):
             custid = None
         if custid is None or custid=="Reset":
-            cursor.execute("select u.customerid, u.first_name, u.last_name, g1.gpu_model, g1.gpu_brand, g1.price, g2.available_start_day, g2.available_end_day from user1 u left outer join gpu_listing_archive g1 on u.customerid=g1.customerid left outer join gpu_listing g2 on u.customerid=g2.customerid and g1.gpu_model=g2.gpu_model and g1.gpu_brand=g2.gpu_brand and g1.listingid=g2.listingid order by u.customerid asc")
+            cursor.execute("select u.customerid, u.first_name, u.last_name, g.gpu_model, g.gpu_brand, g.price, g.available_start_day, g.available_end_day from user1 u left outer join (select g1.customerid as customerid, g1.gpu_model as gpu_model, g1.gpu_brand as gpu_brand, g1.price as price, g2.available_start_day as available_start_day, g2.available_end_day as available_end_day from gpu_listing_archive g1, gpu_listing g2 where g1.gpu_model=g2.gpu_model and g1.gpu_brand=g2.gpu_brand and g1.listingid=g2.listingid) g on u.customerid=g.customerid order by u.customerid asc")
             custinfo = cursor.fetchall()
         else:
-            cursor.execute("select u.customerid, u.first_name, u.last_name, g1.gpu_model, g1.gpu_brand, g1.price, g2.available_start_day, g2.available_end_day from user1 u left outer join gpu_listing_archive g1 on u.customerid=g1.customerid left outer join gpu_listing g2 on u.customerid=g2.customerid and g1.gpu_model=g2.gpu_model and g1.gpu_brand=g2.gpu_brand and g1.listingid=g2.listingid where u.customerid= %s", [custid])
+            cursor.execute("select u.customerid, u.first_name, u.last_name, g.gpu_model, g.gpu_brand, g.price, g.available_start_day, g.available_end_day from user1 u left outer join (select g1.customerid as customerid, g1.gpu_model as gpu_model, g1.gpu_brand as gpu_brand, g1.price as price, g2.available_start_day as available_start_day, g2.available_end_day as available_end_day from gpu_listing_archive g1, gpu_listing g2 where g1.gpu_model=g2.gpu_model and g1.gpu_brand=g2.gpu_brand and g1.listingid=g2.listingid) g on u.customerid=g.customerid where u.customerid= %s", [custid])
             custinfo = cursor.fetchall()
         
 
