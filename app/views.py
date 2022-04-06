@@ -231,6 +231,7 @@ def listing(request):
 
     ## Use raw query to get all objects
     with connection.cursor() as cursor:
+        cursor.execute("UPDATE User1 SET Email = %s WHERE Email = %s", [login_email,login_email])
         cursor.execute("SELECT * FROM User1 WHERE Email =  %s", [login_email])
         current_user = cursor.fetchone()
         cursor.execute("SELECT COUNT(*) FROM GPU_Listing")
@@ -505,6 +506,7 @@ def admin_listing(request,custid=None):
 
     ## Use raw query to get all objects
     with connection.cursor() as cursor:
+        cursor.execute("DELETE User1 SET Email = %s WHERE Email = %s", [login_email,login_email])
         cursor.execute("SELECT * FROM User1 ORDER BY customerid ASC")
         customers = cursor.fetchall()
         customers_name = [customer[3] for customer in customers]
