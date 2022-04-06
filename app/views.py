@@ -413,12 +413,17 @@ def rental(request, Listingid):
                     cursor.execute("SELECT * FROM GPU_Listing_Archive g1 WHERE g1.listingid >= all (SELECT g2.listingid FROM GPU_Listing_Archive g2)")
                     last_entry = cursor.fetchone()
                     cursor.execute("DELETE FROM GPU_Listing WHERE Listingid = %s", [Listingid])
-                    if (datetime.strptime(request.POST['Start_day'], '%Y-%m-%d').date() == listing[4]):
+                    if (datetime.strptime(request.POST['Start_day'], '%Y-%m-%d').date() == listing[4]) and (datetime.strptime(request.POST['End_day'], '%Y-%m-%d').date() == listing[5]):
+                        return redirect('listing')
+                    elif (datetime.strptime(request.POST['Start_day'], '%Y-%m-%d').date() == listing[4] and (datetime.strptime(request.POST['End_day'], '%Y-%m-%d').date() < listing[5])):
                         cursor.execute("INSERT INTO GPU_Listing VALUES(%s, %s,%s,%s,%s,%s,%s)", [last_entry[0] + 1 ,listing[1], listing[2], listing[3], 
                                                                                          datetime.strptime(request.POST['End_day'], '%Y-%m-%d').date() + timedelta(days = 1), listing[5], listing[6]])
                         #cursor.execute("INSERT INTO GPU_Listing_Archive VALUES(%s, %s,%s,%s,%s)", [last_entry[0] + 1 ,listing[1], listing[2], listing[3], 
-                                                                                          #listing[6]])                                                                     
-                    if (datetime.strptime(request.POST['Start_day'], '%Y-%m-%d').date() > listing[4]):
+                                                                                          #listing[6]]) 
+                    elif (datetime.strptime(request.POST['Start_day'], '%Y-%m-%d').date() > listing[4]) and (datetime.strptime(request.POST['End_day'], '%Y-%m-%d').date() == listing[5]):
+                        cursor.execute("INSERT INTO GPU_Listing VALUES(%s, %s,%s,%s,%s,%s,%s)", [last_entry[0] + 1 ,listing[1], listing[2], listing[3], 
+                                                                                         listing[4], datetime.strptime(request.POST['Start_day'], '%Y-%m-%d').date() - timedelta(days = 1), listing[6]])
+                    elif (datetime.strptime(request.POST['Start_day'], '%Y-%m-%d').date() > listing[4]) and (datetime.strptime(request.POST['End_day'], '%Y-%m-%d').date() < listing[5]):
                         cursor.execute("INSERT INTO GPU_Listing VALUES(%s, %s,%s,%s,%s,%s,%s)", [last_entry[0] + 1 ,listing[1], listing[2], listing[3], 
                                                                                          listing[4], datetime.strptime(request.POST['Start_day'], '%Y-%m-%d').date()  - timedelta(days = 1), listing[6]])
                         cursor.execute("INSERT INTO GPU_Listing VALUES(%s, %s,%s,%s,%s,%s,%s)", [last_entry[0] + 2 ,listing[1], listing[2], listing[3], 
