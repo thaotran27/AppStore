@@ -25,6 +25,7 @@ urlpatterns = [
     re_path(r'^appstore_admin/(?:(?P<id>\w+)/)?$', app.views.appstore_admin, name='appstore_admin'),
     path('log_out', app.views.log_out, name='log_out'),
     path('add', app.views.add, name='add'),
+    path('signup', app.views.signup, name='signup'),
     path('view/<str:id>', app.views.view, name='view'),
     path('edit/<str:id>', app.views.edit, name='edit'),
     path('', app.views.index, name='index'),

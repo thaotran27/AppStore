@@ -32,6 +32,15 @@
         </script>
         <title>Home Page</title>
       </head>
+    <style>
+    .filterbtn {
+        width: auto;
+        padding: 5px 20px;
+        background-color: #03c61d;
+        color: rgb(255, 255, 255);
+        border-radius: 5px;
+    }
+    </style>
 <body>
     <div class="container-fluid">
         <div>
@@ -45,30 +54,37 @@
         <form  action="/listing/" method="get" id="filter">
             <label for="filter">Filter:</label>
                 <select name="filter" id="filter">
+                    <option value="Reset">--</option>
                     <option value=1>Most recent</option>
                     <option value=2>Least recent</option>
                     <option value=3>Price High to Low</option>
                     <option value=4>Price Low to High</option>
                 </select>
+            <br/><br/>
+            <label for="dur">View most rented GPU:</label>
+                <select name="dur" id="dur">
+                    <option value="Reset">--</option>
+                    <option value="5">Past 2 weeks</option>
+                    <option value="6">Past 1 month</option>
+                    <option value="7">Past 6 months</option>
+                </select>
+                <br/><br/>
             <p>Minimum price</p>
             <input type="range" name="min_price_filter" value="0" min="0" max="100" onchange="updateTextInput_min(this.value);">
             <input style="border: 0" type="text" id="min_textInput" value="" disabled>
             <br>
             <p>Maximum price</p>
-            <input type="range" name="max_price_filter" value="100"  min="0" max="100" onchange="updateTextInput_max(this.value);">
+            <input type="range" name="max_price_filter" value={{max_price.0}}  min="0" max={{max_price.0}} onchange="updateTextInput_max(this.value);">
             <input style="border: 0" type="text" id="max_textInput" value="" disabled>
             <p>Minimum Memory Size</p>
             <input id="input" name="mem_min" type="range" min="0" value="0" max="40" onchange="updateTextInput_memsizemin(this.value);">
             <input style="border: 0" type="text" id="mem_min" value="" disabled>
             <p>Maximum Memory Size</p>
-            <input id="input"  name="mem_max" type="range" min="0" value="40" max="40" onchange="updateTextInput_memsizemax(this.value);">
+            <input id="input"  name="mem_max" type="range" min="0" value={{max_memsize.0}} max={{max_memsize.0}} onchange="updateTextInput_memsizemax(this.value);">
             <input style="border: 0" type="text" id="mem_max" value="" disabled>
-            <input type="submit" value="Filter">
+            <input type="submit" class="filterbtn" value="Filter">
         </form>
-        <!-- <form action="/listing/" method="get" id="reset">
-            <input type="submit" value="Reset">
-        </form> -->
-        <p class="badge bg-secondary">{{num2.0}} out of {{num.0}} result(s)</p>
+        <p class="badge bg-secondary">{{num2}} out of {{num.0}} result(s)</p>
         <table class="table" border=1>
             <thead class="thead-dark">
                 <th>Listing Number</th>

@@ -80,6 +80,18 @@ def appstore_admin(request, yearid=date.today().year):
     
     ## Use raw query to get all objects
     with connection.cursor() as cursor:
+        #Remove expired listing and Update available start day
+        cursor.execute("SELECT * FROM GPU_Listing")
+        data = cursor.fetchall()
+        listingid = 0
+        for i in data:
+            listingid=i[0]
+            if i[4] < date.today() and i[5] >= date.today():
+                cursor.execute("UPDATE GPU_Listing SET Available_start_day = %s WHERE Listingid = %s", [date.today(), listingid])
+            elif i[5] < date.today():
+                cursor.execute("DELETE FROM GPU_Listing WHERE Listingid = %s", [listingid])
+        
+
         # Get year
         cursor.execute("select distinct extract(year from r.start_day) as year from gpu_listing_archive g join rental r on r.listingid=g.listingid order by year desc")
         years= cursor.fetchall()
@@ -150,6 +162,33 @@ def view(request, id):
     return render(request,'app/view.html',result_dict)
 
 # Create your views here.
+def signup(request):
+    context = {}
+    status = ''
+
+    if request.POST:
+        ## Check if customerid is already in the table
+        with connection.cursor() as cursor:
+
+            cursor.execute("SELECT * FROM User1 WHERE customerid = %s", [request.POST['customerid']])
+            customer = cursor.fetchone()
+            ## No customer with same id
+            if customer == None:
+                ##TODO: date validation
+                cursor.execute("INSERT INTO User1 VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)"
+                        , [request.POST['first_name'], request.POST['last_name'], request.POST['email'],
+                           request.POST['customerid'] , 0, request.POST['phonenumber'], request.POST['password'], request.POST['credit_card_nbr'], request.POST['credit_card_type'] ])
+
+                return redirect('index')
+            else:
+                status = 'Customer with ID %s already exists' % (request.POST['customerid'])
+
+
+    context['status'] = status
+ 
+    return render(request, "app/signup.html", context)
+
+# Create your views here.
 def add(request):
     #use this snippet in everyview function to verify user
     login_email = request.session.get('email', 0)
@@ -173,7 +212,7 @@ def add(request):
                         , [request.POST['first_name'], request.POST['last_name'], request.POST['email'],
                            request.POST['customerid'] , 0, request.POST['phonenumber'], request.POST['password'], request.POST['credit_card_nbr'], request.POST['credit_card_type'] ])
 
-                return redirect('index')
+                return redirect('customer_details')
             else:
                 status = 'Customer with ID %s already exists' % (request.POST['customerid'])
 
@@ -231,41 +270,95 @@ def listing(request):
 
     ## Use raw query to get all objects
     with connection.cursor() as cursor:
+<<<<<<< HEAD
         cursor.execute("UPDATE User1 SET Email = %s WHERE Email = %s", [login_email,login_email])
+=======
+        #Remove expired listing and Update available start day
+        cursor.execute("SELECT * FROM GPU_Listing")
+        data = cursor.fetchall()
+        listingid = 0
+        for i in data:
+            listingid=i[0]
+            if i[4] < date.today() and i[5] >= date.today():
+                cursor.execute("UPDATE GPU_Listing SET Available_start_day = %s WHERE Listingid = %s", [date.today(), listingid])
+            elif i[5] < date.today():
+                cursor.execute("DELETE FROM GPU_Listing WHERE Listingid = %s", [listingid])
+        
+        # Get listing
+>>>>>>> c2bb37964ae6fb526c8a174b12a63b1f1596f7c1
         cursor.execute("SELECT * FROM User1 WHERE Email =  %s", [login_email])
         current_user = cursor.fetchone()
         cursor.execute("SELECT COUNT(*) FROM GPU_Listing")
         num = cursor.fetchone()
-        # cursor.execute("SELECT * FROM GPU_Listing ORDER BY Listingid DESC")
-        # listings = cursor.fetchall()
+
         filter = request.GET.get('filter')
         min_price_filter = request.GET.get('min_price_filter', 0)
         max_price_filter = request.GET.get('max_price_filter', 1000)
         min_memsize_filter = request.GET.get('mem_min', 0)
         max_memsize_filter = request.GET.get('mem_max', 100)
-        if request.GET.get('reset'):
-            filter = None
-        if filter is None:
+        dur = request.GET.get('dur')
+
+        # Get Max Price and Max Memsize for HTML range display
+        cursor.execute("SELECT MAX(price) FROM GPU_Listing")
+        max_price = cursor.fetchone()
+
+        cursor.execute("SELECT MAX(CAST(REGEXP_REPLACE(g.Memory_size,'[[:alpha:]]','','g') AS FLOAT)) FROM GPU g")
+        max_memsize = cursor.fetchone()
+
+        if (filter is None or dur is None) or (filter == "Reset" and dur == "Reset" and min_price_filter == "0" and max_price_filter == "100" and min_memsize_filter == "0" and max_memsize_filter == "40"):
             cursor.execute("SELECT * FROM GPU_Listing ORDER BY Listingid DESC")
             listings = cursor.fetchall()
-            num2 = num
-        else:
-
-            order = ["gl.Listingid DESC", "gl.Listingid ASC", "gl.Price DESC", "gl.Price ASC"]
-            # cursor.execute("SELECT * FROM GPU_listing WHERE price < {} AND price > {} ORDER BY {}".format(max_price_filter, min_price_filter,order[int(filter)-1]))
-            # cursor.execute("select REGEXP_REPLACE(Memory_size,'[[:alpha:]]','','g') as po_number_new from GPU")
+            num2 = len(listings)
+        elif filter == "Reset" and dur == "Reset" and (min_price_filter != "0" or max_price_filter != "100" or min_memsize_filter != "0" or max_memsize_filter != "40"):
+            price_condition = "gl.price < {} AND gl.price > {}".format(max_price_filter, min_price_filter)
+            memsize_condition = "CAST(REGEXP_REPLACE(g.Memory_size,'[[:alpha:]]','','g') AS FLOAT) < {} AND  CAST(REGEXP_REPLACE(g.Memory_size,'[[:alpha:]]','','g') AS FLOAT) > {}".format(max_memsize_filter, min_memsize_filter)
+            order_condition = "ORDER BY Listingid DESC"
+            cursor.execute("SELECT * FROM GPU_listing gl, GPU g WHERE gl.GPU_model = g.GPU_model AND gl.GPU_brand = g.GPU_brand" + " AND " + price_condition + " AND " + memsize_condition + " " + order_condition)
+            listings = cursor.fetchall()
+            num2 = len(listings)
+        elif filter != "Reset" and dur == "Reset":
+            order = ["gl.Available_start_day ASC", "gl.Available_end_day DESC", "gl.Price DESC", "gl.Price ASC"]
             price_condition = "gl.price < {} AND gl.price > {}".format(max_price_filter, min_price_filter)
             memsize_condition = "CAST(REGEXP_REPLACE(g.Memory_size,'[[:alpha:]]','','g') AS FLOAT) < {} AND  CAST(REGEXP_REPLACE(g.Memory_size,'[[:alpha:]]','','g') AS FLOAT) > {}".format(max_memsize_filter, min_memsize_filter)
             order_condition = "ORDER BY {}".format(order[int(filter)-1])
             cursor.execute("SELECT * FROM GPU_listing gl, GPU g WHERE gl.GPU_model = g.GPU_model AND gl.GPU_brand = g.GPU_brand" + " AND " + price_condition + " AND " + memsize_condition + " " + order_condition)
-            # cursor.execute("SELECT * FROM GPU_listing gl, GPU g WHERE gl.GPU_model = g.GPU_model AND gl.GPU_brand = g.GPU_brand AND CAST(REGEXP_REPLACE(g.Memory_size,'[[:alpha:]]','','g') AS FLOAT) < {} AND  CAST(REGEXP_REPLACE(g.Memory_size,'[[:alpha:]]','','g') AS FLOAT) > {}".format(max_memsize_filter, min_memsize_filter))
             listings = cursor.fetchall()
-            cursor.execute("SELECT COUNT(*) FROM GPU_listing gl, GPU g WHERE gl.GPU_model = g.GPU_model AND gl.GPU_brand = g.GPU_brand AND CAST(REGEXP_REPLACE(g.Memory_size,'[[:alpha:]]','','g') AS FLOAT) < {} AND  CAST(REGEXP_REPLACE(g.Memory_size,'[[:alpha:]]','','g') AS FLOAT) > {}".format(max_memsize_filter, min_memsize_filter))
-            
-            # cursor.execute("SELECT COUNT(*) FROM GPU_listing WHERE price < {} AND price > {}".format(max_price_filter, min_price_filter,order[int(filter)-1]))
-            num2 = cursor.fetchone()
+            num2 = len(listings)
+        elif filter == "Reset" and dur != "Reset":
+            if int(dur) == 5:
+                    cursor.execute("SELECT * FROM Gpu_Listing g, (SELECT r1.gpu_model AS most_rented_model, r1.gpu_brand AS most_rented_brand, COUNT(*)	FROM rental r1 WHERE r1.start_day > %s GROUP BY r1.gpu_model, r1.gpu_brand HAVING COUNT(*) >= ALL (SELECT COUNT(*) FROM rental r2 WHERE r2.start_day > %s GROUP BY r2.gpu_model, r2.gpu_brand)) r WHERE g.gpu_model=r.most_rented_model AND g.gpu_brand=r.most_rented_brand", [date.today()-timedelta(days=14), date.today()-timedelta(days=14)])
+                    listings = cursor.fetchall()
+                    num2 = len(listings)
+            elif int(dur) == 6:
+                    cursor.execute("SELECT * FROM Gpu_Listing g, (SELECT r1.gpu_model AS most_rented_model, r1.gpu_brand AS most_rented_brand, COUNT(*)	FROM rental r1 WHERE r1.start_day > %s GROUP BY r1.gpu_model, r1.gpu_brand HAVING COUNT(*) >= ALL (SELECT COUNT(*) FROM rental r2 WHERE r2.start_day > %s GROUP BY r2.gpu_model, r2.gpu_brand)) r WHERE g.gpu_model=r.most_rented_model AND g.gpu_brand=r.most_rented_brand", [date.today()-timedelta(days=30), date.today()-timedelta(days=30)])
+                    listings = cursor.fetchall()
+                    num2 = len(listings)
+            elif int(dur) == 7:
+                    cursor.execute("SELECT * FROM Gpu_Listing g, (SELECT r1.gpu_model AS most_rented_model, r1.gpu_brand AS most_rented_brand, COUNT(*)	FROM rental r1 WHERE r1.start_day > %s GROUP BY r1.gpu_model, r1.gpu_brand HAVING COUNT(*) >= ALL (SELECT COUNT(*) FROM rental r2 WHERE r2.start_day > %s GROUP BY r2.gpu_model, r2.gpu_brand)) r WHERE g.gpu_model=r.most_rented_model AND g.gpu_brand=r.most_rented_brand", [date.today()-relativedelta(months=+6), date.today()-relativedelta(months=+6)])
+                    listings = cursor.fetchall()
+                    print(listings)
+                    num2 = len(listings)
+        elif filter != "Reset" and dur != "Reset":
+            order = ["gl.Available_start_day DESC", "gl.Available_start_day ASC", "gl.Price DESC", "gl.Price ASC"]
+            price_condition = "gl.price < {} AND gl.price > {}".format(max_price_filter, min_price_filter)
+            memsize_condition = "CAST(REGEXP_REPLACE(g.Memory_size,'[[:alpha:]]','','g') AS FLOAT) < {} AND  CAST(REGEXP_REPLACE(g.Memory_size,'[[:alpha:]]','','g') AS FLOAT) > {}".format(max_memsize_filter, min_memsize_filter)
+            order_condition = "ORDER BY {}".format(order[int(filter)-1])
+            filter_sql = "SELECT * FROM GPU_listing gl, GPU g, (SELECT r1.gpu_model AS most_rented_model, r1.gpu_brand AS most_rented_brand, COUNT(*) FROM rental r1 WHERE r1.start_day > %s GROUP BY r1.gpu_model, r1.gpu_brand HAVING COUNT(*) >= ALL (SELECT COUNT(*) FROM rental r2 WHERE r2.start_day > %s GROUP BY r2.gpu_model, r2.gpu_brand)) AS r WHERE gl.gpu_model=r.most_rented_model AND gl.gpu_brand=r.most_rented_brand AND gl.GPU_model = g.GPU_model AND gl.GPU_brand = g.GPU_brand" + " AND " + price_condition + " AND " + memsize_condition + " " + order_condition
+            if int(dur) == 5:
+                    cursor.execute(filter_sql, [date.today()-timedelta(days=14), date.today()-timedelta(days=14)])
+                    listings = cursor.fetchall()
+                    num2 = len(listings)
+            elif int(dur) == 6:
+                    cursor.execute(filter_sql, [date.today()-timedelta(days=30), date.today()-timedelta(days=30)])
+                    listings = cursor.fetchall()
+                    num2 = len(listings)
+            elif int(dur) == 7:
+                    cursor.execute(filter_sql, [date.today()-relativedelta(months=+6), date.today()-relativedelta(months=+6)])
+                    listings = cursor.fetchall()
+                    num2 = len(listings)
 
-    result_dict = {'records': listings, 'current_user': current_user, 'num': num, 'num2': num2}
+
+    result_dict = {'records': listings, 'current_user': current_user, 'num': num, 'num2': num2, 'max_price': max_price, 'max_memsize': max_memsize}
 
     return render(request,'app/listing.html',result_dict)
 
@@ -514,10 +607,10 @@ def admin_listing(request,custid=None):
         if request.GET.get('reset'):
             custid = None
         if custid is None or custid=="Reset":
-            cursor.execute("select u.customerid, u.first_name, u.last_name, g1.gpu_model, g1.gpu_brand, g1.price, g2.available_start_day, g2.available_end_day from user1 u left outer join gpu_listing_archive g1 on u.customerid=g1.customerid left outer join gpu_listing g2 on u.customerid=g2.customerid and g1.gpu_model=g2.gpu_model and g1.gpu_brand=g2.gpu_brand and g1.listingid=g2.listingid order by u.customerid asc")
+            cursor.execute("select u.customerid, u.first_name, u.last_name, g.gpu_model, g.gpu_brand, g.price, g.available_start_day, g.available_end_day from user1 u left outer join (select g1.customerid as customerid, g1.gpu_model as gpu_model, g1.gpu_brand as gpu_brand, g1.price as price, g2.available_start_day as available_start_day, g2.available_end_day as available_end_day from gpu_listing_archive g1, gpu_listing g2 where g1.gpu_model=g2.gpu_model and g1.gpu_brand=g2.gpu_brand and g1.listingid=g2.listingid) g on u.customerid=g.customerid order by u.customerid asc")
             custinfo = cursor.fetchall()
         else:
-            cursor.execute("select u.customerid, u.first_name, u.last_name, g1.gpu_model, g1.gpu_brand, g1.price, g2.available_start_day, g2.available_end_day from user1 u left outer join gpu_listing_archive g1 on u.customerid=g1.customerid left outer join gpu_listing g2 on u.customerid=g2.customerid and g1.gpu_model=g2.gpu_model and g1.gpu_brand=g2.gpu_brand and g1.listingid=g2.listingid where u.customerid= %s", [custid])
+            cursor.execute("select u.customerid, u.first_name, u.last_name, g.gpu_model, g.gpu_brand, g.price, g.available_start_day, g.available_end_day from user1 u left outer join (select g1.customerid as customerid, g1.gpu_model as gpu_model, g1.gpu_brand as gpu_brand, g1.price as price, g2.available_start_day as available_start_day, g2.available_end_day as available_end_day from gpu_listing_archive g1, gpu_listing g2 where g1.gpu_model=g2.gpu_model and g1.gpu_brand=g2.gpu_brand and g1.listingid=g2.listingid) g on u.customerid=g.customerid where u.customerid= %s", [custid])
             custinfo = cursor.fetchall()
         
 
@@ -543,10 +636,10 @@ def admin_rental(request,custid=None):
         if request.GET.get('reset'):
             custid = None
         if custid is None or custid=="Reset":
-            cursor.execute("select u.customerid, u.first_name, u.last_name, g1.gpu_model, g1.gpu_brand, g1.price, r.start_day, r.end_day from user1 u left outer join gpu_listing_archive g1 on u.customerid=g1.customerid left outer join rental r on u.customerid=r.borrower_id and g1.gpu_model=r.gpu_model and g1.gpu_brand=r.gpu_brand order by u.customerid asc")
+            cursor.execute("SELECT u.customerid, u.first_name, u.last_name, j.gpu_model, j.gpu_brand, j.price, j.start_day, j.end_day FROM User1 u LEFT OUTER JOIN (SELECT r.borrower_id AS borrower_id, r.GPU_Model AS GPU_model, r.GPU_Brand AS GPU_Brand, r.start_day AS start_day, r.end_day AS end_day, g.price AS price FROM GPU_Listing_Archive g, Rental r WHERE g.listingid=r.listingid) AS j ON u.customerid=j.borrower_id ORDER BY u.customerid ASC")
             custinfo = cursor.fetchall()
         else:
-            cursor.execute("select u.customerid, u.first_name, u.last_name, g1.gpu_model, g1.gpu_brand, g1.price, r.start_day, r.end_day from user1 u left outer join gpu_listing_archive g1 on u.customerid=g1.customerid left outer join rental r on u.customerid=r.borrower_id and g1.gpu_model=r.gpu_model and g1.gpu_brand=r.gpu_brand where u.customerid= %s", [custid])
+            cursor.execute("SELECT u.customerid, u.first_name, u.last_name, j.gpu_model, j.gpu_brand, j.price, j.start_day, j.end_day FROM User1 u LEFT OUTER JOIN (SELECT r.borrower_id AS borrower_id, r.GPU_Model AS GPU_model, r.GPU_Brand AS GPU_Brand, r.start_day AS start_day, r.end_day AS end_day, g.price AS price FROM GPU_Listing_Archive g, Rental r WHERE g.listingid=r.listingid) AS j ON u.customerid=j.borrower_id WHERE u.customerid= %s", [custid])
             custinfo = cursor.fetchall()
         
 
