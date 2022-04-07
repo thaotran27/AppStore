@@ -38,7 +38,7 @@ CREATE TABLE IF NOT EXISTS User1(
  GPU_brand VARCHAR(32),
  FOREIGN KEY (GPU_model, GPU_brand) REFERENCES GPU(GPU_model, GPU_brand) ON UPDATE CASCADE ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
  Customerid VARCHAR(16) REFERENCES User1(Customerid) ON UPDATE CASCADE ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
- Available_start_day DATE NOT NULL CHECK (Available_start_day <= Available_end_day),
+ Available_start_day DATE NOT NULL CHECK (Available_start_day <= Available_end_day AND Available_start_day >= CURRENT_DATE),
  Available_end_day DATE NOT NULL CHECK(Available_end_day >= Available_start_day),
  Price NUMERIC NOT NULL CHECK (Price >= 0));
 
