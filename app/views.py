@@ -247,18 +247,9 @@ def listing(request):
 
     ## Use raw query to get all objects
     with connection.cursor() as cursor:
-        #Remove expired listing and Update available start day
-        cursor.execute("SELECT * FROM GPU_Listing")
-        data = cursor.fetchall()
-        listingid = 0
-        for i in data:
-            listingid=i[0]
-            if i[4] < date.today() and i[5] >= date.today():
-                cursor.execute("UPDATE GPU_Listing SET Available_start_day = %s WHERE Listingid = %s", [date.today(), listingid])
-            elif i[5] < date.today():
-                cursor.execute("DELETE FROM GPU_Listing WHERE Listingid = %s", [listingid])
-
+        #Remove expired listing and Update available start day using trigger
         cursor.execute("UPDATE User1 SET Email = %s WHERE Email = %s", [login_email,login_email])
+        
         cursor.execute("SELECT * FROM User1 WHERE Email =  %s", [login_email])
         current_user = cursor.fetchone()
         cursor.execute("SELECT COUNT(*) FROM GPU_Listing")
@@ -398,19 +389,24 @@ def rental(request, Listingid):
                     cursor.execute("INSERT INTO Rental VALUES (%s, %s, %s, %s, %s, %s)"
                         , [Borrower[3], listing[1], listing[2],
                            int(Listingid) , request.POST['Start_day'], request.POST['End_day']])
-                    cursor.execute("SELECT * FROM GPU_Listing_Archive g1 WHERE g1.listingid >= all (SELECT g2.listingid FROM GPU_Listing_Archive g2)")
-                    last_entry = cursor.fetchone()
-                    cursor.execute("DELETE FROM GPU_Listing WHERE Listingid = %s", [Listingid])
-                    if (datetime.strptime(request.POST['Start_day'], '%Y-%m-%d').date() == listing[4]):
-                        cursor.execute("INSERT INTO GPU_Listing VALUES(%s, %s,%s,%s,%s,%s,%s)", [last_entry[0] + 1 ,listing[1], listing[2], listing[3], 
-                                                                                         datetime.strptime(request.POST['End_day'], '%Y-%m-%d').date() + timedelta(days = 1), listing[5], listing[6]])
+                    #cursor.execute("SELECT * FROM GPU_Listing_Archive g1 WHERE g1.listingid >= all (SELECT g2.listingid FROM GPU_Listing_Archive g2)")
+                    #last_entry = cursor.fetchone()
+                    #cursor.execute("DELETE FROM GPU_Listing WHERE Listingid = %s", [Listingid])
+                    #if (datetime.strptime(request.POST['Start_day'], '%Y-%m-%d').date() == listing[4]) and (datetime.strptime(request.POST['End_day'], '%Y-%m-%d').date() == listing[5]):
+                    #    return redirect('listing')
+                    #elif (datetime.strptime(request.POST['Start_day'], '%Y-%m-%d').date() == listing[4] and (datetime.strptime(request.POST['End_day'], '%Y-%m-%d').date() < listing[5])):
+                    #    cursor.execute("INSERT INTO GPU_Listing VALUES(%s, %s,%s,%s,%s,%s,%s)", [last_entry[0] + 1 ,listing[1], listing[2], listing[3], 
+                    #                                                                     datetime.strptime(request.POST['End_day'], '%Y-%m-%d').date() + timedelta(days = 1), listing[5], listing[6]])
                         #cursor.execute("INSERT INTO GPU_Listing_Archive VALUES(%s, %s,%s,%s,%s)", [last_entry[0] + 1 ,listing[1], listing[2], listing[3], 
-                                                                                          #listing[6]])                                                                     
-                    if (datetime.strptime(request.POST['Start_day'], '%Y-%m-%d').date() > listing[4]):
-                        cursor.execute("INSERT INTO GPU_Listing VALUES(%s, %s,%s,%s,%s,%s,%s)", [last_entry[0] + 1 ,listing[1], listing[2], listing[3], 
-                                                                                         listing[4], datetime.strptime(request.POST['Start_day'], '%Y-%m-%d').date()  - timedelta(days = 1), listing[6]])
-                        cursor.execute("INSERT INTO GPU_Listing VALUES(%s, %s,%s,%s,%s,%s,%s)", [last_entry[0] + 2 ,listing[1], listing[2], listing[3], 
-                                                                                         datetime.strptime(request.POST['End_day'], '%Y-%m-%d').date() + timedelta(days = 1), listing[5], listing[6]])
+                                                                                          #listing[6]]) 
+                    #elif (datetime.strptime(request.POST['Start_day'], '%Y-%m-%d').date() > listing[4]) and (datetime.strptime(request.POST['End_day'], '%Y-%m-%d').date() == listing[5]):
+                    #    cursor.execute("INSERT INTO GPU_Listing VALUES(%s, %s,%s,%s,%s,%s,%s)", [last_entry[0] + 1 ,listing[1], listing[2], listing[3], 
+                    #                                                                     listing[4], datetime.strptime(request.POST['Start_day'], '%Y-%m-%d').date() - timedelta(days = 1), listing[6]])
+                    #elif (datetime.strptime(request.POST['Start_day'], '%Y-%m-%d').date() > listing[4]) and (datetime.strptime(request.POST['End_day'], '%Y-%m-%d').date() < listing[5]):
+                        #cursor.execute("INSERT INTO GPU_Listing VALUES(%s, %s,%s,%s,%s,%s,%s)", [last_entry[0] + 1 ,listing[1], listing[2], listing[3], 
+                        #                                                                 listing[4], datetime.strptime(request.POST['Start_day'], '%Y-%m-%d').date()  - timedelta(days = 1), listing[6]])
+                        #cursor.execute("INSERT INTO GPU_Listing VALUES(%s, %s,%s,%s,%s,%s,%s)", [last_entry[0] + 2 ,listing[1], listing[2], listing[3], 
+                        #                                                                 datetime.strptime(request.POST['End_day'], '%Y-%m-%d').date() + timedelta(days = 1), listing[5], listing[6]])
                         #cursor.execute("INSERT INTO GPU_Listing_Archive VALUES(%s, %s,%s,%s,%s)", [last_entry[0] + 1 ,listing[1], listing[2], listing[3], 
                                                                                           #listing[6]])
                         #cursor.execute("INSERT INTO GPU_Listing_Archive VALUES(%s, %s,%s,%s,%s)", [last_entry[0] + 2 ,listing[1], listing[2], listing[3], 
@@ -596,18 +592,9 @@ def admin_listing(request,custid=None):
 
     ## Use raw query to get all objects
     with connection.cursor() as cursor:
-        #Remove expired listing and Update available start day
-        cursor.execute("SELECT * FROM GPU_Listing")
-        data = cursor.fetchall()
-        listingid = 0
-        for i in data:
-            listingid=i[0]
-            if i[4] < date.today() and i[5] >= date.today():
-                cursor.execute("UPDATE GPU_Listing SET Available_start_day = %s WHERE Listingid = %s", [date.today(), listingid])
-            elif i[5] < date.today():
-                cursor.execute("DELETE FROM GPU_Listing WHERE Listingid = %s", [listingid])
-                
-        cursor.execute("DELETE User1 SET Email = %s WHERE Email = %s", [login_email,login_email])
+        #Remove expired listing and Update available start day using trigger
+        cursor.execute("DELETE FROM User1 WHERE Email = %s", [login_email])
+  
         cursor.execute("SELECT * FROM User1 ORDER BY customerid ASC")
         customers = cursor.fetchall()
         customers_name = [customer[3] for customer in customers]

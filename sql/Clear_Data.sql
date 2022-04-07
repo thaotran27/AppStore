@@ -3,6 +3,8 @@
   Cleaning script
 
 *******************/
+DROP TRIGGER IF EXISTS After_rental_listing on Rental;
+DROP FUNCTION IF EXISTS Rentals();
 DROP TRIGGER IF EXISTS Update_Timing ON User1;
 DROP FUNCTION IF EXISTS Date_now();
 DROP TRIGGER IF EXISTS Update_Listing ON GPU_Listing;
