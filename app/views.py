@@ -504,6 +504,7 @@ def add_listing(request):
     context = {}
     status = ''
     current_user = login_email
+    context['status'] = status
     with connection.cursor() as cursor:
 
         cursor.execute("SELECT * FROM GPU_Listing_Archive ORDER BY Listingid DESC")
@@ -514,18 +515,19 @@ def add_listing(request):
         current_user = customer2[0][3]
 
         if request.POST:
-                    ##TODO: date validation
             if listing_data == None:  
                 next_id = 1
+            start = request.POST['start_date']
+            end = request.POST['end_date']
+            if datetime.strptime(start, '%Y-%m-%d').date() <datetime.today().date() or datetime.strptime(start, '%Y-%m-%d').date() >= datetime.strptime(end, '%Y-%m-%d').date():
+                return render(request, "app/add_listing.html", {'date_error': 'Invalid date'})
             cursor.execute("INSERT INTO GPU_Listing VALUES (%s, %s, %s, %s, %s, %s, %s)"
                     ,[next_id, request.POST['gpu_model'], request.POST['gpu_brand'], current_user,
                     request.POST['start_date'] , request.POST['end_date'], request.POST['price']])
-            ##cursor.execute("INSERT INTO GPU_Listing_Archive VALUES (%s, %s, %s, %s, %s)"
-            ##        ,[next_id, request.POST['gpu_model'], request.POST['gpu_brand'], current_user,
-            ##        request.POST['price']])
-            return redirect('listing')  
+            return redirect('listing')
+            
+             
 
-    context['status'] = status
     return render(request, "app/add_listing.html", context)
 
 def del_listing(request):

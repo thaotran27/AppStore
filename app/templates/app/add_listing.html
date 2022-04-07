@@ -12,7 +12,7 @@
     <div class="container-lg">
     <p style="color:red">{{ status|safe }}</p>
     <!-- Create a Form -->
-    <form method="POST">
+    <form method="POST" action={% url 'add_listing' %}>
         <!-- Security token by Django -->
         {% csrf_token %}
         <!-- form -->
@@ -27,10 +27,10 @@
         Available End Date<span class="asteriskField">*</span> </label> <div class="controls"> <input type="date" name="end_date" required="" id="id_end_date"> </div> </div> 
         <div id="div_id_price" class="control-group"> <label for="id_price" class="control-label requiredField">
         Price<span class="asteriskField">*</span> </label> <div class="controls"> <input type="number" name="price" required="" id="id_price"> </div> </div> 
-
         <br>
         <button class="btn btn-info" type="submit" value="Add">Add</button>
     </form>
+    <p style="color:red">{{date_error}}</p>
 </div>
 </body>
 </html>
