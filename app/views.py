@@ -17,17 +17,6 @@ def index(request):
     context = {}
     status = ''
 
-    login_email = request.session.get('email', 0)
-    if login_email == "admin@admin.com":
-        return HttpResponseRedirect(reverse('appstore_admin'))
-    elif login_email != 0:
-        # return HttpResponse(login_email)
-        with connection.cursor() as cursor:
-             cursor.execute("SELECT * FROM User1 WHERE Email = %s", [login_email])
-             row = cursor.fetchone()
-             if row != None:
-                 return HttpResponseRedirect(reverse('listing'))
-
     if request.POST:
         ## Check if customer account already exists
         with connection.cursor() as cursor:
@@ -258,6 +247,17 @@ def listing(request):
 
     ## Use raw query to get all objects
     with connection.cursor() as cursor:
+        #Remove expired listing and Update available start day
+        cursor.execute("SELECT * FROM GPU_Listing")
+        data = cursor.fetchall()
+        listingid = 0
+        for i in data:
+            listingid=i[0]
+            if i[4] < date.today() and i[5] >= date.today():
+                cursor.execute("UPDATE GPU_Listing SET Available_start_day = %s WHERE Listingid = %s", [date.today(), listingid])
+            elif i[5] < date.today():
+                cursor.execute("DELETE FROM GPU_Listing WHERE Listingid = %s", [listingid])
+
         cursor.execute("UPDATE User1 SET Email = %s WHERE Email = %s", [login_email,login_email])
         cursor.execute("SELECT * FROM User1 WHERE Email =  %s", [login_email])
         current_user = cursor.fetchone()
@@ -596,6 +596,17 @@ def admin_listing(request,custid=None):
 
     ## Use raw query to get all objects
     with connection.cursor() as cursor:
+        #Remove expired listing and Update available start day
+        cursor.execute("SELECT * FROM GPU_Listing")
+        data = cursor.fetchall()
+        listingid = 0
+        for i in data:
+            listingid=i[0]
+            if i[4] < date.today() and i[5] >= date.today():
+                cursor.execute("UPDATE GPU_Listing SET Available_start_day = %s WHERE Listingid = %s", [date.today(), listingid])
+            elif i[5] < date.today():
+                cursor.execute("DELETE FROM GPU_Listing WHERE Listingid = %s", [listingid])
+                
         cursor.execute("DELETE User1 SET Email = %s WHERE Email = %s", [login_email,login_email])
         cursor.execute("SELECT * FROM User1 ORDER BY customerid ASC")
         customers = cursor.fetchall()
