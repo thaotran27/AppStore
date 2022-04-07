@@ -77,17 +77,13 @@ def appstore_admin(request, yearid=date.today().year):
             year.insert(0, date.today().year)
         yearid = request.GET.get('year')
 
-        if request.GET.get('reset'):
-            yearid = None
-        if yearid is None:
-            yearid = date.today().year
-            cursor.execute("select extract(month from r.start_day) as month, count(*) from rental r where extract(year from r.start_day) = %s group by month", [yearid])
-            listing = cursor.fetchall()
-        else:
-            cursor.execute("select extract(month from r.start_day) as month, count(*) from rental r where extract(year from r.start_day) = %s group by month", [yearid])
-            listing = cursor.fetchall()
-        month = [month[0] for month in listing]
-        count = [count[1] for count in listing]
+        if request.GET.get('reset') or yearid is None:
+            yearid = date.today().year   
+        cursor.execute("select extract(month from r.start_day) as month, count(*) from rental r where extract(year from r.start_day) = %s group by month", [yearid])
+        listing = cursor.fetchall()
+
+        month = [data[0] for data in listing]
+        count = [data[1] for data in listing]
         total_month_rent = [0,0,0,0,0,0,0,0,0,0,0,0]
         for i in range(len(month)):
             total_month_rent[int(month[i])-1] = count[i]
