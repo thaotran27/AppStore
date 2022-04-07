@@ -256,7 +256,8 @@ def listing(request):
         max_price_filter = request.GET.get('max_price_filter', 1000)
         min_memsize_filter = request.GET.get('mem_min', 0)
         max_memsize_filter = request.GET.get('mem_max', 100)
-        dur = request.GET.get('dur')
+        month = request.GET.get('month')
+        year = request.GET.get('year')
 
         # Get Max Price and Max Memsize for HTML range display
         cursor.execute("SELECT MAX(price) FROM GPU_Listing")
@@ -265,57 +266,47 @@ def listing(request):
         cursor.execute("SELECT MAX(CAST(REGEXP_REPLACE(g.Memory_size,'[[:alpha:]]','','g') AS FLOAT)) FROM GPU g")
         max_memsize = cursor.fetchone()
 
-        if (filter is None or dur is None) or (filter == "Reset" and dur == "Reset" and min_price_filter == "0" and max_price_filter == "100" and min_memsize_filter == "0" and max_memsize_filter == "40"):
+        if (filter is None or month is None or year is None) or (filter == "Reset" and year == "Reset" and min_price_filter == "0" and max_price_filter == max_price[0] and min_memsize_filter == "0" and max_memsize_filter == max_memsize[0]):
             cursor.execute("SELECT * FROM GPU_Listing ORDER BY Listingid DESC")
             listings = cursor.fetchall()
             num2 = len(listings)
-        elif filter == "Reset" and dur == "Reset" and (min_price_filter != "0" or max_price_filter != "100" or min_memsize_filter != "0" or max_memsize_filter != "40"):
-            price_condition = "gl.price < {} AND gl.price > {}".format(max_price_filter, min_price_filter)
-            memsize_condition = "CAST(REGEXP_REPLACE(g.Memory_size,'[[:alpha:]]','','g') AS FLOAT) < {} AND  CAST(REGEXP_REPLACE(g.Memory_size,'[[:alpha:]]','','g') AS FLOAT) > {}".format(max_memsize_filter, min_memsize_filter)
+        elif filter == "Reset" and year == "Reset" and (min_price_filter != "0" or max_price_filter != max_price[0] or min_memsize_filter != "0" or max_memsize_filter != max_memsize[0]):
+            price_condition = "gl.price <= {} AND gl.price >= {}".format(max_price_filter, min_price_filter)
+            memsize_condition = "CAST(REGEXP_REPLACE(g.Memory_size,'[[:alpha:]]','','g') AS FLOAT) <= {} AND  CAST(REGEXP_REPLACE(g.Memory_size,'[[:alpha:]]','','g') AS FLOAT) >= {}".format(max_memsize_filter, min_memsize_filter)
             order_condition = "ORDER BY Listingid DESC"
             cursor.execute("SELECT * FROM GPU_listing gl, GPU g WHERE gl.GPU_model = g.GPU_model AND gl.GPU_brand = g.GPU_brand" + " AND " + price_condition + " AND " + memsize_condition + " " + order_condition)
             listings = cursor.fetchall()
             num2 = len(listings)
-        elif filter != "Reset" and dur == "Reset":
-            order = ["gl.Available_start_day ASC", "gl.Available_end_day DESC", "gl.Price DESC", "gl.Price ASC"]
-            price_condition = "gl.price < {} AND gl.price > {}".format(max_price_filter, min_price_filter)
-            memsize_condition = "CAST(REGEXP_REPLACE(g.Memory_size,'[[:alpha:]]','','g') AS FLOAT) < {} AND  CAST(REGEXP_REPLACE(g.Memory_size,'[[:alpha:]]','','g') AS FLOAT) > {}".format(max_memsize_filter, min_memsize_filter)
+        elif filter != "Reset" and month == "Reset" and year == "Reset":
+            order = ["gl.Available_start_day ASC", "gl.Available_start_day DESC", "gl.Price DESC", "gl.Price ASC"]
+            price_condition = "gl.price <= {} AND gl.price >= {}".format(max_price_filter, min_price_filter)
+            memsize_condition = "CAST(REGEXP_REPLACE(g.Memory_size,'[[:alpha:]]','','g') AS FLOAT) <= {} AND  CAST(REGEXP_REPLACE(g.Memory_size,'[[:alpha:]]','','g') AS FLOAT) >= {}".format(max_memsize_filter, min_memsize_filter)
             order_condition = "ORDER BY {}".format(order[int(filter)-1])
             cursor.execute("SELECT * FROM GPU_listing gl, GPU g WHERE gl.GPU_model = g.GPU_model AND gl.GPU_brand = g.GPU_brand" + " AND " + price_condition + " AND " + memsize_condition + " " + order_condition)
             listings = cursor.fetchall()
             num2 = len(listings)
-        elif filter == "Reset" and dur != "Reset":
-            if int(dur) == 5:
-                    cursor.execute("SELECT * FROM Gpu_Listing g, (SELECT r1.gpu_model AS most_rented_model, r1.gpu_brand AS most_rented_brand, COUNT(*)	FROM rental r1 WHERE r1.start_day > %s GROUP BY r1.gpu_model, r1.gpu_brand HAVING COUNT(*) >= ALL (SELECT COUNT(*) FROM rental r2 WHERE r2.start_day > %s GROUP BY r2.gpu_model, r2.gpu_brand)) r WHERE g.gpu_model=r.most_rented_model AND g.gpu_brand=r.most_rented_brand", [date.today()-timedelta(days=14), date.today()-timedelta(days=14)])
-                    listings = cursor.fetchall()
-                    num2 = len(listings)
-            elif int(dur) == 6:
-                    cursor.execute("SELECT * FROM Gpu_Listing g, (SELECT r1.gpu_model AS most_rented_model, r1.gpu_brand AS most_rented_brand, COUNT(*)	FROM rental r1 WHERE r1.start_day > %s GROUP BY r1.gpu_model, r1.gpu_brand HAVING COUNT(*) >= ALL (SELECT COUNT(*) FROM rental r2 WHERE r2.start_day > %s GROUP BY r2.gpu_model, r2.gpu_brand)) r WHERE g.gpu_model=r.most_rented_model AND g.gpu_brand=r.most_rented_brand", [date.today()-timedelta(days=30), date.today()-timedelta(days=30)])
-                    listings = cursor.fetchall()
-                    num2 = len(listings)
-            elif int(dur) == 7:
-                    cursor.execute("SELECT * FROM Gpu_Listing g, (SELECT r1.gpu_model AS most_rented_model, r1.gpu_brand AS most_rented_brand, COUNT(*)	FROM rental r1 WHERE r1.start_day > %s GROUP BY r1.gpu_model, r1.gpu_brand HAVING COUNT(*) >= ALL (SELECT COUNT(*) FROM rental r2 WHERE r2.start_day > %s GROUP BY r2.gpu_model, r2.gpu_brand)) r WHERE g.gpu_model=r.most_rented_model AND g.gpu_brand=r.most_rented_brand", [date.today()-relativedelta(months=+6), date.today()-relativedelta(months=+6)])
-                    listings = cursor.fetchall()
-                    print(listings)
-                    num2 = len(listings)
-        elif filter != "Reset" and dur != "Reset":
-            order = ["gl.Available_start_day DESC", "gl.Available_start_day ASC", "gl.Price DESC", "gl.Price ASC"]
-            price_condition = "gl.price < {} AND gl.price > {}".format(max_price_filter, min_price_filter)
-            memsize_condition = "CAST(REGEXP_REPLACE(g.Memory_size,'[[:alpha:]]','','g') AS FLOAT) < {} AND  CAST(REGEXP_REPLACE(g.Memory_size,'[[:alpha:]]','','g') AS FLOAT) > {}".format(max_memsize_filter, min_memsize_filter)
+        elif filter == "Reset" and year != "Reset":
+            month_condition1 = ""
+            month_condition2 = ""
+            if month != "Reset":
+                month_condition1 = "EXTRACT(MONTH FROM r1.start_day) =" + month + " AND"
+                month_condition2 = "EXTRACT(MONTH FROM r2.start_day) =" + month + " AND"
+            cursor.execute("SELECT * FROM Gpu_Listing gl, (SELECT r1.gpu_model AS most_rented_model, r1.gpu_brand AS most_rented_brand, COUNT(*) FROM rental r1 WHERE" + " " + month_condition1 + " " + "EXTRACT(YEAR FROM r1.start_day) = %s GROUP BY r1.gpu_model, r1.gpu_brand HAVING COUNT(*) >= ALL (SELECT COUNT(*) FROM rental r2 WHERE " + " " + month_condition2 + " " + "EXTRACT(YEAR FROM r2.start_day) = %s GROUP BY r2.gpu_model, r2.gpu_brand)) r WHERE gl.gpu_model=r.most_rented_model AND gl.gpu_brand=r.most_rented_brand", [year, year])
+            listings = cursor.fetchall()
+            num2 = len(listings)
+        elif filter != "Reset" and year != "Reset":
+            month_condition1 = ""
+            month_condition2 = ""
+            if month != "Reset":
+                month_condition1 = "EXTRACT(MONTH FROM r1.start_day) =" + month + " AND "
+                month_condition2 = "EXTRACT(MONTH FROM r2.start_day) =" + month + " AND "
+            order = ["gl.Available_start_day ASC", "gl.Available_start_day DESC", "gl.Price DESC", "gl.Price ASC"]
+            price_condition = "gl.price <= {} AND gl.price >= {}".format(max_price_filter, min_price_filter)
+            memsize_condition = "CAST(REGEXP_REPLACE(g.Memory_size,'[[:alpha:]]','','g') AS FLOAT) <= {} AND  CAST(REGEXP_REPLACE(g.Memory_size,'[[:alpha:]]','','g') AS FLOAT) >= {}".format(max_memsize_filter, min_memsize_filter)
             order_condition = "ORDER BY {}".format(order[int(filter)-1])
-            filter_sql = "SELECT * FROM GPU_listing gl, GPU g, (SELECT r1.gpu_model AS most_rented_model, r1.gpu_brand AS most_rented_brand, COUNT(*) FROM rental r1 WHERE r1.start_day > %s GROUP BY r1.gpu_model, r1.gpu_brand HAVING COUNT(*) >= ALL (SELECT COUNT(*) FROM rental r2 WHERE r2.start_day > %s GROUP BY r2.gpu_model, r2.gpu_brand)) AS r WHERE gl.gpu_model=r.most_rented_model AND gl.gpu_brand=r.most_rented_brand AND gl.GPU_model = g.GPU_model AND gl.GPU_brand = g.GPU_brand" + " AND " + price_condition + " AND " + memsize_condition + " " + order_condition
-            if int(dur) == 5:
-                    cursor.execute(filter_sql, [date.today()-timedelta(days=14), date.today()-timedelta(days=14)])
-                    listings = cursor.fetchall()
-                    num2 = len(listings)
-            elif int(dur) == 6:
-                    cursor.execute(filter_sql, [date.today()-timedelta(days=30), date.today()-timedelta(days=30)])
-                    listings = cursor.fetchall()
-                    num2 = len(listings)
-            elif int(dur) == 7:
-                    cursor.execute(filter_sql, [date.today()-relativedelta(months=+6), date.today()-relativedelta(months=+6)])
-                    listings = cursor.fetchall()
-                    num2 = len(listings)
+            cursor.execute("SELECT * FROM GPU_listing gl, GPU g, (SELECT r1.gpu_model AS most_rented_model, r1.gpu_brand AS most_rented_brand, COUNT(*) FROM rental r1 WHERE" + " " + month_condition1 + " " + "EXTRACT(YEAR FROM r1.start_day) = %s GROUP BY r1.gpu_model, r1.gpu_brand HAVING COUNT(*) >= ALL (SELECT COUNT(*) FROM rental r2 WHERE " + month_condition2 + " " + "EXTRACT(YEAR FROM r2.start_day) = %s GROUP BY r2.gpu_model, r2.gpu_brand)) AS r WHERE gl.gpu_model=r.most_rented_model AND gl.gpu_brand=r.most_rented_brand AND gl.GPU_model = g.GPU_model AND gl.GPU_brand = g.GPU_brand" + " AND " + price_condition + " AND " + memsize_condition + " " + order_condition, [year, year])
+            listings = cursor.fetchall()
+            num2 = len(listings)
 
 
     result_dict = {'records': listings, 'current_user': current_user, 'num': num, 'num2': num2, 'max_price': max_price, 'max_memsize': max_memsize}
