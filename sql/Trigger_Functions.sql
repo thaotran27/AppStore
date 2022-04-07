@@ -46,46 +46,47 @@ CREATE OR REPLACE FUNCTION Rentals()
 	AS
 $$
 BEGIN
-	IF ((NEW.Start_day = (SELECT Available_start_day FROM GPU_Listing WHERE Listingid = NEW.Listingid)) AND (NEW.End_day = (SELECT Available_end_day FROM GPU_Listing WHERE Listingid = NEW.Listingid)) AND (CURRENT_DATE >= (SELECT Available_start_day FROM GPU_Listing WHERE Listingid = NEW.Listingid)) AND (CURRENT_DATE >= (SELECT Available_end_day FROM GPU_Listing WHERE Listingid = NEW.Listingid))) THEN
+	IF ((NEW.Start_day = (SELECT g3.Available_start_day FROM GPU_Listing g3,Rental r1 WHERE g3.Listingid = r1.Listingid)) AND (NEW.End_day = (SELECT g3.Available_end_day FROM GPU_Listing g3,Rental r1 WHERE g3.Listingid = r1.Listingid)) AND ((SELECT CURRENT_DATE) <= (SELECT Available_start_day FROM GPU_Listing g3,Rental r1 WHERE g3.Listingid = r1.Listingid)) AND ((SELECT CURRENT_DATE) <= (SELECT Available_end_day FROM GPU_Listing g3,Rental r1 WHERE g3.Listingid = r1.Listingid))) THEN
 	END IF;
-	IF ((NEW.Start_day = (SELECT Available_start_day FROM GPU_Listing WHERE Listingid = NEW.Listingid)) AND (NEW.End_day < (SELECT Available_end_day FROM GPU_Listing WHERE Listingid = NEW.Listingid)) AND (CURRENT_DATE >= (SELECT Available_start_day FROM GPU_Listing WHERE Listingid = NEW.Listingid)) AND (CURRENT_DATE >= (SELECT Available_end_day FROM GPU_Listing WHERE Listingid = NEW.Listingid))) THEN
+	IF ((NEW.Start_day = (SELECT g3.Available_start_day FROM GPU_Listing g3,Rental r1 WHERE g3.Listingid = r1.Listingid)) AND (NEW.End_day < (SELECT g3.Available_end_day FROM GPU_Listing g3,Rental r1 WHERE g3.Listingid = r1.Listingid)) AND ((SELECT CURRENT_DATE) <= (SELECT Available_start_day FROM GPU_Listing g3,Rental r1 WHERE g3.Listingid = r1.Listingid)) AND ((SELECT CURRENT_DATE) <= (SELECT Available_end_day FROM GPU_Listing g3,Rental r1 WHERE g3.Listingid = r1.Listingid))) THEN
 	INSERT INTO GPU_Listing VALUES ((SELECT g1.Listingid + 1 FROM GPU_Listing_Archive g1 WHERE g1.listingid >= all (SELECT g2.listingid FROM GPU_Listing_Archive g2)), 
 									NEW.GPU_model,
 								    NEW.GPU_brand,
-								    (SELECT Customerid FROM GPU_Listing WHERE Listingid = NEW.Listingid),
+								    (SELECT g3.Customerid FROM GPU_Listing g3,Rental r1 WHERE g3.Listingid = r1.Listingid),
 								    NEW.End_Day + 1,
-								    (SELECT Available_end_day FROM GPU_Listing WHERE Listingid = NEW.Listingid),
-								   	(SELECT Price FROM GPU_Listing WHERE Listingid = NEW.Listingid));
+								    (SELECT g3.Available_end_day FROM GPU_Listing g3,Rental r1 WHERE g3.Listingid = r1.Listingid),
+								   	(SELECT g3.Price FROM GPU_Listing g3,Rental r1 WHERE g3.Listingid = r1.Listingid));
 	END IF;
-	IF ((NEW.Start_day > (SELECT Available_start_day FROM GPU_Listing WHERE Listingid = NEW.Listingid)) AND (NEW.End_day = (SELECT Available_end_day FROM GPU_Listing WHERE Listingid = NEW.Listingid)) AND (CURRENT_DATE >= (SELECT Available_start_day FROM GPU_Listing WHERE Listingid = NEW.Listingid)) AND (CURRENT_DATE >= (SELECT Available_end_day FROM GPU_Listing WHERE Listingid = NEW.Listingid))) THEN
+	IF ((NEW.Start_day > (SELECT g3.Available_start_day FROM GPU_Listing g3,Rental r1 WHERE g3.Listingid = r1.Listingid)) AND (NEW.End_day = (SELECT g3.Available_end_day FROM GPU_Listing g3,Rental r1 WHERE g3.Listingid = r1.Listingid)) AND ((SELECT CURRENT_DATE) <= (SELECT Available_start_day FROM GPU_Listing g3,Rental r1 WHERE g3.Listingid = r1.Listingid)) AND ((SELECT CURRENT_DATE) <= (SELECT Available_end_day FROM GPU_Listing g3,Rental r1 WHERE g3.Listingid = r1.Listingid))) THEN
 	INSERT INTO GPU_Listing VALUES ((SELECT g1.Listingid + 1 FROM GPU_Listing_Archive g1 WHERE g1.listingid >= all (SELECT g2.listingid FROM GPU_Listing_Archive g2)), 
 									NEW.GPU_model,
 								    NEW.GPU_brand,
-								    (SELECT Customerid FROM GPU_Listing WHERE Listingid = NEW.Listingid),
-									(SELECT Available_start_day FROM GPU_Listing WHERE Listingid = NEW.Listingid),
+								    (SELECT g3.Customerid FROM GPU_Listing g3,Rental r1 WHERE g3.Listingid = r1.Listingid),
+									(SELECT g3.Available_start_day FROM GPU_Listing g3,Rental r1 WHERE g3.Listingid = r1.Listingid),
 								    NEW.Start_day - 1,
-								   	(SELECT Price FROM GPU_Listing WHERE Listingid = NEW.Listingid));					
+								   	(SELECT g3.Price FROM GPU_Listing g3,Rental r1 WHERE g3.Listingid = r1.Listingid));					
 	END IF;
-	IF ((NEW.Start_day > (SELECT Available_start_day FROM GPU_Listing WHERE Listingid = NEW.Listingid)) AND (NEW.End_day < (SELECT Available_end_day FROM GPU_Listing WHERE Listingid = NEW.Listingid)) AND (CURRENT_DATE >= (SELECT Available_start_day FROM GPU_Listing WHERE Listingid = NEW.Listingid)) AND (CURRENT_DATE >= (SELECT Available_end_day FROM GPU_Listing WHERE Listingid = NEW.Listingid))) THEN
-	INSERT INTO GPU_Listing VALUES ((SELECT g1.Listingid + 1 FROM GPU_Listing_Archive g1 WHERE g1.listingid >= all (SELECT g2.listingid FROM GPU_Listing_Archive g2)),  
+	IF ((NEW.Start_day > (SELECT g3.Available_start_day FROM GPU_Listing g3,Rental r1 WHERE g3.Listingid = r1.Listingid)) AND (NEW.End_day < (SELECT g3.Available_end_day FROM GPU_Listing g3,Rental r1 WHERE g3.Listingid = r1.Listingid)) AND ((SELECT CURRENT_DATE) <= (SELECT Available_start_day FROM GPU_Listing g3,Rental r1 WHERE g3.Listingid = r1.Listingid)) AND ((SELECT CURRENT_DATE) <= (SELECT Available_end_day FROM GPU_Listing g3,Rental r1 WHERE g3.Listingid = r1.Listingid))) THEN
+	INSERT INTO GPU_Listing VALUES ((SELECT g1.Listingid + 1 FROM GPU_Listing_Archive g1 WHERE g1.listingid >= all (SELECT g2.listingid FROM GPU_Listing_Archive g2)), 
 									NEW.GPU_model,
 								    NEW.GPU_brand,
-								    (SELECT Customerid FROM GPU_Listing WHERE Listingid = NEW.Listingid),
-									(SELECT Available_start_day FROM GPU_Listing WHERE Listingid = NEW.Listingid),
+								    (SELECT g3.Customerid FROM GPU_Listing g3,Rental r1 WHERE g3.Listingid = r1.Listingid),
+									(SELECT g3.Available_start_day FROM GPU_Listing g3,Rental r1 WHERE g3.Listingid = r1.Listingid),
 								    NEW.Start_day - 1,
-								   	(SELECT Price FROM GPU_Listing WHERE Listingid = NEW.Listingid));
-	INSERT INTO GPU_Listing VALUES ((SELECT g1.Listingid + 1 FROM GPU_Listing_Archive g1 WHERE g1.listingid >= all (SELECT g2.listingid FROM GPU_Listing_Archive g2)),  
+								   	(SELECT g3.Price FROM GPU_Listing g3,Rental r1 WHERE g3.Listingid = r1.Listingid));
+	INSERT INTO GPU_Listing VALUES ((SELECT g1.Listingid + 1 FROM GPU_Listing_Archive g1 WHERE g1.listingid >= all (SELECT g2.listingid FROM GPU_Listing_Archive g2)), 
 									NEW.GPU_model,
 								    NEW.GPU_brand,
-								    (SELECT Customerid FROM GPU_Listing WHERE Listingid = NEW.Listingid),
+								    (SELECT g3.Customerid FROM GPU_Listing g3,Rental r1 WHERE g3.Listingid = r1.Listingid),
 								    NEW.End_Day + 1,
-								    (SELECT Available_end_day FROM GPU_Listing WHERE Listingid = NEW.Listingid),
-									(SELECT Price FROM GPU_Listing WHERE Listingid = NEW.Listingid));
+								    (SELECT g3.Available_end_day FROM GPU_Listing g3,Rental r1 WHERE g3.Listingid = r1.Listingid),
+								   	(SELECT g3.Price FROM GPU_Listing g3,Rental r1 WHERE g3.Listingid = r1.Listingid));
 	END IF;
 	DELETE FROM GPU_Listing WHERE Listingid = NEW.Listingid;
-	RETURN NEW;	
+	RETURN NEW;
 END;
 $$;
+
 
 CREATE TRIGGER After_rental_listing
 AFTER INSERT
