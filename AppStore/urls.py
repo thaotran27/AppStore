@@ -31,6 +31,7 @@ urlpatterns = [
     path('', app.views.index, name='index'),
     re_path(r'^listing/(?:(?P<id>\w+)/)?$', app.views.listing, name='listing'),
     path('add_listing', app.views.add_listing, name='add_listing'),
+    path('del_listing', app.views.del_listing, name='del_listing'),
     path('view_listing/<str:id>', app.views.view_listing, name='view_listing'),
     path('rental/<str:Listingid>', app.views.rental, name = 'rental'),
     path('personal/<str:id>', app.views.personal, name='personal'),

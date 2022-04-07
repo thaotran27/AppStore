@@ -17,17 +17,6 @@ def index(request):
     context = {}
     status = ''
 
-    login_email = request.session.get('email', 0)
-    if login_email == "admin@admin.com":
-        return HttpResponseRedirect(reverse('appstore_admin'))
-    elif login_email != 0:
-        # return HttpResponse(login_email)
-        with connection.cursor() as cursor:
-             cursor.execute("SELECT * FROM User1 WHERE Email = %s", [login_email])
-             row = cursor.fetchone()
-             if row != None:
-                 return HttpResponseRedirect(reverse('listing'))
-
     if request.POST:
         ## Check if customer account already exists
         with connection.cursor() as cursor:
@@ -80,18 +69,6 @@ def appstore_admin(request, yearid=date.today().year):
     
     ## Use raw query to get all objects
     with connection.cursor() as cursor:
-        #Remove expired listing and Update available start day
-        cursor.execute("SELECT * FROM GPU_Listing")
-        data = cursor.fetchall()
-        listingid = 0
-        for i in data:
-            listingid=i[0]
-            if i[4] < date.today() and i[5] >= date.today():
-                cursor.execute("UPDATE GPU_Listing SET Available_start_day = %s WHERE Listingid = %s", [date.today(), listingid])
-            elif i[5] < date.today():
-                cursor.execute("DELETE FROM GPU_Listing WHERE Listingid = %s", [listingid])
-        
-
         # Get year
         cursor.execute("select distinct extract(year from r.start_day) as year from gpu_listing_archive g join rental r on r.listingid=g.listingid order by year desc")
         years= cursor.fetchall()
@@ -247,7 +224,7 @@ def edit(request, id):
         with connection.cursor() as cursor:
             cursor.execute("UPDATE User1 SET first_name = %s, last_name = %s, email = %s, customerid = %s, wallet_balance = %s, phone_number = %s, pass_word = %s, Credit_card_number = %s, Credit_card_type = %s WHERE customerid = %s"
                     , [request.POST['first_name'], request.POST['last_name'], request.POST['email'],
-                        request.POST['customerid'] , request.POST['walletbalance'], request.POST['phonenumber'], request.POST['password'], request.POST['credit_card_number'], request.POST['credit_card_number'], id ])
+                        request.POST['customerid'] , request.POST['walletbalance'], request.POST['phonenumber'], request.POST['password'], request.POST['credit_card_nbr'], request.POST['credit_card_type'], id ])
             status = 'Customer edited successfully!'
             cursor.execute("SELECT * FROM User1 WHERE customerid = %s", [id])
             cust = cursor.fetchone()
@@ -270,7 +247,9 @@ def listing(request):
 
     ## Use raw query to get all objects
     with connection.cursor() as cursor:
+        #Remove expired listing and Update available start day using trigger
         cursor.execute("UPDATE User1 SET Email = %s WHERE Email = %s", [login_email,login_email])
+        
         cursor.execute("SELECT * FROM User1 WHERE Email =  %s", [login_email])
         current_user = cursor.fetchone()
         cursor.execute("SELECT COUNT(*) FROM GPU_Listing")
@@ -549,6 +528,30 @@ def add_listing(request):
     context['status'] = status
     return render(request, "app/add_listing.html", context)
 
+def del_listing(request):
+    #use this snippet in everyview function to verify user
+    login_email = request.session.get('email', 0)
+    logging.debug(login_email)
+    if login_email == 0:
+        return HttpResponseRedirect(reverse('index'))
+    #use this snippet in everyview function to verify user. ends here
+    
+    ## Delete listing
+    if request.POST:
+        if request.POST['action'] == 'delete':
+            with connection.cursor() as cursor:
+                cursor.execute("DELETE FROM GPU_Listing WHERE Listingid = %s", [request.POST['id']])
+
+    ## Use raw query to get all objects
+    with connection.cursor() as cursor:
+        cursor.execute("SELECT * FROM GPU_Listing g, User1 u WHERE g.customerid = u.customerid AND u.email = %s", [login_email])
+        listing_data = cursor.fetchall()
+
+    result_dict = {'records': listing_data}
+
+    return render(request,'app/del_listing.html',result_dict)
+
+
 #to-do: integrity check on top up, only accept positive values
 def top_up(request):
     #use this snippet in everyview function to verify user
@@ -589,7 +592,9 @@ def admin_listing(request,custid=None):
 
     ## Use raw query to get all objects
     with connection.cursor() as cursor:
+        #Remove expired listing and Update available start day using trigger
         cursor.execute("DELETE FROM User1 WHERE Email = %s", [login_email])
+  
         cursor.execute("SELECT * FROM User1 ORDER BY customerid ASC")
         customers = cursor.fetchall()
         customers_name = [customer[3] for customer in customers]
