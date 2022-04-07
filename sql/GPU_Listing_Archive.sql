@@ -1,6 +1,6 @@
 /***************************
 
-  Populate the downloads table
+  Populate the GPU LISTING ARCHIVE table BEFORE TRIGGER FUNCTION WAS CREATED
 
 ****************************/
 

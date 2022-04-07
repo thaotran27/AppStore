@@ -9,11 +9,17 @@ BEGIN
 END;
 $$;
 
+
+
 CREATE TRIGGER Update_listing 
 AFTER INSERT 
 ON GPU_Listing
 FOR EACH ROW
 EXECUTE PROCEDURE Log_listing();
+
+
+
+
 
 CREATE OR REPLACE FUNCTION Date_now()
 	RETURNS TRIGGER
@@ -33,11 +39,17 @@ BEGIN
 END;
 $$;
 
+
+
+
+
 CREATE TRIGGER Update_timing 
 AFTER UPDATE OR DELETE
 ON User1
 FOR EACH STATEMENT
 EXECUTE PROCEDURE Date_now();
+
+
 
 
 CREATE OR REPLACE FUNCTION Rentals()
@@ -86,6 +98,9 @@ BEGIN
 	RETURN NEW;
 END;
 $$;
+
+
+
 
 
 CREATE TRIGGER After_rental_listing

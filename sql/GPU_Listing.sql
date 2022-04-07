@@ -1,6 +1,6 @@
 /***************************
 
-  Populate the downloads table
+  Populate the GPU_Listing table
 
 ****************************/
 

@@ -376,7 +376,6 @@ def rental(request, Listingid):
     #use this snippet in everyview function to verify user. ends here
 
     """Shows the main page"""
-    #context = {}
     status = ''
     with connection.cursor() as cursor:
         cursor.execute("SELECT * FROM GPU_Listing WHERE Listingid = %s", [Listingid])
@@ -384,13 +383,11 @@ def rental(request, Listingid):
         cursor.execute("SELECT * FROM User1 WHERE Email = %s", [request.session['email']])
         Borrower_details = cursor.fetchall()
     if request.POST:
-        ## Check if customerid is already in the table
         with connection.cursor() as cursor:
             cursor.execute("SELECT * FROM GPU_Listing WHERE Listingid = %s", [Listingid])
             listing = cursor.fetchone()
             cursor.execute("SELECT * FROM User1 WHERE Email = %s", [request.session['email']])
             Borrower = cursor.fetchone()
-            ## No customer with same id
             if (datetime.strptime(request.POST['Start_day'], '%Y-%m-%d').date() >= listing[4] and datetime.strptime(request.POST['End_day'], '%Y-%m-%d').date() <= listing[5] and datetime.strptime(request.POST['Start_day'], '%Y-%m-%d').date() <=  datetime.strptime(request.POST['End_day'], '%Y-%m-%d').date()):
                 ##TODO: date validation
                 #cursor.execute("INSERT INTO Rental VALUES (%s, %s, %s, %s, %s, %s)",[request.POST['Borrower_id'], listing[1], listing[2],
